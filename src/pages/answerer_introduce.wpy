@@ -1,4 +1,11 @@
 <style lang="less">
+.section{
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+  width: 100%;
+  height: 100%;
+}
 .head_top{
   display: flex;
 }
@@ -92,72 +99,96 @@
   border-radius: 10%;
   background-color: #F6F6F6;
 }
+.login{
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  width: 710rpx;
+  height: 80rpx;
+  line-height: 20px;
+  border-radius: 5px;
+  color: #ffffff;
+  font-size: 14px;
+}
+.login-wechat{
+  position: fixed;
+  bottom:10rpx;
+  background-color: #5383c3;
+  color: #ffffff;
+}
 </style>
 //回答者介绍页
 <template>
   <view>
-    <view class="head_top">
-      <view class="userinfo-avatar">
-          <image  class="avatar_img" src="{{model.avatarUrl}}"></image>
-          <image  wx:if="{{model.isExpert==1}}" class="expert_img" src="../files/img/expert.png"></image>
-      </view>
-      <view>
-         <view>
-          <label class="showName">{{model.showName}}</label>
-          <label class="title">{{model.title}}</label>
-         </view>
-         <view>
-          <label class="company">{{model.company}}</label>
-         </view>
-      </view>
-      <view>
-        <label class="location">{{model.location}}</label>
-      </view>
-    </view>
-    <view class="head_bottom">
-        <label wx:if="{{isRest}}" class="status_label"><text space="nbsp"> 休息中 </text></label>
-        <view style="{{isRest?'margin-left:10rpx':'margin-left:100rpx'}}"></view>
-        <view class="little_tabs">
-          <label class="little_tab"><image class="grade_pic" src="../files/img/grade_high.png"></image><label class="blue_font">{{model.averageScore}}</label>分</label>
-          <label class="little_tab"><label class="blue_font">{{model.answerNumber}}</label>个回答</label>
-          <label class="little_tab"><label class="blue_font">{{model.responseRate}}%</label>响应率</label>
-          <label class="little_tab">平均<label class="blue_font">{{model.averageTime}}分钟</label>响应</label>
+    <scroll-view scroll-y="true" style="height:{{windowHeight-100}}rpx">
+      <view class="head_top">
+        <view class="userinfo-avatar">
+            <image  class="avatar_img" src="{{model.avatarUrl}}" @tap="test()"></image>
+            <image  wx:if="{{model.isExpert==1}}" class="expert_img" src="../files/img/expert.png"></image>
         </view>
-        
-    </view>
-
-     <servicelabel :servicelabel.sync="servicelabel"></servicelabel>
-
-
-
-
-    <panel>
-      <view class="title" slot="title">服务时间
-      </view>
-      <view class="panel_bar">
         <view>
-          <label class="gery_font">{{workDay}}</label>
+          <view>
+            <label class="showName">{{model.showName}}</label>
+            <label class="title">{{model.title}}</label>
+          </view>
+          <view>
+            <label class="company">{{model.company}}</label>
+          </view>
         </view>
-        <view style="margin-top:20rpx">
-          <label class="gery_font">{{model.serviceTime}}</label>
+        <view>
+          <label class="location">{{model.location}}</label>
         </view>
       </view>
-    </panel>
-
-    <panel>
-      <view class="title" slot="title">简介</view>
-      <view class="profiles">{{model.profiles}}</view>
-      <view class="profilesPic">
-        <repeat for="{{profilesPic}}" item="item">
-          <image src="{{item}}" @tap="previewImage({{item}})"></image>
-        </repeat>
+      <view class="head_bottom">
+          <label wx:if="{{isRest}}" class="status_label"><text space="nbsp"> 休息中 </text></label>
+          <view style="{{isRest?'margin-left:10rpx':'margin-left:100rpx'}}"></view>
+          <view class="little_tabs">
+            <label class="little_tab"><image class="grade_pic" src="../files/img/grade_high.png"></image><label class="blue_font">{{model.averageScore}}</label>分</label>
+            <label class="little_tab"><label class="blue_font">{{model.answerNumber}}</label>个回答</label>
+            <label class="little_tab"><label class="blue_font">{{model.responseRate}}%</label>响应率</label>
+            <label class="little_tab">平均<label class="blue_font">{{model.averageTime}}分钟</label>响应</label>
+          </view>
+          
       </view>
 
-    </panel>
-    
-    <panel wx:if="{{model.commentNumber>0}}">
-      <view class="title" slot="title">用户评论</view>
-    </panel>
+      <servicelabel :servicelabel.sync="servicelabel"></servicelabel>
+
+
+
+
+      <panel>
+        <view class="title" slot="title">服务时间
+        </view>
+        <view class="panel_bar">
+          <view>
+            <label class="gery_font">{{workDay}}</label>
+          </view>
+          <view style="margin-top:20rpx">
+            <label class="gery_font">{{model.serviceTime}}</label>
+          </view>
+        </view>
+      </panel>
+
+      <panel>
+        <view class="title" slot="title">简介</view>
+        <view class="profiles">{{model.profiles}}</view>
+        <view class="profilesPic">
+          <repeat for="{{profilesPic}}" item="item">
+            <image src="{{item}}" @tap="previewImage({{item}})"></image>
+          </repeat>
+        </view>
+
+      </panel>
+      
+      <panel wx:if="{{model.commentNumber>0}}">
+        <view class="title" slot="title">用户评论</view>
+      </panel>
+     
+  </scroll-view>
+  <view class="section">
+    <button class="login login-wechat">立即咨询</button>
+  </view>
+ 
 
   </view>
 </template>
@@ -166,8 +197,7 @@
   import wepy from 'wepy'
   import Panel from '../components/panel' 
   import servicelabel from '../components/servicelabel'
-  import {Base64} from 'js-base64'
-  import md5 from 'js-md5'
+  import utils from "../mixins/utils";
   export default class answerer_introduce extends wepy.page {
     config = {
       navigationBarTitleText: ''
@@ -185,6 +215,7 @@
        profilesPic:'',
        isRest:false,
     }
+    mixins=[utils];
 
     methods = {
        previewImage(img){
@@ -209,17 +240,16 @@
       let self = this
       let json2={};
       json2.responderId=self.responderId;
-      json2=JSON.stringify(json2);
-      let obj=Base64.encode(json2);
-      let sign=md5(obj+self.$parent.globalData.randomKey)
+      let obj=self.genObj(json2);
+      let sign=self.genSign(obj);
       wepy.request({
-        url:  self.$parent.globalData.domain+'/ww/api/v1/responder/showDetail',
+        url:  self.domain+'/ww/api/v1/responder/showDetail',
         method: 'post',
         data: {object:obj,sign:sign},
         header:{
           'JWT': 'true',
           'content-type':'application/json',
-          'Authorization':'Bearer '+self.$parent.globalData.accessToken
+          'Authorization':'Bearer '+self.accessToken
         },
         success(res) {
           self.model=res.data.data;

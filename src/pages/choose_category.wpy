@@ -102,6 +102,7 @@ button::after {
 <script>
   import wepy from 'wepy'
   import {Base64} from 'js-base64'
+  import utils from "../mixins/utils";
   export default class choose_category extends wepy.page {
     config = {
       navigationBarTitleText: ''
@@ -122,9 +123,8 @@ button::after {
       }
      
     }
+    mixins=[utils]
     data={
-        categoryList: [],
-        windowHeight:'',
     }
     confirm(){
        let self=this;
@@ -147,13 +147,13 @@ button::after {
         json.categoryId=categoryId;
         json=JSON.stringify(json);
         wepy.request({
-          url:  self.$parent.globalData.domain+'/ww/api/v1/common/choiceIndustry',
+          url:  self.domain+'/ww/api/v1/common/choiceIndustry',
           method: 'post',
           data: {object:Base64.encode(json)},
           header:{
             'JWT': 'true',
             'content-type':'application/json',
-            'Authorization':'Bearer '+self.$parent.globalData.accessToken
+            'Authorization':'Bearer '+self.accessToken
           },
           success(res) {
             let result=res.data
@@ -244,15 +244,7 @@ button::after {
              
       //         }
       // })
-      wepy.getSystemInfo({
-         success: function (res) {
-          let clientHeight = res.windowHeight,
-          clientWidth = res.windowWidth,
-          rpxR = 750 / clientWidth;
-          var calc = clientHeight * rpxR;
-          self.windowHeight=calc
-         }
-      });
+  
       self.categoryList=self.$parent.globalData.categorieList
     }
   }
