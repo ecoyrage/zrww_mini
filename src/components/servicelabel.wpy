@@ -1,0 +1,36 @@
+<style lang="less">
+.labelView{
+    margin-left:20rpx;
+    margin-top:20rpx;
+    display:flex;
+    flex-wrap:wrap;
+    font-size:12px;
+}
+.tab_lable{
+    color:#5383C3;
+    border:1px solid #5383C3;
+    border-radius: 10%;
+    margin-left: 10rpx;
+    margin-top: 10rpx;
+    margin-right: 10rpx;
+  }
+</style>
+// 业务标签页
+<template>
+  <view class="labelView">
+    <repeat for="{{servicelabel}}" item="item">
+        <lable class="tab_lable"><text space="nbsp"> {{item}} </text></lable> 
+    </repeat>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class servicelabel extends wepy.component {
+    props = {
+      servicelabel: Object
+    }
+  }
+</script>
+
+

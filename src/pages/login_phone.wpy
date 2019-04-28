@@ -1,0 +1,287 @@
+<style lang="less">
+.section{
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+  width: 100%;
+  height: 100%;
+}
+.login{
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  width: 670rpx;
+  height: 100rpx;
+  line-height: 20px;
+  border-radius: 5px;
+  color: #ffffff;
+  font-size: 16px;
+}
+.login-wechat{
+  margin-top:72rpx;
+  background-color: #5383c3;
+  color: #ffffff;
+}
+.zrww{
+  margin-top: 40rpx;
+  color: #333333;
+  font-size: 24px;
+  font-weight: bold;
+}
+.band{
+  background-color: #F6F6F6;
+  width: 670rpx;
+  height:100rpx;
+  margin-left:40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+  font-size:14px;
+}
+.phone{
+  margin-top:76rpx;
+}  
+.code{
+  margin-top:58rpx;
+}
+.fontarea{
+  position: absolute;
+  left: 80rpx;
+}
+.getCode{
+  position: absolute;
+  color: #5383C3;
+  right:80rpx;
+  outline: none;
+  font-size:14px;
+}
+button::after {
+  border: none;
+}
+
+</style>
+<template>
+  <view>
+    <view class="section">
+      <text class="zrww">{{title}}</text>
+    </view>
+    <view class="band phone">
+      <input class="fontarea" placeholder="输入手机号" maxlength="11" bindinput='getPhoneValue()' value='{{account}}'/>
+    </view>
+    <view class="band code">
+      <input class="fontarea" placeholder="输入验证码" bindinput='getCodeValue' value='{{code}}'/>
+      <button class="getCode" @tap='getVerificationCode' disabled='{{disabled}}'>{{codename}}</button>
+    </view>
+    <view class="section">
+      <button class="login login-wechat"  @tap='save()'>{{submit}}</button>
+    </view>
+   
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import {Base64} from 'js-base64'
+  import md5 from 'js-md5'
+  export default class login_phone extends wepy.page {
+    config = {
+      navigationBarTitleText: ''
+    }
+    components = {
+    }
+
+    methods = {
+        //获取验证码
+        getVerificationCode() {
+          this.getCode();
+        }
+    }
+    data = {
+      title:'',//标题
+      submit:'',//确认框
+      type:'',//1-验证码注册登录;2-三方登录
+      account:'',//手机号
+      code:'',//验证码
+      codename:'获取验证码',
+      disabled:false,
+    }
+    //获取input输入框的值
+    getPhoneValue(e){
+      this.account=e.detail.value;
+    }
+    getCodeValue(e) {
+      this.code=e.detail.value;
+    }
+  
+    getCode(){
+      var _this = this;
+      var myreg = /^(14[0-9]|13[0-9]|15[0-9]|17[0-9]|18[0-9])\d{8}$$/;
+      if (this.account == "") {
+        wepy.showToast({
+          title: '手机号不能为空',
+          icon: 'none',
+          duration: 1000
+        })
+        return false;
+      } else if (!myreg.test(this.account)) {
+        wepy.showToast({
+          title: '请输入正确的手机号',
+          icon: 'none',
+          duration: 1000
+        })
+        return false;
+      }else{
+        var json={};
+        json.tel=_this.account;
+        json.type=_this.type;
+        json=JSON.stringify(json);
+        wepy.request({
+          url:  _this.$parent.globalData.domain+'/ww/api/v1/common/sms',
+          method: 'post',
+          data: {object:Base64.encode(json)},
+          header:{
+            'JWT': 'true',
+            'content-type':'application/json',
+          },
+          success(res) {
+            var num = 61;
+            var timer = setInterval(function () {
+              num--;
+              if (num <= 0) {
+                clearInterval(timer);
+                _this.codename='重新发送';
+                _this.disabled=false;
+                _this.$apply();
+              } else {
+                _this.codename=num + "s"
+                _this.disabled=true;
+                _this.$apply();
+              }
+            }, 1000)
+            if(res.data.code==200){
+              wepy.showToast({
+                title: res.data.msg,
+                icon: 'none',
+                duration: 3000
+              })
+            }
+          }
+        })
+        _this.disabled=true;
+        _this.$apply();
+      }
+  }
+  save(){
+    let _this=this;
+    var myreg = /^(14[0-9]|13[0-9]|15[0-9]|17[0-9]|18[0-9])\d{8}$$/;
+    if (_this.account == "") {
+      wepy.showToast({
+        title: '手机号不能为空',
+        icon: 'none',
+        duration: 1000
+      })
+      return false;
+    }else if (!myreg.test(this.account)) {
+        wepy.showToast({
+          title: '请输入正确的手机号',
+          icon: 'none',
+          duration: 1000
+        })
+        return false;
+    }
+    if (_this.code == "") {
+      wepy.showToast({
+        title: '验证码不能为空',
+        icon: 'none',
+        duration: 1000
+      })
+      return false;
+    }
+    let type=_this.type;
+    if(type==1){  
+      var json={};
+      json.account=_this.account;
+      json.vaildCode=_this.code;
+      json.loginInfo=_this.$parent.globalData.model;
+      json=JSON.stringify(json);
+      wepy.request({
+          url:  _this.$parent.globalData.domain+'/ww/api/v1/common/vaildCode',
+          method: 'post',
+          data: {object:Base64.encode(json)},
+          header:{
+            'JWT': 'true',
+            'content-type':'application/json',
+          },
+          success(res) {
+            let result=res.data;
+            if(result.code==100){
+              _this.$parent.globalData.accessToken=result.data.accessToken;
+              _this.$parent.globalData.randomKey=result.data.randomKey;
+              _this.$parent.globalData.isLogin=true;
+              _this.$apply();
+              wepy.reLaunch({
+                url:'/pages/answerer_introduce'
+              })
+              // let json2={};
+              // json2.loginInfo="小程序";
+              // json2=JSON.stringify(json2);
+              // let obj=Base64.encode(json2);
+              // let sign=md5(obj+result.data.randomKey)
+              // wepy.request({
+              //   url:  _this.$parent.globalData.domain+'/ww/api/v1/user/basicInfo',
+              //   method: 'post',
+              //   data: {object:obj,sign:sign},
+              //   header:{
+              //     'JWT': 'true',
+              //     'content-type':'application/json',
+              //     'Authorization':'Bearer '+result.data.accessToken
+              //   },
+              //   success(res) {
+              //     if(res.data.code==100){
+              //         _this.$parent.globalData.basicInfo=res.data.data;
+              //         _this.$apply();
+              //         wepy.reLaunch({
+              //           url:'/pages/index'
+              //         })
+              //     }
+              //   }
+              // })
+
+               
+
+            }else if(result.code==200){
+              wepy.showToast({
+                title: result.msg,
+                icon: 'none',
+                duration: 3000
+              })
+            }
+          }
+      })
+
+    }else if(type==2){
+      wepy.redirectTo({
+        url:'/pages/invitation_code'
+      })
+
+    }
+  
+  }
+
+    events = {
+      // 'index-emit': (...args) => {
+      //   let $event = args[args.length - 1]
+      //   console.log(`${this.$name} receive ${$event.name} from ${$event.source.$name}`)
+      // }
+    }
+
+    onLoad(options) {
+      let self = this
+      self.title=options.title
+      self.submit=options.submit
+      self.type=options.type
+      self.$apply();
+      
+    }
+  }
+</script>

@@ -1,0 +1,42 @@
+<style lang="less">
+</style>
+<template>
+  <view>
+    <image src="{{trety}}" mode="widthFix" style="width:100%"/>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class treaty extends wepy.page {
+    config = {
+      navigationBarTitleText: ''
+    }
+    components = {
+     
+    }
+
+
+    data = {
+      trety:'',
+    }
+
+    methods = {
+     
+    }
+
+    
+    onLoad(options) {
+      let self = this;
+      let type=options.type;
+      if(type==1){
+        self.trety="http://oss.50waizhuan.com/fenxiangguize.png";
+      }else{
+        self.trety="";
+      }
+ 
+      
+      
+    }
+  }
+</script>

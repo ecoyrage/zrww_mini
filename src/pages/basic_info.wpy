@@ -1,0 +1,44 @@
+<style lang="less">
+
+</style>
+<template>
+  <view>
+   
+    
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class basic_info extends wepy.page {
+    config = {
+      navigationBarTitleText: ''
+    }
+    components = {
+     
+    }
+
+
+    data = {
+      
+    }
+
+    methods = {
+     
+      
+    }
+
+
+    events = {
+      // 'index-emit': (...args) => {
+      //   let $event = args[args.length - 1]
+      //   console.log(`${this.$name} receive ${$event.name} from ${$event.source.$name}`)
+      // }
+    }
+
+    onLoad() {
+      let self = this
+      
+    }
+  }
+</script>

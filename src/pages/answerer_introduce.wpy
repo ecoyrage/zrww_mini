@@ -1,0 +1,327 @@
+<style lang="less">
+.head_top{
+  display: flex;
+}
+.userinfo-avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  margin-left:20rpx;
+}
+.avatar_img{
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+}
+.expert_img{
+  position:fixed;
+  margin-left:-30rpx;
+  width:46rpx;
+  height:46rpx;
+}
+.showName{
+  color:#444;
+  font-size: 16px;
+  margin-left:20rpx;
+}
+.title{
+  color:#333;
+  font-size: 14px;
+  margin-left:20rpx;
+}
+.location{
+  position: absolute;
+  top: 14rpx;
+  right: 20rpx;
+  color:#999;
+  font-size: 12px;
+}
+.company{
+  color:#333;
+  font-size: 14px;
+  margin-left:20rpx;
+  margin-top:18rpx;
+}
+.head_bottom{
+  font-size: 12px;
+  margin-left:20rpx;
+  margin-top:28rpx;
+  display: flex;
+}
+.little_tab{
+  margin-left: 20rpx;
+}
+// .little_tabs{
+//   margin-left:100rpx;
+// }
+.blue_font{
+ color:#5383C3;
+}
+.gery_font{
+  color:#767676;
+}
+.panel_bar{
+  margin-left:20rpx;
+}
+.grade_pic{
+  width:24rpx;
+  height: 24rpx;
+}
+.profiles{
+   margin-left:20rpx;
+   font-size:14px;
+   color:#333;
+}
+.profilesPic{
+  margin-left:20rpx;
+  margin-top:20rpx;
+  margin-right:20rpx;
+  display: flex;
+  flex-wrap: wrap; 
+}
+
+.profilesPic image{
+  width:200rpx;
+  height:200rpx;
+  margin-right:37rpx;
+  margin-bottom:16rpx;
+}
+.status_label{
+  color:#DF7163;
+  border:1px solid #F6F6F6;
+  border-radius: 10%;
+  background-color: #F6F6F6;
+}
+</style>
+//回答者介绍页
+<template>
+  <view>
+    <view class="head_top">
+      <view class="userinfo-avatar">
+          <image  class="avatar_img" src="{{model.avatarUrl}}"></image>
+          <image  wx:if="{{model.isExpert==1}}" class="expert_img" src="../files/img/expert.png"></image>
+      </view>
+      <view>
+         <view>
+          <label class="showName">{{model.showName}}</label>
+          <label class="title">{{model.title}}</label>
+         </view>
+         <view>
+          <label class="company">{{model.company}}</label>
+         </view>
+      </view>
+      <view>
+        <label class="location">{{model.location}}</label>
+      </view>
+    </view>
+    <view class="head_bottom">
+        <label wx:if="{{isRest}}" class="status_label"><text space="nbsp"> 休息中 </text></label>
+        <view style="{{isRest?'margin-left:10rpx':'margin-left:100rpx'}}"></view>
+        <view class="little_tabs">
+          <label class="little_tab"><image class="grade_pic" src="../files/img/grade_high.png"></image><label class="blue_font">{{model.averageScore}}</label>分</label>
+          <label class="little_tab"><label class="blue_font">{{model.answerNumber}}</label>个回答</label>
+          <label class="little_tab"><label class="blue_font">{{model.responseRate}}%</label>响应率</label>
+          <label class="little_tab">平均<label class="blue_font">{{model.averageTime}}分钟</label>响应</label>
+        </view>
+        
+    </view>
+
+     <servicelabel :servicelabel.sync="servicelabel"></servicelabel>
+
+
+
+
+    <panel>
+      <view class="title" slot="title">服务时间
+      </view>
+      <view class="panel_bar">
+        <view>
+          <label class="gery_font">{{workDay}}</label>
+        </view>
+        <view style="margin-top:20rpx">
+          <label class="gery_font">{{model.serviceTime}}</label>
+        </view>
+      </view>
+    </panel>
+
+    <panel>
+      <view class="title" slot="title">简介</view>
+      <view class="profiles">{{model.profiles}}</view>
+      <view class="profilesPic">
+        <repeat for="{{profilesPic}}" item="item">
+          <image src="{{item}}" @tap="previewImage({{item}})"></image>
+        </repeat>
+      </view>
+
+    </panel>
+    
+    <panel wx:if="{{model.commentNumber>0}}">
+      <view class="title" slot="title">用户评论</view>
+    </panel>
+
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Panel from '../components/panel' 
+  import servicelabel from '../components/servicelabel'
+  import {Base64} from 'js-base64'
+  import md5 from 'js-md5'
+  export default class answerer_introduce extends wepy.page {
+    config = {
+      navigationBarTitleText: ''
+    }
+    components = {
+       panel: Panel,
+       servicelabel: servicelabel,
+    }
+
+    data = {
+       model:'',
+       servicelabel: [],
+       responderId:'1122029315456847873',
+       workDay:'',
+       profilesPic:'',
+       isRest:false,
+    }
+
+    methods = {
+       previewImage(img){
+        //图片预览
+        wx.previewImage({
+          current: img, // 当前显示图片的http链接
+          urls: this.profilesPic // 需要预览的图片http链接列表
+		    })
+
+      }
+      
+    }
+
+    events = {
+      // 'index-emit': (...args) => {
+      //   let $event = args[args.length - 1]
+      //   console.log(`${this.$name} receive ${$event.name} from ${$event.source.$name}`)
+      // }
+    }
+  
+    onLoad() {
+      let self = this
+      let json2={};
+      json2.responderId=self.responderId;
+      json2=JSON.stringify(json2);
+      let obj=Base64.encode(json2);
+      let sign=md5(obj+self.$parent.globalData.randomKey)
+      wepy.request({
+        url:  self.$parent.globalData.domain+'/ww/api/v1/responder/showDetail',
+        method: 'post',
+        data: {object:obj,sign:sign},
+        header:{
+          'JWT': 'true',
+          'content-type':'application/json',
+          'Authorization':'Bearer '+self.$parent.globalData.accessToken
+        },
+        success(res) {
+          self.model=res.data.data;
+          self.servicelabel=res.data.data.label.split(',');
+          self.workDay=self.changeWorkDay(res.data.data.workDay);
+          self.isRest=self.isRest(res.data.data.workDay,res.data.data.serviceTime);
+          self.profilesPic=res.data.data.profilesPic.split(',');
+          self.$apply();
+       
+          // console.log(self.model)
+        }
+      })
+
+   
+    }
+
+
+    changeWorkDay(data){
+      let day=data.split(",");
+      let str=""
+      if(day.length==7){
+        return "周一 至 周日"
+      }else{
+        for(let i=0;i<day.length;i++){
+          if(day[i]==1){
+            str+="周一、"
+          }
+          if(day[i]==2){
+            str+="周二、"
+          }
+          if(day[i]==3){
+            str+="周三、"
+          }
+          if(day[i]==4){
+            str+="周四、"
+          }
+          if(day[i]==5){
+            str+="周五、"
+          }
+          if(day[i]==6){
+            str+="周六、"
+          }
+           if(day[i]==7){
+            str+="周日、"
+          }
+        }
+      }
+      return str.substring(0,str.length-1)
+    }
+
+    isRest(day,time){
+      let days=day.split(",");
+      let today=new Date().getDay();
+      if(today==0) {
+        today=7
+      }
+      if(days.indexOf(today+"")>-1){
+        let times=time.split(",")
+        let array=new Array();
+        for(let i=0;i<times.length;i++){
+          let hour=times[i].split("~")
+          let start=hour[0]
+          let end=hour[1]
+          array.push(this.time_range(start,end))
+        }
+        return !this.contains(array,true);
+      
+      }else{
+         return true;
+      }
+
+    }
+
+    time_range(beginTime,endTime){
+      var strb = beginTime.split (":");
+      var stre = endTime.split (":");
+      var b = new Date ();
+      var e = new Date ();
+      var n = new Date ();
+      b.setHours (strb[0]);
+      b.setMinutes (strb[1]);
+      e.setHours (stre[0]);
+      e.setMinutes (stre[1]);
+      if (n.getTime () - b.getTime () > 0 && n.getTime () - e.getTime () < 0) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    contains(a, obj) {
+      var i = a.length;
+      while (i--) {
+        if (a[i] === obj) {
+            return true;
+        }
+      }
+      return false;
+    }
+
+
+
+    
+  }
+</script>

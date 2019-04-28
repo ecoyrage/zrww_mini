@@ -1,0 +1,142 @@
+<style lang="less">
+.section{
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+  width: 100%;
+  height: 100%;
+}
+.zrww{
+  margin-top: 40rpx;
+  color: #333333;
+  font-size: 18px;
+}
+.userinfo-avatar {
+  width: 48rpx;
+  height: 48rpx;
+  margin-left:20rpx;
+}
+.userinfo-avatar image{
+  width: 48rpx;
+  height:48rpx;
+  border-radius: 50%;
+}
+.login{
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  width: 670rpx;
+  height: 100rpx;
+  line-height: 20px;
+  border-radius: 5px;
+  color: #ffffff;
+  font-size: 32rpx;
+}
+.login-wechat{
+  margin-top:40rpx;
+  background-color: #5383c3;
+  color: #ffffff;
+}
+.grey_space{
+   background-color: #F6F6F6;
+   height: 10rpx;
+}
+.search_img{
+  width: 46rpx;
+  height: 46rpx;
+}
+</style>
+<template>
+  <view>
+     <view class="userinfo-avatar" @tap="userInfo()">
+          <image  src="{{avatarUrl}}"></image>
+      </view>
+    <view class="section">
+      <text class="zrww">找任何人，问任何事</text>
+    </view>
+    <view class="section">
+      <button class="login login-wechat" @tap="openApp()"><image class="search_img"  src="../files/img/search.png"></image>找人问问</button>
+    </view>
+    <view class="grey_space" style="margin-top:120rpx;">
+    </view>
+
+   
+    <indexArea>
+      <image class="icon" src="{{icon}}" slot="icon"></image>
+      <view class="title" slot="title">成为答者，多点人脉，赚点外快</view>
+      <button class="behave" slot="behave">成为答者</button>
+    </indexArea>
+    <indexArea>
+      <image class="icon" src="{{icon}}" slot="icon"></image>
+      <view class="title" slot="title">邀请好友，坐享收益</view>
+      <button class="behave" slot="behave">去邀请</button>
+    </indexArea>
+
+    
+    
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import indexArea from '../components/index_area' 
+  export default class index extends wepy.page {
+    config = {
+      navigationBarTitleText: ''
+    }
+    components = {
+      indexArea:indexArea,
+    }
+
+
+    data = {
+      avatarUrl:"../files/img/avatarUrl.png",
+      icon:"../files/img/avatarUrl.png",
+      isLogin:'',
+      
+    }
+
+    methods = {
+      userInfo(){
+        if(!this.isLogin){
+          wepy.navigateTo({
+            url:'/pages/login'
+          })
+        }else{
+          // console.log("已登录");
+          //  wepy.navigateTo({
+          //   url:'/pages/basic_info'
+          // })
+        }
+      
+      }
+      
+    }
+
+    
+   
+
+    isRegist(){
+      console.log("a");
+      return false;
+    }
+    events = {
+      // 'index-emit': (...args) => {
+      //   let $event = args[args.length - 1]
+      //   console.log(`${this.$name} receive ${$event.name} from ${$event.source.$name}`)
+      // }
+    }
+
+    onLoad() {
+      let self = this
+      let globalData=self.$parent.globalData
+      let isLogin=globalData.isLogin
+      self.isLogin=isLogin;
+      if(isLogin){
+        self.avatarUrl=globalData.basicInfo.avatarUrl;
+      }
+      self.$apply();
+      
+    }
+  }
+</script>

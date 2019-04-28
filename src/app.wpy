@@ -1,0 +1,115 @@
+<style lang="less">
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+</style>
+
+<script>
+import wepy from 'wepy'
+import 'wepy-async-function'
+
+
+export default class extends wepy.app {
+  config = {
+    pages: [
+      'pages/answerer_introduce',//回答者介绍
+      'pages/login',
+      'pages/index',
+      'pages/invitation_code',//邀请码
+      'pages/choose_category',//选择分类
+      'pages/basic_info',//个人中心
+      'pages/login_phone',
+      'pages/treaty',
+    ],
+    window: {
+      backgroundTextStyle: 'light',
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTitleText: 'WeChat',
+      navigationBarTextStyle: 'black'
+    },
+    "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
+  }
+  }
+
+  globalData = {
+    userInfo: null,
+    basicInfo:null,
+    // domain:'http://192.168.1.254:9090',
+    domain:'http://192.168.1.253',
+    accessToken:'eyJhbGciOiJIUzUxMiJ9.eyJyYW5kb21LZXkiOiI1NHVwdTAiLCJzdWIiOiIxMDA3MTUxOTU3MDE2MTk1MDc0IiwidG9rZW5UeXBlIjoiYWNjZXNzVG9rZW4iLCJleHAiOjE1ODc0MzY5NzUsImlhdCI6MTU1NjMzMjk3NX0.fM4cKj7rE6wGKoNIGt_4bYO5-UoGIKlYPJw0voqX7l8qNpIP4Nf1LxN5GE0Ru98iLoQZH_Gv2NOWeKj_R_OTcg',
+    randomKey:'54upu0',
+    isLogin:false,
+    model:'',//登录手机信息
+    categorieList:'',
+  }
+
+  constructor () {
+    super()
+    this.use('requestfix')
+  }
+  
+
+  onLaunch() {
+    // this.testAsync()
+     wepy.getSystemInfo({
+       success: function (res) {
+        this.globalData.model=res.model;
+       }
+      });
+    // wepy.request({
+    //   url: this.globalData.domain+'/ww/api/v1/common/sys', //开发者服务器接口地址",
+    //   method: 'post',
+    //   header:{
+    //       'JWT': 'true',
+    //       'content-type':'application/json',
+    //   },
+    //   dataType: 'json', //如果设为json，会尝试对返回的数据做一次 JSON.parse
+    //   success: res => {
+    //     this.globalData.categorieList=res.data.data.categorieList;
+    //   },
+    //   fail: () => {},
+    // });
+  }
+
+  sleep (s) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+         wepy.login({
+          success(res){
+            console.log(res)
+            resolve('promise resolved')
+          }
+        });
+        
+      }, s * 1000)
+    })
+  }
+
+  async testAsync () {
+    const data = await this.sleep(3)
+    console.log(data)
+  }
+
+  getUserInfo(cb) {
+    const that = this
+    if (this.globalData.userInfo) {
+      return this.globalData.userInfo
+    }
+    wepy.getUserInfo({
+      success (res) {
+        that.globalData.userInfo = res.userInfo
+        cb && cb(res.userInfo)
+      }
+    })
+  }
+}
+</script>
