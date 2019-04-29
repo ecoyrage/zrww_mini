@@ -18,12 +18,12 @@ import 'wepy-async-function'
 export default class extends wepy.app {
   config = {
     pages: [
-      'pages/answerer_introduce',//回答者介绍
-      'pages/login',
-      'pages/index',
-      'pages/invitation_code',//邀请码
-      'pages/choose_category',//选择分类
       'pages/basic_info',//个人中心
+      'pages/answerer_introduce',//回答者介绍
+      'pages/index',
+      'pages/choose_category',//选择分类
+      'pages/login',
+      'pages/invitation_code',//邀请码
       'pages/login_phone',
       'pages/treaty',
     ],
@@ -50,7 +50,12 @@ export default class extends wepy.app {
     isLogin:false,
     model:'',//登录手机信息
     categorieList:'',
+    adCode:'',
+    latitude:'',
+    longitude:'',
+    mobileVersion:'minipro 1.0'
   }
+  
 
   constructor () {
     super()

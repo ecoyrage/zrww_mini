@@ -65,7 +65,7 @@
 <script>
   import wepy from 'wepy'
   import Toast from 'wepy-com-toast'
-  import {Base64} from 'js-base64'
+  import utils from "../mixins/utils";
   export default class login extends wepy.page {
     config = {
       navigationBarTitleText: ''
@@ -78,6 +78,8 @@
     data = {
       responderId:'',
     }
+    
+    mixins=[utils]
 
     methods = {
       userAgreement(type){
@@ -91,9 +93,53 @@
           })
       },
       phone_login(){
-          wepy.navigateTo({
-            url:'/pages/login_phone?title=手机验证码登录&submit=登录&type=1'
-          })
+        let self=this;
+         wx.getSetting({
+            success(res) {
+              if (!res.authSetting['scope.userLocation']) {
+                wx.showModal({
+                    title: '是否授权当前位置',
+                    content: '需要获取您的地理位置，请确认授权，否则功能将无法使用',
+                    success: function (tip) {
+                        if (tip.confirm) {
+                            wx.openSetting({
+                                success: function (data) {
+                                    if (data.authSetting["scope.userLocation"] === true) {
+                                        wx.showToast({
+                                            title: '授权成功',
+                                            icon: 'success',
+                                            duration: 1000
+                                        })
+                                        self.getAdCode();
+                                        wepy.navigateTo({
+                                          url:'/pages/login_phone?title=手机验证码登录&submit=登录&type=1'
+                                        })
+                                      
+                                    } else {
+                                        wx.showToast({
+                                            title: '授权失败',
+                                            icon: 'none',
+                                            duration: 1000
+                                        })
+                                    }
+                                }
+                            })
+                        }
+                    }
+                })
+              }else{
+                //  wepy.navigateTo({
+                //     url:'/pages/answerer_introduce'
+                //   })
+                  wepy.navigateTo({
+                    url:'/pages/login_phone?title=手机验证码登录&submit=登录&type=1'
+                  })
+              }
+            }
+        })
+
+
+     
       }
       
     }
@@ -157,6 +203,32 @@
         // });
     })
     }
+    getAdCode(){
+      let self=this;
+      wx.getLocation({
+          type: 'gcj02', // 返回可以用于wx.openLocation的经纬度
+          success(res) {
+            let latitude = res.latitude,
+                longitude = res.longitude
+                self.$parent.globalData.latitude=latitude
+                self.$parent.globalData.longitude=longitude
+            wepy.request({
+                url: 'http://api.map.baidu.com/geocoder/v2/?&location=' + latitude + ',' + longitude + '&output=json&ak=fpmIGPqo4DYm61tvTuKHgT9QxWG5cIdc',
+                method: 'get',
+                success: function (res) {
+                    let result = res.data.result,
+                        addressComponent = result.addressComponent,
+                        adcode = addressComponent.adcode
+                        self.$parent.globalData.adCode=adcode;
+                        self.$apply();
+                },
+                error: function (res) {
+                    this.getAdCode(latitude, longitude);
+                }
+              });
+          }
+      })
+    }
  
     events = {
       // 'index-emit': (...args) => {
@@ -174,8 +246,7 @@
             url:'/pages/answerer_introduce?responderId='
            })
       }
-
-
+      self.getAdCode();
     }
   }
 </script>

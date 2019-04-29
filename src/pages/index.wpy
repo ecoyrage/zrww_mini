@@ -80,6 +80,7 @@
 <script>
   import wepy from 'wepy'
   import indexArea from '../components/index_area' 
+  import utils from "../mixins/utils"
   export default class index extends wepy.page {
     config = {
       navigationBarTitleText: ''
@@ -96,6 +97,8 @@
       
     }
 
+    mixins=[utils]
+
     methods = {
       userInfo(){
         if(!this.isLogin){
@@ -103,10 +106,9 @@
             url:'/pages/login'
           })
         }else{
-          // console.log("已登录");
-          //  wepy.navigateTo({
-          //   url:'/pages/basic_info'
-          // })
+           wepy.navigateTo({
+            url:'/pages/basic_info'
+          })
         }
       
       }
@@ -116,10 +118,7 @@
     
    
 
-    isRegist(){
-      console.log("a");
-      return false;
-    }
+
     events = {
       // 'index-emit': (...args) => {
       //   let $event = args[args.length - 1]

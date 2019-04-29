@@ -1,6 +1,6 @@
 <style lang="less">
 .labelView{
-    margin-left:20rpx;
+    margin-left:30rpx;
     margin-top:20rpx;
     display:flex;
     flex-wrap:wrap;

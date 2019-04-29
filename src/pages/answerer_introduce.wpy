@@ -8,6 +8,7 @@
 }
 .head_top{
   display: flex;
+  margin-left:20rpx;
 }
 .userinfo-avatar {
   width: 100rpx;
@@ -38,7 +39,6 @@
 }
 .location{
   position: absolute;
-  top: 14rpx;
   right: 20rpx;
   color:#999;
   font-size: 12px;
@@ -58,9 +58,7 @@
 .little_tab{
   margin-left: 20rpx;
 }
-// .little_tabs{
-//   margin-left:100rpx;
-// }
+
 .blue_font{
  color:#5383C3;
 }
@@ -93,11 +91,14 @@
   margin-right:37rpx;
   margin-bottom:16rpx;
 }
-.status_label{
-  color:#DF7163;
-  border:1px solid #F6F6F6;
-  border-radius: 10%;
-  background-color: #F6F6F6;
+.status_img{
+  margin-left:20rpx;
+  width: 100rpx;
+  height:30rpx;
+}
+.status_img image{
+  width: 100rpx;
+  height:30rpx;
 }
 .login{
   display: flex;
@@ -116,6 +117,20 @@
   background-color: #5383c3;
   color: #ffffff;
 }
+.line{
+  width: 93%;
+  margin-top: 20rpx;
+  border-top:1rpx #BBB solid;
+}
+.service_bar{
+  font-size:12px;
+  color:#303030;
+  margin-top:10rpx;
+}
+.doubt_img{
+  width:24rpx;
+  height:24rpx;
+}
 </style>
 //回答者介绍页
 <template>
@@ -123,7 +138,7 @@
     <scroll-view scroll-y="true" style="height:{{windowHeight-100}}rpx">
       <view class="head_top">
         <view class="userinfo-avatar">
-            <image  class="avatar_img" src="{{model.avatarUrl}}" @tap="test()"></image>
+            <image  class="avatar_img" src="{{model.avatarUrl}}"></image>
             <image  wx:if="{{model.isExpert==1}}" class="expert_img" src="../files/img/expert.png"></image>
         </view>
         <view>
@@ -140,8 +155,11 @@
         </view>
       </view>
       <view class="head_bottom">
-          <label wx:if="{{isRest}}" class="status_label"><text space="nbsp"> 休息中 </text></label>
-          <view style="{{isRest?'margin-left:10rpx':'margin-left:100rpx'}}"></view>
+          <view class="status_img">
+              <image wx:if="{{isRest}}" src="../files/img/rest.png"></image>
+          </view>
+          <!-- <label wx:if="{{isRest}}" class="status_label"><text space="nbsp"> 休息中 </text></label>
+          <view style="{{isRest?'margin-left:10rpx':'margin-left:100rpx'}}"></view> -->
           <view class="little_tabs">
             <label class="little_tab"><image class="grade_pic" src="../files/img/grade_high.png"></image><label class="blue_font">{{model.averageScore}}</label>分</label>
             <label class="little_tab"><label class="blue_font">{{model.answerNumber}}</label>个回答</label>
@@ -166,7 +184,14 @@
           <view style="margin-top:20rpx">
             <label class="gery_font">{{model.serviceTime}}</label>
           </view>
+          <view class='line'></view>
+          <view class="service_bar">
+            <text @tap="zhuiwen(1)">24小时内可追问</text><image class="doubt_img" src="../files/img/doubt.png"></image>
+            <text @tap="hudong(2)" style="margin-left:84rpx;">在线互动</text><image class="doubt_img" src="../files/img/doubt.png"></image>
+            <text wx:if="{{model.isRefund==1}}" style="margin-left:100rpx;">支持无理由退款</text>
+          </view>
         </view>
+        
       </panel>
 
       <panel>
@@ -225,7 +250,18 @@
           urls: this.profilesPic // 需要预览的图片http链接列表
 		    })
 
+      },
+      zhuiwen(type){
+        wepy.navigateTo({
+            url:'/pages/treaty?type='+type
+        })
+      },
+      hudong(type){
+        wepy.navigateTo({
+            url:'/pages/treaty?type='+type
+        })
       }
+       
       
     }
 
@@ -255,7 +291,7 @@
           self.model=res.data.data;
           self.servicelabel=res.data.data.label.split(',');
           self.workDay=self.changeWorkDay(res.data.data.workDay);
-          self.isRest=self.isRest(res.data.data.workDay,res.data.data.serviceTime);
+          self.isRest=self.isResting(res.data.data.workDay,res.data.data.serviceTime);
           self.profilesPic=res.data.data.profilesPic.split(',');
           self.$apply();
        
@@ -300,7 +336,7 @@
       return str.substring(0,str.length-1)
     }
 
-    isRest(day,time){
+    isResting(day,time){
       let days=day.split(",");
       let today=new Date().getDay();
       if(today==0) {

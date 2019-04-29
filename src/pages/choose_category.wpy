@@ -101,7 +101,6 @@ button::after {
 
 <script>
   import wepy from 'wepy'
-  import {Base64} from 'js-base64'
   import utils from "../mixins/utils";
   export default class choose_category extends wepy.page {
     config = {
@@ -125,6 +124,7 @@ button::after {
     }
     mixins=[utils]
     data={
+        categoryList: [],
     }
     confirm(){
        let self=this;

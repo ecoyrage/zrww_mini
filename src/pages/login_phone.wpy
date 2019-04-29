@@ -81,8 +81,7 @@ button::after {
 
 <script>
   import wepy from 'wepy'
-  import {Base64} from 'js-base64'
-  import md5 from 'js-md5'
+  import utils from "../mixins/utils";
   export default class login_phone extends wepy.page {
     config = {
       navigationBarTitleText: ''
@@ -96,6 +95,9 @@ button::after {
           this.getCode();
         }
     }
+
+    mixins=[utils]
+
     data = {
       title:'',//标题
       submit:'',//确认框
@@ -112,6 +114,7 @@ button::after {
     getCodeValue(e) {
       this.code=e.detail.value;
     }
+
   
     getCode(){
       var _this = this;
@@ -134,11 +137,10 @@ button::after {
         var json={};
         json.tel=_this.account;
         json.type=_this.type;
-        json=JSON.stringify(json);
         wepy.request({
-          url:  _this.$parent.globalData.domain+'/ww/api/v1/common/sms',
+          url:  _this.domain+'/ww/api/v1/common/sms',
           method: 'post',
-          data: {object:Base64.encode(json)},
+          data: {object: _this.genObj(json)},
           header:{
             'JWT': 'true',
             'content-type':'application/json',
@@ -203,11 +205,10 @@ button::after {
       json.account=_this.account;
       json.vaildCode=_this.code;
       json.loginInfo=_this.$parent.globalData.model;
-      json=JSON.stringify(json);
       wepy.request({
-          url:  _this.$parent.globalData.domain+'/ww/api/v1/common/vaildCode',
+          url:  _this.domain+'/ww/api/v1/common/vaildCode',
           method: 'post',
-          data: {object:Base64.encode(json)},
+          data: {object:_this.genObj(json)},
           header:{
             'JWT': 'true',
             'content-type':'application/json',
@@ -215,37 +216,43 @@ button::after {
           success(res) {
             let result=res.data;
             if(result.code==100){
+              _this.accessToken=result.data.accessToken;
+              _this.randomKey=result.data.randomKey;
               _this.$parent.globalData.accessToken=result.data.accessToken;
               _this.$parent.globalData.randomKey=result.data.randomKey;
               _this.$parent.globalData.isLogin=true;
               _this.$apply();
-              wepy.reLaunch({
-                url:'/pages/answerer_introduce'
-              })
-              // let json2={};
-              // json2.loginInfo="小程序";
-              // json2=JSON.stringify(json2);
-              // let obj=Base64.encode(json2);
-              // let sign=md5(obj+result.data.randomKey)
-              // wepy.request({
-              //   url:  _this.$parent.globalData.domain+'/ww/api/v1/user/basicInfo',
-              //   method: 'post',
-              //   data: {object:obj,sign:sign},
-              //   header:{
-              //     'JWT': 'true',
-              //     'content-type':'application/json',
-              //     'Authorization':'Bearer '+result.data.accessToken
-              //   },
-              //   success(res) {
-              //     if(res.data.code==100){
-              //         _this.$parent.globalData.basicInfo=res.data.data;
-              //         _this.$apply();
-              //         wepy.reLaunch({
-              //           url:'/pages/index'
-              //         })
-              //     }
-              //   }
+              // wepy.reLaunch({
+              //   url:'/pages/answerer_introduce'
               // })
+              let json2={};
+              json2.loginInfo="小程序";
+              json2.adCode=_this.adCode;
+              json2.mobileType=3;
+              json2.mobileVersion= _this.$parent.globalData.mobileVersion
+              json2.latitude=_this.latitude
+              json2.longitude=_this.longitude
+              let obj=_this.genObj(json2);
+              let sign=_this.genSign(obj);
+              wepy.request({
+                url:  _this.domain+'/ww/api/v1/user/basicInfo',
+                method: 'post',
+                data: {object:obj,sign:sign},
+                header:{
+                  'JWT': 'true',
+                  'content-type':'application/json',
+                  'Authorization':'Bearer '+_this.accessToken
+                },
+                success(res) {
+                  if(res.data.code==100){
+                      _this.$parent.globalData.basicInfo=res.data.data;
+                      _this.$apply();
+                      wepy.reLaunch({
+                        url:'/pages/index'
+                      })
+                  }
+                }
+              })
 
                
 

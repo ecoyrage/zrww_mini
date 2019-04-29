@@ -85,13 +85,14 @@ button::after {
 
 <script>
   import wepy from 'wepy'
-  import {Base64} from 'js-base64'
+  import utils from "../mixins/utils";
   export default class invitation_code extends wepy.page {
     config = {
       navigationBarTitleText: ''
     }
     components = {
     }
+    mixins=[utils]
 
     methods = {
       confirm(code){
@@ -111,15 +112,15 @@ button::after {
               if (tip.confirm) {
                   let json={};
                   json.invitationCode=code;
-                  json=JSON.stringify(json);
+                  let obj=_this.genObj(json);
                   wepy.request({
-                    url:  _this.$parent.globalData.domain+'/ww/api/v1/common/invitationCode',
+                    url:  _this.domain+'/ww/api/v1/common/invitationCode',
                     method: 'post',
-                    data: {object:Base64.encode(json)},
+                    data: {object:obj},
                     header:{
                       'JWT': 'true',
                       'content-type':'application/json',
-                      'Authorization':'Bearer '+_this.$parent.globalData.accessToken
+                      'Authorization':'Bearer '+_this.accessToken
                     },
                     success(res) {
                       let result=res.data

@@ -1,9 +1,123 @@
 <style lang="less">
+.name_bar{
+  background-color: #333;
+  height: 200rpx;
+}
+.userinfo-avatar {
+  width: 100rpx;
+  height: 100rpx;
+  margin-left:20rpx;
+  margin-top:40rpx;
+}
+.userinfo-avatar image{
+  width: 100rpx;
+  height:100rpx;
+  border-radius: 50%;
+}
+.nickName{
+  color:#FFF;
+  font-size: 18px;
+  position:absolute;
+  left:140rpx;
+  top:100rpx;
+}
+.menu_img{
+  width:100rpx;
+  height: 100rpx;
+}
+.menu_text{
+  margin-top:-10rpx;
+  color:#444;
+  font-size: 12px;
+  width:100rpx;
+}
+.middle_bar{
+  display: flex;
+  margin-top:42rpx;
+}
+.middle_part{
+  margin-right:150rpx;
+  text-align: center;
+}
+.grey_space{
+   background-color: #F6F6F6;
+   height: 20rpx;
+}
+.tab_menu_img{
+  width:48rpx;
+  height: 48rpx;
+  margin-top:24rpx;
+  margin-left:30rpx;
+}
+.line{
+  width: 100%;
+  margin-top: 20rpx;
+  border-top:1rpx#F7F7F7 solid;
+}
+.tab_menu{
+  height: 100rpx;
+}
+.tab_menu text{
+  position: absolute;
+  padding-top: 25rpx;
+  padding-left: 20rpx;
+}
 
 </style>
 <template>
   <view>
-   
+    <view class="name_bar">
+      <view class="userinfo-avatar">
+            <image src="{{basicInfo.avatarUrl}}"></image>
+      </view>
+      <view>
+          <text class="nickName">{{basicInfo.nickName}}</text>
+      </view>
+    </view>
+    <view class="middle_bar">
+      <view class="middle_part" style="margin-left:70rpx;">
+        <image class="menu_img" src="../files/img/doubt.png"></image>
+        <view class="menu_text">
+         <text>钱包</text>
+        </view>
+      </view>
+       <view class="middle_part">
+        <image class="menu_img" src="../files/img/doubt.png"></image>
+        <view class="menu_text">
+         <text>沟通历史</text>
+        </view>
+      </view>
+       <view class="middle_part">
+        <image class="menu_img" src="../files/img/doubt.png"></image>
+        <view class="menu_text">
+         <text>关注</text>
+        </view>
+      </view>
+      
+    </view>
+     <view class="grey_space" style="margin-top:20rpx;">
+     </view>
+
+     <view>
+         <view class="tab_menu">
+             <image class="tab_menu_img" src="../files/img/doubt.png"></image>
+             <text>设置</text>
+              <view class='line'></view>
+        </view>
+         <view class="tab_menu">
+             <image class="tab_menu_img" src="../files/img/doubt.png"></image>
+             <text>联系平台</text>
+             <view class='line'></view>
+        </view>
+         <view class="tab_menu">
+             <image class="tab_menu_img" src="../files/img/doubt.png"></image>
+             <text>实名认证</text>
+              <view class='line'></view>
+        </view>
+       
+
+     </view>
+    
     
   </view>
 </template>
@@ -12,7 +126,7 @@
   import wepy from 'wepy'
   export default class basic_info extends wepy.page {
     config = {
-      navigationBarTitleText: ''
+      navigationBarTitleText: '我的'
     }
     components = {
      
@@ -20,7 +134,28 @@
 
 
     data = {
-      
+      basicInfo:{
+        account:"18451114801",
+        adCode:"320482",
+        avatarUrl:"http://oss.50waizhuan.com/77c166e8-8020-461a-9c2c-3597f2a35350.jpg",
+        createTime:"2019-04-29 09:59:19",
+        gender:1,
+        invitationCode:"801507",
+        isAdmin:1,
+        latitude:31.72322,
+        loginInfo:"小程序",
+        longitude:119.59794,
+        mobileType:3,
+        mobileVersion:"minipro 1.0",
+        nickName:"闯进你的身体",
+        profit:19365,
+        responderId:"",
+        rewardBalance:4538,
+        role:2,
+        status:4,
+        updateTime:"2019-04-29 09:59:19",
+        userCode:"1007151957016195074"
+      }
     }
 
     methods = {

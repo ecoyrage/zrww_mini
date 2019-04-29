@@ -5,10 +5,12 @@ import md5 from 'js-md5'
 export default class utils extends wepy.mixin {
     data = {
         windowHeight:'',
-        categoryList: [],
         randomKey:'',
         accessToken:'',
         domain:'',
+        longitude:'',
+        latitude:'',
+        adCode:'',
 
     }
     methods = {
@@ -22,12 +24,16 @@ export default class utils extends wepy.mixin {
         let randomKey = this.randomKey;
         return md5(obj + randomKey)
     }
-    
+ 
+
     onLoad(){
         let self=this;
         self.randomKey = self.$parent.globalData.randomKey;
         self.accessToken = self.$parent.globalData.accessToken;
         self.domain = self.$parent.globalData.domain;
+        self.adCode = self.$parent.globalData.adCode;
+        self.longitude = self.$parent.globalData.longitude;
+        self.latitude = self.$parent.globalData.latitude;
         wepy.getSystemInfo({
             success: function (res) {
                 let clientHeight = res.windowHeight,
