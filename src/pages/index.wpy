@@ -72,6 +72,7 @@
       <button class="behave" slot="behave">去邀请</button>
     </indexArea>
 
+    <questionList :questionList.sync="questionList"></questionList>
     
     
   </view>
@@ -81,19 +82,36 @@
   import wepy from 'wepy'
   import indexArea from '../components/index_area' 
   import utils from "../mixins/utils"
+  import questionList from '../components/question_list'
   export default class index extends wepy.page {
     config = {
-      navigationBarTitleText: ''
+      navigationBarTitleText: '',
+      enablePullDownRefresh: true,
     }
     components = {
       indexArea:indexArea,
+      questionList:questionList
     }
-
 
     data = {
       avatarUrl:"../files/img/avatarUrl.png",
       icon:"../files/img/avatarUrl.png",
       isLogin:'',
+      questionList:[
+        {
+                "questionId":"1122336040693051393",
+                "avatarUrl":"http://oss.50waizhuan.com/bb73889e-1c55-4804-bc4a-1b3666d8b958.jpg",
+                "nickName":"测试",
+                "refundRate":0,
+                "pics":"http://oss.50waizhuan.com/bb73889e-1c55-4804-bc4a-1b3666d8b958.jpg,http://oss.50waizhuan.com/bb73889e-1c55-4804-bc4a-1b3666d8b958.jpg,http://oss.50waizhuan.com/bb73889e-1c55-4804-bc4a-1b3666d8b958.jpg",
+                "recommendumber":0,
+                "status":3,
+                "questionDescribe":"xxx",
+                "averageScore":"5",
+                "questionNumber":0
+            }
+            
+      ]
       
     }
 
@@ -111,10 +129,49 @@
           })
         }
       
-      }
+      },
+        
       
     }
-
+    onReachBottom(){
+      wx.showLoading({
+      title: '玩命加载中',
+      })
+      // 页数+1
+      let page = page + 1;
+      let obj={
+                "questionId":"1122336040693051393",
+                "avatarUrl":"http://oss.50waizhuan.com/bb73889e-1c55-4804-bc4a-1b3666d8b958.jpg",
+                "nickName":"测试",
+                "refundRate":0,
+                "pics":"http://oss.50waizhuan.com/bb73889e-1c55-4804-bc4a-1b3666d8b958.jpg,http://oss.50waizhuan.com/bb73889e-1c55-4804-bc4a-1b3666d8b958.jpg,http://oss.50waizhuan.com/bb73889e-1c55-4804-bc4a-1b3666d8b958.jpg",
+                "recommendumber":0,
+                "status":3,
+                "questionDescribe":"xxx",
+                "averageScore":"5",
+                "questionNumber":0
+            }
+      this.questionList.push(obj);
+      console.log(this.questionList)
+      this.$apply();
+      // wx.request({
+      //   url: 'https://xxx/?page=' + page,
+      //   method: "post",
+      //   // 请求头部
+      //   header: {
+      //     'content-type': 'application/text'
+      //   },
+      //   success: function (res) {
+    
+       
+      //     wx.hideLoading();
+      //   }
+      // })
+      setTimeout(() => {
+        wx.hideLoading();
+      }, 1000);
+        
+    }
     
    
 

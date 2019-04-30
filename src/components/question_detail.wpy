@@ -1,0 +1,102 @@
+<style lang="less">
+.questionBar{
+    text-align: center;
+}
+.question_avatar {
+  float: left;
+  width: 80rpx;
+  height: 80rpx;
+  margin-left:20rpx;
+  margin-top:20rpx;
+}
+.question_avatar image{
+  width: 80rpx;
+  height:80rpx;
+  border-radius: 50%;
+}
+.line{
+    width: 100%;
+    margin-top: 50rpx;
+    border-top:4rpx#F7F7F7 solid;
+}
+.question_deta{
+  float: left;
+  margin-top:40rpx;
+  margin-left:20rpx;
+  color:#999;
+  font-size: 12px;
+}
+.question_desc{
+  margin-top:20rpx;
+  margin-left:20rpx;
+  margin-right:20rpx;
+  text-align: left;
+  color:#999;
+  font-size: 14px;
+}
+.profilesPic{
+  margin-left:20rpx;
+  margin-top:20rpx;
+  margin-right:20rpx;
+  display: flex;
+  flex-wrap: wrap; 
+}
+
+.profilesPic image{
+  width:200rpx;
+  height:200rpx;
+  margin-right:37rpx;
+  margin-bottom:16rpx;
+}
+</style>
+<template>
+  <view class="questionBar">
+     <view class="question_avatar">
+          <image  src="{{question.avatarUrl}}"></image>
+      </view>
+      <view class="question_deta">
+          <text>愿支付:</text><text style="font-size:14px;color:#5383C3">333</text>
+          <text style="margin-left:120rpx;">回答者评分:</text><text style="font-size:12px;color:#5383C3">{{question.averageScore}}</text>
+          <text style="margin-left:80rpx;">退款率:</text><text style="font-size:12px;color:#5383C3">{{question.refundRate}}%</text>
+      </view>
+    <view style="clear:both"></view>
+    <view class="question_desc">
+       <text>问题描述：</text><text style="color:#333;">{{question.questionDescribe}}</text>
+    </view>
+    
+      <view class="profilesPic">
+        <repeat for="{{profilesPic}}" item="item">
+          <image src="{{item}}" @tap="previewImage({{item}})"></image>
+        </repeat>
+      </view>
+    <view class='line'></view>
+
+
+   
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class questionDetail extends wepy.component {
+    props = {
+      question: {},
+    }
+    data={
+      profilesPic:[],
+    }
+    $questionList$questionDetail$previewImage(img){
+        //图片预览
+        wx.previewImage({
+          current: img, // 当前显示图片的http链接
+          urls: this.profilesPic // 需要预览的图片http链接列表
+		    })
+
+    }
+
+    onLoad(){
+      this.profilesPic=this.question.pics.split(",");
+      this.$apply();
+    }
+  }
+</script>

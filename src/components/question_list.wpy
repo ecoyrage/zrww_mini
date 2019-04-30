@@ -1,0 +1,50 @@
+<style lang="less">
+.questionList{
+    text-align: center;
+}
+.title_first{
+    color:#0D0D0D;
+    font-size: 15px;
+    font-weight: bold;
+    margin-top:20rpx;
+}
+.title_second{
+    font-size: 14px;
+    color:#ADADAD;
+
+}
+.line{
+    width: 100%;
+    margin-top: 50rpx;
+    border-top:4rpx#F7F7F7 solid;
+}
+</style>
+<template>
+  <view class="questionList">
+     <view class="title_first">——这些问题，等你回答——</view>
+     <view class="title_second">推荐他人成功回答，同样可获<text style="color:#F05654">高额收益</text></view>
+     <view class='line'></view>
+     <view>
+        <repeat for="{{questionList}}" item="item">
+          <questionDetail :question="item"></questionDetail>
+        </repeat>
+     </view>
+  </view>
+ 
+</template>
+<script>
+  import wepy from 'wepy'
+  import questionDetail from './question_detail'
+
+  export default class questionList extends wepy.component {
+    props = {
+      questionList: {},
+    }
+
+     components = {
+      questionDetail: questionDetail
+    }
+
+
+  }
+</script>
