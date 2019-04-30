@@ -76,7 +76,7 @@
 
 
     data = {
-      responderId:'',
+      isGetUserLocation:false,
     }
     
     mixins=[utils]
@@ -94,7 +94,19 @@
       },
       phone_login(){
         let self=this;
-         wx.getSetting({
+        self.getUserLocation();
+        if(self.isGetUserLocation){
+          self.getAdCode();
+          wepy.navigateTo({
+            url:'/pages/login_phone?title=手机验证码登录&submit=登录&type=1'
+          })
+        }
+      }
+    }
+
+    getUserLocation(){
+      let self=this;
+      wx.getSetting({
             success(res) {
               if (!res.authSetting['scope.userLocation']) {
                 wx.showModal({
@@ -110,11 +122,8 @@
                                             icon: 'success',
                                             duration: 1000
                                         })
-                                        self.getAdCode();
-                                        wepy.navigateTo({
-                                          url:'/pages/login_phone?title=手机验证码登录&submit=登录&type=1'
-                                        })
-                                      
+                                        self.isGetUserLocation = true;
+                                        self.$apply();
                                     } else {
                                         wx.showToast({
                                             title: '授权失败',
@@ -128,20 +137,11 @@
                     }
                 })
               }else{
-                //  wepy.navigateTo({
-                //     url:'/pages/answerer_introduce'
-                //   })
-                  wepy.navigateTo({
-                    url:'/pages/login_phone?title=手机验证码登录&submit=登录&type=1'
-                  })
+                self.isGetUserLocation = true;
+                self.$apply();
               }
             }
         })
-
-
-     
-      }
-      
     }
     async getUserInfo(e){
       let self=this;
@@ -154,18 +154,25 @@
         })
       }else{
         self.$parent.globalData.userInfo=userInfo;
+        self.$parent.globalData.isLogin=true;
         self.$apply();
         let isRegist= await self.login(e.detail.encryptedData,e.detail.iv);
         if(!isRegist){
-          wepy.navigateTo({
-            url:'/pages/login_phone?title=绑定手机号&submit=确认&type=2'
-          })
+           self.getUserLocation();
+           if(self.isGetUserLocation){
+              wepy.navigateTo({
+                url:'/pages/login_phone?title=绑定手机号&submit=确认&type=2'
+              })
+          }
         }else{
-          self.$parent.globalData.isLogin=true;
-          self.$apply();
-           wepy.redirectTo({
-            url:'/pages/answerer_introduce?responderId='+self.responderId
-           })
+          self.getUserLocation();
+          if(self.isGetUserLocation){
+            self.getAdCode();
+            wepy.switchTab({
+              url:'/pages/answerer_introduce'
+            })
+          }
+
         }
       }
     }
@@ -229,6 +236,7 @@
           }
       })
     }
+
  
     events = {
       // 'index-emit': (...args) => {
@@ -241,11 +249,7 @@
       let self = this
       self.responderId=options.responderId;
       self.$apply();
-      if(self.$parent.globalData.isLogin){
-        wepy.redirectTo({
-            url:'/pages/answerer_introduce?responderId='
-           })
-      }
+  
       self.getAdCode();
     }
   }

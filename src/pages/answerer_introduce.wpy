@@ -31,8 +31,9 @@
   color:#444;
   font-size: 16px;
   margin-left:20rpx;
+  font-weight: bold;
 }
-.title{
+.model_title{
   color:#333;
   font-size: 14px;
   margin-left:20rpx;
@@ -144,7 +145,7 @@
         <view>
           <view>
             <label class="showName">{{model.showName}}</label>
-            <label class="title">{{model.title}}</label>
+            <label class="model_title">{{model.title}}</label>
           </view>
           <view>
             <label class="company">{{model.company}}</label>
@@ -274,6 +275,11 @@
   
     onLoad() {
       let self = this
+      if(!self.$parent.globalData.isLogin){
+        wepy.redirectTo({
+          url:'/pages/login'
+        })
+      }
       let json2={};
       json2.responderId=self.responderId;
       let obj=self.genObj(json2);

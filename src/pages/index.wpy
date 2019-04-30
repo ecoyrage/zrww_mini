@@ -124,7 +124,7 @@
             url:'/pages/login'
           })
         }else{
-           wepy.navigateTo({
+           wepy.switchTab({
             url:'/pages/basic_info'
           })
         }

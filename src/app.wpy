@@ -18,9 +18,9 @@ import 'wepy-async-function'
 export default class extends wepy.app {
   config = {
     pages: [
+      'pages/answerer_introduce',//回答者介绍
       'pages/index',
       'pages/basic_info',//个人中心
-      'pages/answerer_introduce',//回答者介绍
       'pages/choose_category',//选择分类
       'pages/login',
       'pages/invitation_code',//邀请码
@@ -37,7 +37,29 @@ export default class extends wepy.app {
     "scope.userLocation": {
       "desc": "你的位置信息将用于小程序位置接口的效果展示"
     }
-   }
+   }, 
+   "tabBar": {  
+   "color": "#a9b7b7",  
+   "selectedColor": "#11cd6e",  
+   "borderStyle": "black" ,
+   "list": [{  
+    //  "selectedIconPath": "images/icon_consult_press.png",  
+    //  "iconPath": "images/icon_consult.png",  
+     "pagePath": "pages/index",  
+     "text": "首页"  
+   },
+   {
+     "pagePath": "pages/answerer_introduce",  
+     "text": "回答者" 
+   },
+    {  
+    //  "selectedIconPath": "images/icon_mine_press.png",  
+    //  "iconPath": "images/icon_mine.png",  
+     "pagePath": "pages/basic_info",  
+     "text": "我的"  
+   },
+   ]  
+ } 
   }
 
   globalData = {
