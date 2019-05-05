@@ -219,20 +219,20 @@
                 longitude = res.longitude
                 self.$parent.globalData.latitude=latitude
                 self.$parent.globalData.longitude=longitude
-            wepy.request({
-                url: 'http://api.map.baidu.com/geocoder/v2/?&location=' + latitude + ',' + longitude + '&output=json&ak=fpmIGPqo4DYm61tvTuKHgT9QxWG5cIdc',
-                method: 'get',
-                success: function (res) {
-                    let result = res.data.result,
-                        addressComponent = result.addressComponent,
-                        adcode = addressComponent.adcode
-                        self.$parent.globalData.adCode=adcode;
-                        self.$apply();
-                },
-                error: function (res) {
-                    this.getAdCode(latitude, longitude);
-                }
-              });
+                wepy.request({
+                    url: 'http://api.map.baidu.com/geocoder/v2/?&location=' + latitude + ',' + longitude + '&output=json&ak=fpmIGPqo4DYm61tvTuKHgT9QxWG5cIdc',
+                    method: 'get',
+                    success: function (res) {
+                        let result = res.data.result,
+                            addressComponent = result.addressComponent,
+                            adcode = addressComponent.adcode
+                            self.$parent.globalData.adCode=adcode;
+                            self.$apply();
+                    },
+                    error: function (res) {
+                        this.getAdCode(latitude, longitude);
+                    }
+                  });
           }
       })
     }

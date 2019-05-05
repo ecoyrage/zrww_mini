@@ -55,8 +55,8 @@
           <image  src="{{question.avatarUrl}}"></image>
       </view>
       <view class="question_deta">
-          <text>愿支付:</text><text style="font-size:14px;color:#5383C3">333</text>
-          <text style="margin-left:120rpx;">回答者评分:</text><text style="font-size:12px;color:#5383C3">{{question.averageScore}}</text>
+          <text>愿支付:</text><text style="font-size:14px;color:#5383C3">{{question.offer}}</text>
+          <text style="margin-left:80rpx;">回答者评分:</text><text style="font-size:12px;color:#5383C3">{{question.averageScore}}</text>
           <text style="margin-left:80rpx;">退款率:</text><text style="font-size:12px;color:#5383C3">{{question.refundRate}}%</text>
       </view>
     <view style="clear:both"></view>
@@ -65,7 +65,7 @@
     </view>
     
       <view class="profilesPic">
-        <repeat for="{{profilesPic}}" item="item">
+        <repeat for="{{question.pics}}" item="item">
           <image src="{{item}}" @tap="previewImage({{item}})"></image>
         </repeat>
       </view>
@@ -82,21 +82,21 @@
     props = {
       question: {},
     }
-    data={
-      profilesPic:[],
-    }
-    $questionList$questionDetail$previewImage(img){
-        //图片预览
-        wx.previewImage({
-          current: img, // 当前显示图片的http链接
-          urls: this.profilesPic // 需要预览的图片http链接列表
-		    })
 
+  
+
+    methods={
+        previewImage(img){
+          wx.previewImage({
+            current: img, // 当前显示图片的http链接
+            urls: this.question.pics // 需要预览的图片http链接列表
+          })
+        }
     }
+
 
     onLoad(){
-      this.profilesPic=this.question.pics.split(",");
-      this.$apply();
+    
     }
   }
 </script>

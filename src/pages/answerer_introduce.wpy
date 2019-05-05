@@ -236,7 +236,7 @@
     data = {
        model:'',
        servicelabel: [],
-       responderId:'1122029315456847873',
+       responderId:'1124584944411148290',
        workDay:'',
        profilesPic:'',
        isRest:false,
@@ -275,11 +275,11 @@
   
     onLoad() {
       let self = this
-      if(!self.$parent.globalData.isLogin){
-        wepy.redirectTo({
-          url:'/pages/login'
-        })
-      }
+      // if(!self.$parent.globalData.isLogin){
+      //   wepy.redirectTo({
+      //     url:'/pages/login'
+      //   })
+      // }
       let json2={};
       json2.responderId=self.responderId;
       let obj=self.genObj(json2);

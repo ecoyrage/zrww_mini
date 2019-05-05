@@ -1,13 +1,13 @@
 <style lang="less">
 .name_bar{
-  background-color: #333;
+  background-color: #5383C3;
   height: 200rpx;
 }
 .userinfo-avatar {
   width: 100rpx;
   height: 100rpx;
   margin-left:20rpx;
-  margin-top:40rpx;
+  padding-top:40rpx;
 }
 .userinfo-avatar image{
   width: 100rpx;
@@ -74,7 +74,7 @@
           <text class="nickName">{{basicInfo.nickName}}</text>
       </view>
     </view>
-    <view class="middle_bar">
+    <view class="middle_bar" @tap="clickWallet()">
       <view class="middle_part" style="margin-left:70rpx;">
         <image class="menu_img" src="../files/img/doubt.png"></image>
         <view class="menu_text">
@@ -126,7 +126,8 @@
   import wepy from 'wepy'
   export default class basic_info extends wepy.page {
     config = {
-      navigationBarTitleText: '我的'
+      navigationBarTitleText: '我的',
+      navigationBarBackgroundColor: "#5383C3",
     }
     components = {
      
@@ -159,7 +160,10 @@
     }
 
     methods = {
-     
+     clickWallet(){
+       wepy.navigateTo({ url: '/pages/wallet' });
+       
+     }
       
     }
 

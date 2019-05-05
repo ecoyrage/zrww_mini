@@ -10,6 +10,11 @@
   height:48rpx;
   margin-top:32rpx;
 }
+.title_check{
+  margin-top:28rpx;
+  font-size: 14px;
+  color:#0089FF;
+}
 .title {
   margin-top:28rpx;
   font-size: 14px;
