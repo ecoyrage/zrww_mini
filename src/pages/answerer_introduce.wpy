@@ -1,11 +1,4 @@
 <style lang="less">
-.section{
-  display: flex;
-  align-items: center;
-  justify-content: center;  
-  width: 100%;
-  height: 100%;
-}
 .head_top{
   display: flex;
   margin-left:20rpx;
@@ -40,6 +33,7 @@
 }
 .location{
   position: absolute;
+  top:60rpx;
   right: 20rpx;
   color:#999;
   font-size: 12px;
@@ -132,6 +126,20 @@
   width:24rpx;
   height:24rpx;
 }
+.focus{
+  position:absolute;
+  right: 20rpx;
+  // top:30rpx;
+  // width: 130rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  border-radius: 5px;
+  color: #ffffff;
+  font-size: 13px;
+  background-color: #f6f6f6;
+  color: #5383c3;
+}
+
 </style>
 //回答者介绍页
 <template>
@@ -151,6 +159,8 @@
             <label class="company">{{model.company}}</label>
           </view>
         </view>
+          <button wx-if="{{model.isFocus==0}}" class="focus" @tap="focus({{responderId}})">+关注</button>
+          <button wx-if="{{model.isFocus==1}}" class="focus" @tap="unfocus({{responderId}})">取消关注</button>
         <view>
           <label class="location">{{model.location}}</label>
         </view>
@@ -212,7 +222,7 @@
      
   </scroll-view>
   <view class="section">
-    <button class="login login-wechat">立即咨询</button>
+    <button  open-type="launchApp" app-parameter="wechat" binderror="launchAppError" class="login login-wechat">立即咨询</button>
   </view>
  
 
@@ -261,6 +271,79 @@
         wepy.navigateTo({
             url:'/pages/treaty?type='+type
         })
+      },
+       launchAppError(e) {
+      console.log(e.detail.errMsg)
+      },
+      focus(id){
+        let self=this;
+        let json={};
+        json.responderId=id;
+        let obj=self.genObj(json);
+        let sign=self.genSign(obj);
+        wepy.request({
+          url:  self.domain+'/ww/api/v1/responder/focus',
+          method: 'post',
+          data: {object:obj,sign:sign},
+          header:{
+            'JWT': 'true',
+            'content-type':'application/json',
+            'Authorization':'Bearer '+self.accessToken
+          },
+          success: res => {
+            if(res.data.code==100){
+               wepy.showToast({
+                title: "关注成功！",
+                icon: 'none',
+                duration: 2000
+              })
+              self.model.isFocus=1;
+              self.$apply();
+
+            }else if(res.data.code==200){
+               wepy.showToast({
+                title: res.data.msg,
+                icon: 'none',
+                duration: 2000
+              })
+            }
+          }
+        });
+      },
+      unfocus(id){
+        let self=this;
+        let json={};
+        json.responderId=id;
+        let obj=self.genObj(json);
+        let sign=self.genSign(obj);
+        wepy.request({
+          url:  self.domain+'/ww/api/v1/responder/cancleFocus',
+          method: 'post',
+          data: {object:obj,sign:sign},
+          header:{
+            'JWT': 'true',
+            'content-type':'application/json',
+            'Authorization':'Bearer '+self.accessToken
+          },
+          success: res => {
+            if(res.data.code==100){
+               wepy.showToast({
+                title: "取消关注成功！",
+                icon: 'none',
+                duration: 2000
+              })
+              self.model.isFocus=0;
+              self.$apply();
+
+            }else if(res.data.code==200){
+               wepy.showToast({
+                title: res.data.msg,
+                icon: 'none',
+                duration: 2000
+              })
+            }
+          }
+        });
       }
        
       

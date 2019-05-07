@@ -1,11 +1,4 @@
 <style lang="less">
-.section{
-  display: flex;
-  align-items: center;
-  justify-content: center;  
-  width: 100%;
-  height: 100%;
-}
 .zrww{
   margin-top: 40rpx;
   color: #333333;
@@ -72,6 +65,52 @@
 .blue_text{
  color:#5383C3;
 }
+.question_avatar {
+  float: left;
+  width: 80rpx;
+  height: 80rpx;
+  margin-left:30rpx;
+  margin-top:30rpx;
+}
+.question_avatar image{
+  width: 80rpx;
+  height:80rpx;
+  border-radius: 50%;
+}
+.question_info{
+  float: left;
+  margin-top:20rpx;
+}
+.nick_name{
+  margin-left:20rpx;
+  color: rgba(51, 51, 51, 1);
+  font-size: 14px;
+}
+.question_status{
+  margin-left:20rpx;
+  color: #5383C3;
+  font-size: 14px;
+}
+
+.end_time{
+  margin-left:20rpx;
+  color: rgba(153, 153, 153, 1);
+  font-size: 10px;
+}
+.questionDescribe{
+  margin-left:20rpx;
+  color: rgba(153, 153, 153, 1);
+  font-size: 12px;
+}
+.chakan{
+    width:134rpx;
+    height: 60rpx;
+    border-radius: 5px;
+    background-color: rgba(83, 131, 195, 1);
+    color: rgba(255, 255, 255, 1);
+    font-size: 14px;
+    line-height: 60rpx;
+}
 </style>
 <template>
   <view>
@@ -91,44 +130,72 @@
     </view>
     <view class="section">
       <button class="login login-wechat" @tap="openApp()"><image class="search_img"  src="../files/img/search.png"></image>找人问问</button>
-      
     </view>
-    <view style="text-align: center;">
-      <view  class="title"><text class="blue_text">9800个答者</text>已加入</view>
-      <view  class="title">已帮助了<text class="blue_text">1888人</text></view>
-      <view  class="title">目前<text class="blue_text">500个</text>问题在解决中</view>
-    </view>
-    <view class="grey_space" style="margin-top:80rpx;">
-    </view>
+    <view wx-if="{{upperQuestionList.length<=0}}">
+     
+        <view style="text-align: center;">
+          <view  class="title"><text class="blue_text">9800个答者</text>已加入</view>
+          <view  class="title">已帮助了<text class="blue_text">1888人</text></view>
+          <view  class="title">目前<text class="blue_text">500个</text>问题在解决中</view>
+        </view>
+        <view class="grey_space" style="margin-top:80rpx;">
+        </view>
 
-    <view wx-if="{{timePass5}}">
-      <view class="Title">
-        <view class="title2">自身价值<text class="blue_text">变现</text></view>
-        <button class="behave2">成为答者</button>
-      </view>
-      <view class='line' style="margin-top:10rpx;"></view>
-      <view class="Title">
-        <view class="title2">一次邀请，<text class="blue_text">永久</text>收益</view>
-        <button class="behave2">去了解</button>
-      </view>
-      <view class="grey_space" style="margin-top:10rpx;"></view>
-    </view>
+        <view wx-if="{{timePass5}}">
+          <view class="Title">
+            <view class="title2">自身价值<text class="blue_text">变现</text></view>
+            <button class="behave2" @tap="toBeResponder()">成为答者</button>
+          </view>
+          <view class='line' style="margin-top:10rpx;"></view>
+          <view class="Title">
+            <view class="title2">一次邀请，<text class="blue_text">永久</text>收益</view>
+            <button class="behave2" @tap="toInviteFriends()">去了解</button>
+          </view>
+          <view class="grey_space" style="margin-top:10rpx;"></view>
+        </view>
 
-    <view wx-if="{{!timePass5}}">
-      <indexArea>
-        <image class="icon" src="{{icon}}" slot="icon"></image>
-        <view class="title" slot="title">成为答者，多点人脉，赚点外快</view>
-        <view wx-if="{{responderStatus==2}}" class="title_check" slot="title">回答者申请审核中</view>
-        <button wx-if="{{responderStatus==''}}" class="behave" slot="behave">成为答者</button>
+        <view wx-if="{{!timePass5}}">
+          <view wx-if="{{responderStatus!=1}}">
+            <indexArea>
+                <image class="icon" src="{{be_responder}}" slot="icon"></image>
+                <view class="title" slot="title">成为答者，多点人脉，赚点外快</view>
+                <view wx-if="{{responderStatus==2}}" class="title_check" slot="title">回答者申请审核中</view>
+                <button wx-if="{{responderStatus==''}}" class="behave" slot="behave" @tap="toBeResponder()">成为答者</button>
+            </indexArea>
+          </view>
 
-      </indexArea>
-      <indexArea>
-        <image class="icon" src="{{icon}}" slot="icon"></image>
-        <view class="title" slot="title">邀请好友，坐享收益</view>
-        <button class="behave" slot="behave">去邀请</button>
-      </indexArea>
-    </view>
-    
+          <indexArea>
+            <image class="icon2" src="{{go_invite}}" slot="icon"></image>
+            <view class="title" slot="title">邀请好友，坐享收益</view>
+            <button class="behave" slot="behave" @tap="toInviteFriends()">去邀请</button>
+          </indexArea>
+        </view>
+       
+     </view>
+     <view wx-if="{{upperQuestionList.length>0}}">
+        <!--upperQuestionList.questionList start  -->
+        <view class="grey_space" style="margin-top:40rpx;"></view>
+        <repeat for="{{upperQuestionList}}" item="item">
+            <view class="question_avatar">
+                  <image src="{{item.avatarUrl}}"></image>
+            </view>
+            <view class="question_info">
+              <text class="nick_name">{{item.nickName}}</text>
+               <text class="question_status" style="{{item.status==6?'color:#DF7163':''}}">{{status[item.status-1]}}</text>
+              <view style="clear:both"></view>
+              <text class="end_time">{{item.endTime}}</text>
+              <view style="clear:both"></view>
+              <text class="questionDescribe">{{item.questionDescribe}}</text>
+            </view>
+            <view style="display:inline-table;position:absolute;right:20rpx;margin-top:40rpx;">
+                <button class="chakan" >查看</button>
+            </view>
+            <view style="clear:both"></view>
+        </repeat>
+
+      <view class="grey_space" style="margin-top:40rpx;"></view>
+      <!--upperQuestionList.questionList end  -->
+     </view>
 
     <questionList :questionList.sync="questionList" :questionReward.sync="questionReward"></questionList>
     
@@ -153,13 +220,9 @@
     }
 
     data = {
-       imgUrls: [
-      'https://images.unsplash.com/photo-1551334787-21e6bd3ab135?w=640',
-      'https://images.unsplash.com/photo-1551214012-84f95e060dee?w=640',
-      'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640'
-    ],
       avatarUrl:"../files/img/avatarUrl.png",
-      icon:"../files/img/avatarUrl.png",
+      go_invite:"../files/img/go_invite.png",
+      be_responder:"../files/img/be_responder.png",
       isLogin:'',
       questionList:[
         // {
@@ -175,10 +238,22 @@
         //   "questionNumber":0
         // }
       ],
-      // questionList:[],
+      upperQuestionList:[],
       timePass5:false,
       questionReward:'',
       responderStatus:'',
+      status:[
+        '审核中',
+        '审核驳回',
+        '审核通过',
+        '等待接单',
+        '取消订单',
+        '拒绝',
+        '交流中',
+        '退款',
+        '待评价',
+        '交易结束'
+      ]
     }
 
     mixins=[utils]
@@ -196,6 +271,30 @@
         }
       
       },
+      toInviteFriends(){
+        let self=this;
+        if(!this.isLogin){
+          wepy.navigateTo({
+            url:'/pages/login'
+          })
+        }else{
+          wepy.navigateTo({
+            url:'/pages/invite_friends?invitationCode='+  wx.getStorageSync('basicInfo').invitationCode
+          })
+        }
+      },
+      toBeResponder(){
+        if(!this.isLogin){
+          wepy.navigateTo({
+            url:'/pages/login'
+          })
+        }else{
+          wepy.navigateTo({
+            url:'/pages/be_responder'
+          })
+        }
+
+      }
     }
     openApp(){
        wepy.navigateTo({
@@ -302,55 +401,57 @@
 
     onLoad() {
       let self = this
-      let globalData=self.$parent.globalData
-      let isLogin=globalData.isLogin
+      let isLogin=wx.getStorageSync('isLogin')
       self.isLogin=isLogin;
       if(isLogin){
-        self.avatarUrl=globalData.basicInfo.avatarUrl;
+        self.avatarUrl=wx.getStorageSync('basicInfo').avatarUrl;
       }
       self.$apply();
 
       let json={};
       let obj=self.genObj(json);
       let sign=self.genSign(obj);
-      wepy.request({
-        url:  self.domain+'/ww/api/v1/index/info',
-        method: 'post',
-        data: {object:obj,sign:sign},
-        header:{
-          'JWT': 'true',
-          'content-type':'application/json',
-          'Authorization':'Bearer '+self.accessToken
-        },
-        success: res => {
-          if(res.data.code==100){
-            let data=res.data.data;
-            let createTime=data.createTime;
-            
-            let date1 = new Date(createTime);
-            let date2 = new Date();
-            let s1 = date1.getTime(),s2 = date2.getTime();
-            let total = (s2 - s1)/1000;
-            let day = parseInt(total / (24*60*60));//计算整数天数
-            if(day>5){
-              self.timePass5=true;
+      if(self.accessToken!=""){
+
+        wepy.request({
+          url:  self.domain+'/ww/api/v1/index/info',
+          method: 'post',
+          data: {object:obj,sign:sign},
+          header:{
+            'JWT': 'true',
+            'content-type':'application/json',
+            'Authorization':'Bearer '+self.accessToken
+          },
+          success: res => {
+            if(res.data.code==100){
+              let data=res.data.data;
+              let createTime=data.createTime;
+              
+              let date1 = new Date(createTime);
+              let date2 = new Date();
+              let s1 = date1.getTime(),s2 = date2.getTime();
+              let total = (s2 - s1)/1000;
+              let day = parseInt(total / (24*60*60));//计算整数天数
+              if(day>5){
+                self.timePass5=true;
+                self.$apply();
+              }
+              self.questionReward=data.questionReward;
+              self.responderStatus=data.responderStatus;
+              self.upperQuestionList=data.questionList;
               self.$apply();
+
+            
             }
-            self.questionReward=data.questionReward;
-            self.responderStatus=data.responderStatus;
-            self.$apply();
-
-           
           }
-        }
-      });
+        });
+        this.getQuestionList();
 
-      this.getQuestionList();
+      }
 
-      
-      
-  
-      
+
+
+
       
     }
   }

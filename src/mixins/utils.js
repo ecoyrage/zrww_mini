@@ -28,8 +28,8 @@ export default class utils extends wepy.mixin {
 
     onLoad(){
         let self=this;
-        self.randomKey = self.$parent.globalData.randomKey;
-        self.accessToken = self.$parent.globalData.accessToken;
+        self.randomKey = wx.getStorageSync('randomKey');
+        self.accessToken = wx.getStorageSync('accessToken');
         self.domain = self.$parent.globalData.domain;
         self.adCode = self.$parent.globalData.adCode;
         self.longitude = self.$parent.globalData.longitude;

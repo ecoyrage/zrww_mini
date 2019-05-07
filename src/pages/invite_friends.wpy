@@ -1,0 +1,193 @@
+<style lang="less">
+.login{
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  width: 670rpx;
+  height: 100rpx;
+  line-height: 20px;
+  border-radius: 5px;
+  color: #ffffff;
+  font-size: 16px;
+}
+.login-wechat{
+  position:absolute;
+  bottom:20rpx;
+  background-color: #5383c3;
+  color: #ffffff;
+}
+.zrww{
+  margin-top: 38rpx;
+  color: #333333;
+  font-size: 18px;
+}
+.band{
+  background-color: #F6F6F6;
+  width: 670rpx;
+  height:100rpx;
+  margin-left:40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+  font-size:14px;
+}
+.phone{
+  margin-top:76rpx;
+}  
+.code{
+  margin-top:58rpx;
+}
+.fontarea{
+  position: absolute;
+  left: 80rpx;
+}
+.getCode{
+  position: absolute;
+  color: #5383C3;
+  right:80rpx;
+  outline: none;
+  font-size:14px;
+}
+.login-phone{
+  margin-top:38rpx;
+  background-color: #f6f6f6;
+  color: #5383c3;
+  font-weight: bold;
+  font-size:24px;
+}
+button::after {
+  border: none;
+}
+.copy{
+  position: absolute;
+  color: rgba(83, 131, 195, 1);
+  font-size: 14px;
+  right:60rpx;
+  margin-top:20rpx;
+}
+.blue{
+  color: rgba(83, 131, 195, 1);
+  font-size: 14px;
+  text-align: left;
+  font-weight: bold;
+}
+.balck{
+  color: rgba(51, 51, 51, 1);
+  font-size: 14px;
+  text-align: left;
+  margin-top:20rpx;
+}
+.red{
+  color: #F05654;
+  font-size: 14px;
+  margin-top:20rpx;
+}
+.desc{
+  margin-left:20rpx;
+  margin-right:20rpx;
+  margin-top:40rpx;
+}
+</style>
+<template>
+  <view>
+    <view class="section">
+      <text class="zrww">我的邀请码</text>
+    </view>
+    <view class="section" @tap="copy({{invitationCode}})">
+      <button class="login login-phone" >{{invitationCode}}</button>
+      <view class="copy">复制</view>
+    </view>
+    <view class="section">
+      <button class="login login-wechat" >邀请好友</button>
+    </view>
+    <view class="desc">
+      <view class="blue">
+        为什么要邀请好友加入
+      </view>
+      <view class="balck" >
+        ·让他有更多的机会帮助他人
+      </view>
+      <view class="balck">
+        ·让别人需要找他合作/咨询/帮助的时候可以通过平台找到他
+      </view>
+       <view class="red">
+        ·他也可以成为答者，赚得收益
+      </view>
+    </view>
+    <view class="desc">
+      <view class="blue">
+        邀请别人加入，可以得到什么奖励
+      </view>
+      <view class="balck" >
+      只要是通过你的邀请码、或者通过你的
+      </view>
+
+    </view>
+    <view class="desc">
+      <view class="blue">
+        邀请好友注册时，请提醒他填写你的邀请码！
+      </view>
+      <view class="red" >
+       注意：好友注册时，仅有一次机会输入你的邀请码，注册完成后将无法补填。
+      </view>
+
+    </view>
+  
+   
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import utils from "../mixins/utils";
+  export default class invite_friends extends wepy.page {
+    config = {
+      navigationBarTitleText: '邀请好友'
+    }
+    components = {
+    }
+    mixins=[utils]
+
+    methods = {
+      copy(code){
+        wx.setClipboardData({
+          data: code,
+          success: function (res) {
+            wx.getClipboardData({
+              success: function (res) {
+                wx.showToast({
+                  title: '复制成功'
+                })
+              }
+            })
+          }
+        })
+      }
+      
+    }
+    data = {
+      invitationCode:'',//邀请码
+
+
+    }
+  
+  
+  
+    
+
+
+    events = {
+      // 'index-emit': (...args) => {
+      //   let $event = args[args.length - 1]
+      //   console.log(`${this.$name} receive ${$event.name} from ${$event.source.$name}`)
+      // }
+    }
+
+    onLoad(options) {
+      let self = this
+      self.invitationCode=options.invitationCode;
+      self.$apply();
+
+    }
+  }
+</script>

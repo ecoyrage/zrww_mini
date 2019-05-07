@@ -4,10 +4,14 @@
   text-align: center;
   font-size: 12px;
 }
-
 .icon{
-  width:48rpx;
-  height:48rpx;
+  width:102rpx;
+  height:100rpx;
+  margin-top:32rpx;
+}
+.icon2{
+  width:116rpx;
+  height:100rpx;
   margin-top:32rpx;
 }
 .title_check{

@@ -1,11 +1,4 @@
 <style lang="less">
-.section{
-  display: flex;
-  align-items: center;
-  justify-content: center;  
-  width: 100%;
-  height: 100%;
-}
 .login{
   display: flex;
   align-items: center;
@@ -218,9 +211,9 @@ button::after {
             if(result.code==100){
               _this.accessToken=result.data.accessToken;
               _this.randomKey=result.data.randomKey;
-              _this.$parent.globalData.accessToken=result.data.accessToken;
-              _this.$parent.globalData.randomKey=result.data.randomKey;
-              _this.$parent.globalData.isLogin=true;
+              wx.setStorageSync('accessToken',  _this.accessToken);
+              wx.setStorageSync('randomKey',  _this.randomKey);
+              wx.setStorageSync('isLogin', true);
               _this.$apply();
               // wepy.reLaunch({
               //   url:'/pages/answerer_introduce'
@@ -245,8 +238,7 @@ button::after {
                 },
                 success(res) {
                   if(res.data.code==100){
-                      _this.$parent.globalData.basicInfo=res.data.data;
-                      _this.$apply();
+                      wx.setStorageSync('basicInfo',res.data.data);
                       wepy.reLaunch({
                         url:'/pages/index'
                       })
