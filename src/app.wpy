@@ -7,7 +7,20 @@
   justify-content: space-between;
   box-sizing: border-box;
 }
-
+.section{
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+  width: 100%;
+  height: 100%;
+}
+.icon_qianjin{
+    width:38rpx;
+    height: 48rpx;
+    position:absolute;
+    right: 0;
+    margin-top:30rpx;
+}
 </style>
 
 <script>
@@ -20,6 +33,10 @@ export default class extends wepy.app {
   config = {
     pages: [
       'pages/index',
+      'pages/be_responder',
+      'pages/invite_friends',//邀请好友
+      'pages/inviter_rank',//邀请排行
+      'pages/invitee_list',//邀请列表
       'pages/answerer_introduce',//回答者介绍
       'pages/login',
       'pages/basic_info',//个人中心、我的
@@ -28,7 +45,8 @@ export default class extends wepy.app {
       'pages/login_phone',
       'pages/treaty',
       'pages/wallet',//钱包
-
+      
+      
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -70,8 +88,8 @@ export default class extends wepy.app {
     basicInfo:null,
     // domain:'http://192.168.1.254:9090',
     domain:'http://192.168.1.253',
-    accessToken:'eyJhbGciOiJIUzUxMiJ9.eyJyYW5kb21LZXkiOiI1NHVwdTAiLCJzdWIiOiIxMDA3MTUxOTU3MDE2MTk1MDc0IiwidG9rZW5UeXBlIjoiYWNjZXNzVG9rZW4iLCJleHAiOjE1ODc0MzY5NzUsImlhdCI6MTU1NjMzMjk3NX0.fM4cKj7rE6wGKoNIGt_4bYO5-UoGIKlYPJw0voqX7l8qNpIP4Nf1LxN5GE0Ru98iLoQZH_Gv2NOWeKj_R_OTcg',
-    randomKey:'54upu0',
+    accessToken:'eyJhbGciOiJIUzUxMiJ9.eyJyYW5kb21LZXkiOiJiamtxN3AiLCJzdWIiOiIxMDA3MTUxOTU3MDE2MTk1MDc0IiwidG9rZW5UeXBlIjoiYWNjZXNzVG9rZW4iLCJleHAiOjE1ODgyOTYxMjIsImlhdCI6MTU1NzE5MjEyMn0.e1wZ0o2MkDrBLfUXUyMfVi6AbWZihFEO1EbuHIF6XWu8Z93YdBZ-89ppKX5u4Gvl2-gLOMOYSxHQnpTeKCdiGg',
+    randomKey:'bjkq7p',
     isLogin:false,
     model:'',//登录手机信息
     categorieList:'',
