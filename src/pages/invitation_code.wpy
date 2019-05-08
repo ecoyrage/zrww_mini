@@ -89,7 +89,7 @@ button::after {
 
     methods = {
       confirm(code){
-        let _this=this;
+        let self=this;
         if (code == "") {
           wepy.showToast({
             title: '邀请码不能为空',
@@ -105,15 +105,15 @@ button::after {
               if (tip.confirm) {
                   let json={};
                   json.invitationCode=code;
-                  let obj=_this.genObj(json);
+                  let obj=self.genObj(json);
                   wepy.request({
-                    url:  _this.domain+'/ww/api/v1/common/invitationCode',
+                    url:  self.domain+'/ww/api/v1/common/invitationCode',
                     method: 'post',
                     data: {object:obj},
                     header:{
                       'JWT': 'true',
                       'content-type':'application/json',
-                      'Authorization':'Bearer '+_this.accessToken
+                      'Authorization':'Bearer '+self.accessToken
                     },
                     success(res) {
                       let result=res.data
@@ -139,9 +139,35 @@ button::after {
        
       },
       skip(){
-        wepy.reLaunch({
-          url:'/pages/answerer_introduce?responderId='
+        let json={};
+        json.invitationCode='';
+        let obj=self.genObj(json);
+        wepy.request({
+          url:  self.domain+'/ww/api/v1/common/invitationCode',
+          method: 'post',
+          data: {object:obj},
+          header:{
+            'JWT': 'true',
+            'content-type':'application/json',
+            'Authorization':'Bearer '+self.accessToken
+          },
+          success(res) {
+            let result=res.data
+            if(result.code==100){
+                wepy.redirectTo({
+                url:'/pages/choose_category'
+              })
+            }else{
+                wepy.showToast({
+                title: result.msg,
+                icon: 'none',
+                duration: 2000
+              })
+            }
+      
+          }
         })
+    
       }
     }
     data = {

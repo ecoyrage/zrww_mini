@@ -36,6 +36,14 @@
   margin-top:60rpx;
   margin-left:20rpx;
 }
+.level{
+  position:absolute;
+  color: rgba(51, 51, 51, 1);
+  font-size: 16px;
+  font-weight: bold;
+  left:380rpx;
+  margin-top:60rpx;
+}
 .contacts{
   float: right;
   margin-top:30rpx;
@@ -46,23 +54,24 @@
 .invitationBalance{
   position: absolute;  
   right:20rpx;
-  margin-top:80rpx;
+  margin-top:100rpx;
   color: rgba(153, 153, 153, 1);
   font-size: 14px;
 }
 </style>
 <template>
   <view>
-      <scroll-view scroll-y="true" style="height:{{windowHeight-100}}rpx">
+      <scroll-view scroll-y="true" style="height:{{windowHeight-100}}rpx" @scrolltolower="showMore()" @scrolltoupper="reLoad()">
         <view>
           <repeat for="{{model}}" item="item">
             <view style="margin-top:20rpx;margin-bottom:20rpx;">
               <view class="invite_avatar">
                 <image src="{{item.avatarUrl}}"></image>
               </view>
-              <view class="nickName">{{item.nickName}}　{{item.invitationLevel}}级</view>
+              <view class="nickName">{{item.nickName}}</view>
+              <view class="level">{{item.invitationLevel}}级</view>
               <view class="contacts">{{item.contacts}}人脉</view>
-              <view class="invitationBalance">累计邀请奖励   <text style="color:#F05654">{{item.invitationBalance/10000000000}}元</text></view>
+              <view class="invitationBalance">累计邀请奖励   <text style="color:#F05654">{{item.invitationBalance}}元</text></view>
               <view style="clear:both"></view>
             </view>
           </repeat>
@@ -82,7 +91,7 @@
   export default class inviter_rank extends wepy.page {
     config = {
        navigationBarTitleText: '邀请奖励排行',
-    //    navigationBarBackgroundColor: "#5383C3",
+       enablePullDownRefresh: true,
     }
     components = {
      
@@ -92,6 +101,8 @@
 
     data = {
         model:'',
+        pageNum:1,
+        noMore:false
     }
 
     methods = {
@@ -99,14 +110,83 @@
       
     }
 
+    showMore(){
+      if(!this.noMore){
+        let self = this
+        let json={};
+        self.pageNum+=1;
+        json.pageNum=self.pageNum+'';
+        json.pageSize='10';
+        let obj=self.genObj(json);
+        let sign=self.genSign(obj);
+        wepy.request({
+            url:  self.domain+'/ww/api/v1/invitation/ranking',
+            method: 'post',
+            data: {object:obj,sign:sign},
+            header:{
+                'JWT': 'true',
+                'content-type':'application/json',
+                'Authorization':'Bearer '+self.accessToken
+            },
+            success: res => {
+                if(res.data.code==100){
+                    let list=res.data.data.list;
+                    if(list.length==0){
+                       wx.showToast({
+                        title: '暂无更多数据',
+                        icon: 'none',
+                      })
+                      self.noMore=true
+                    }
+                    for(let i=0;i<list.length;i++){
+                      list[i].invitationBalance=(self.model[i].invitationBalance/10000000000).toFixed(2);
+                      self.model.push(list[i]);
+                  }
+                
+                    self.$apply();
+                }
+            }
+        })
+      }
+    }
 
+    reLoad(){
+        let self = this
+        let json={};
+        json.pageNum='1';
+        json.pageSize='10';
+        let obj=self.genObj(json);
+        let sign=self.genSign(obj);
+        wepy.request({
+            url:  self.domain+'/ww/api/v1/invitation/ranking',
+            method: 'post',
+            data: {object:obj,sign:sign},
+            header:{
+                'JWT': 'true',
+                'content-type':'application/json',
+                'Authorization':'Bearer '+self.accessToken
+            },
+            success: res => {
+                if(res.data.code==100){
+                      self.model=res.data.data.list;
+                    for(let i=0;i<self.model.length;i++){
+                      self.model[i].invitationBalance=(self.model[i].invitationBalance/10000000000).toFixed(2);
+                    }
+                    self.$apply();
+                }
+            }
+        })
+    }
+
+
+    
    
 
     onLoad() {
       let self = this
       let json={};
-      json.pageNum="1";
-      json.pageSize="10";
+      json.pageNum=self.pageNum+'';
+      json.pageSize='10';
       let obj=self.genObj(json);
       let sign=self.genSign(obj);
       wepy.request({
@@ -121,6 +201,12 @@
           success: res => {
               if(res.data.code==100){
                   self.model=res.data.data.list;
+                  for(let i=0;i<self.model.length;i++){
+                    self.model[i].invitationBalance=(self.model[i].invitationBalance/10000000000).toFixed(2);
+                  }
+                  // for(let i=0;i<10;i++){
+                  //   self.model.push(self.model[1])
+                  // }
                   self.$apply();
               }
           }

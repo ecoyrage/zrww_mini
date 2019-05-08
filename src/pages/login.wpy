@@ -43,7 +43,7 @@
       <text class="zrww">找人问问，登录</text>
     </view>
     <view class="section">
-      <button class="login login-wechat" open-type="getUserInfo"  bindgetuserinfo="getUserInfo">微信登录/注册</button>
+      <button class="login login-wechat" open-type="getUserInfo"  @getuserinfo="getUserInfo">微信登录/注册</button>
     </view>
     <view class="section">
       <button class="login login-phone" @tap="phone_login()">手机验证码登录</button>
@@ -146,34 +146,35 @@
           duration: 3000
         })
       }else{
-        self.$parent.globalData.userInfo=userInfo;
-        self.$parent.globalData.isLogin=true;
-        self.$apply();
-        let isRegist= await self.login(e.detail.encryptedData,e.detail.iv);
-        if(!isRegist){
-           self.getUserLocation();
-           if(self.isGetUserLocation){
+        self.getUserLocation();
+        if(self.isGetUserLocation){
+          self.$parent.globalData.userInfo=userInfo;
+          self.$parent.globalData.isLogin=true;
+          let unionId= await self.getUnionId(e.detail.encryptedData,e.detail.iv);
+          self.$parent.globalData.unionId=unionId;
+          self.$apply();
+          let firstReg= await self.oauthLogin(unionId,userInfo);
+          if(firstReg==-1){
               wepy.navigateTo({
                 url:'/pages/login_phone?title=绑定手机号&submit=确认&type=2'
               })
-          }
-        }else{
-          self.getUserLocation();
-          if(self.isGetUserLocation){
-            self.getAdCode();
-            wepy.switchTab({
-              url:'/pages/answerer_introduce'
+          }else if(firstReg==0){
+              self.getAdCode();
+              self.getBascicInfo();
+          }else if(firstReg==1){
+            wepy.navigateTo({
+                url:'/pages/invitation_code'
             })
-          }
 
+          }
         }
       }
     }
 
-    login(encryptedData,iv){
+    getUnionId(encryptedData,iv){
       let _this=this;
       return new Promise((resolve, reject) => {
-         resolve(true)
+         resolve('ogp_70sFqo7c9uiShhgg77RhrvgI')
         // wepy.login({
         //       success(res){
         //         wepy.request({
@@ -201,34 +202,47 @@
         //         });
         //       }
         // });
-    })
-    }
-    getAdCode(){
-      let self=this;
-      wx.getLocation({
-          type: 'gcj02', // 返回可以用于wx.openLocation的经纬度
-          success(res) {
-            let latitude = res.latitude,
-                longitude = res.longitude
-                self.$parent.globalData.latitude=latitude
-                self.$parent.globalData.longitude=longitude
-                wepy.request({
-                    url: 'http://api.map.baidu.com/geocoder/v2/?&location=' + latitude + ',' + longitude + '&output=json&ak=5vsXU7pSrrRWAX7c1odIcgD6fV89KasD',
-                    method: 'get',
-                    success: function (res) {
-                        let result = res.data.result,
-                            addressComponent = result.addressComponent,
-                            adcode = addressComponent.adcode
-                            self.$parent.globalData.adCode=adcode;
-                            self.$apply();
-                    },
-                    error: function (res) {
-                        this.getAdCode(latitude, longitude);
-                    }
-                  });
-          }
       })
     }
+    oauthLogin(unionId,userInfo){
+      let self=this;
+      return new Promise((resolve, reject) => {
+          let json={};
+          json.unionid=unionId;
+          json.nickName=userInfo.nickName
+          json.gender=userInfo.gender
+          json.avatarUrl=userInfo.avatarUrl
+          json.loginInfo="小程序";
+          let obj=self.genObj(json);
+          let sign=self.genSign(obj);
+          wepy.request({
+            url:  self.domain+'/ww/api/v1/common/oauthLogin',
+            method: 'post',
+            data: {object:obj,sign:sign},
+            header:{
+              'JWT': 'true',
+              'content-type':'application/json',
+            },
+            success: res => {
+              if(res.data.code==401){
+                resolve(-1);
+              }else if(res.data.code==100){
+                let data=res.data.data;
+                let accessToken= data.accessToken;
+                let randomKey=data.randomKey;
+                self.accessToken=accessToken;
+                self.randomKey=randomKey;
+                wx.setStorageSync('accessToken',accessToken);
+                wx.setStorageSync('randomKey',randomKey);
+                wx.setStorageSync('isLogin', true);
+                resolve(data.firstReg)
+              }
+            }
+       })
+        
+      })
+    }
+
 
  
     events = {

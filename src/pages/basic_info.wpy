@@ -59,8 +59,37 @@
 }
 .tab_menu text{
   position: absolute;
-  padding-top: 25rpx;
+  padding-top: 30rpx;
   padding-left: 20rpx;
+  font-size:14px;
+}
+.logout{
+   background-color: #FFF;
+   color:#DF7163;
+   text-align: center;
+   position: absolute;
+   width:100%;
+   height: 100rpx;
+   bottom:100rpx;
+   line-height: 100rpx;
+   font-size:18px;
+}
+.login{
+  color:#F6F6F6;
+}
+.login text{
+  position:absolute;
+  font-size:20px;
+  color:#F6F6F6;
+  left:50rpx;
+  top: 90rpx;
+}
+.login image{
+  width:38rpx;
+  height: 48rpx;
+  position:absolute;
+  right: 0;
+  top: 90rpx;
 }
 
 
@@ -68,11 +97,18 @@
 <template>
   <view>
     <view class="name_bar">
-      <view class="userinfo-avatar">
-            <image src="{{basicInfo.avatarUrl}}"></image>
+      <view wx-if="{{isLogin}}">
+        <view class="userinfo-avatar">
+              <image src="{{basicInfo.avatarUrl}}"></image>
+        </view>
+        <view>
+            <text class="nickName">{{basicInfo.nickName}}</text>
+        </view>
       </view>
-      <view>
-          <text class="nickName">{{basicInfo.nickName}}</text>
+      
+      <view class="login" wx-if="{{!isLogin}}" @tap="login()">
+        <text>登录/注册 </text>
+         <image src="../files/img/qianjin_white.png"></image>
       </view>
     </view>
     <view class="middle_bar">
@@ -116,11 +152,15 @@
              <image class="tab_menu_img" src="../files/img/doubt.png"></image>
              <text>实名认证</text>
               <image class="icon_qianjin" src="../files/img/qianjin.png"></image>
-              <view class='line'></view>
         </view>
        
 
      </view>
+      <view class="grey_space" style="height:{{windowHeight-700}}rpx;">
+        <view class="logout" @tap="logout()" wx-if="{{isLogin}}">
+          <text>退出登录</text>
+        </view>
+      </view>
     
     
   </view>
@@ -128,6 +168,7 @@
 
 <script>
   import wepy from 'wepy'
+  import utils from "../mixins/utils";
   export default class basic_info extends wepy.page {
     config = {
       navigationBarTitleText: '我的',
@@ -137,38 +178,59 @@
      
     }
 
+    mixins=[utils];
 
     data = {
       basicInfo:{
-        account:"18451114801",
-        adCode:"320482",
-        avatarUrl:"http://oss.50waizhuan.com/77c166e8-8020-461a-9c2c-3597f2a35350.jpg",
-        createTime:"2019-04-29 09:59:19",
-        gender:1,
-        invitationCode:"801507",
-        isAdmin:1,
-        latitude:31.72322,
-        loginInfo:"小程序",
-        longitude:119.59794,
-        mobileType:3,
-        mobileVersion:"minipro 1.0",
-        nickName:"闯进你的身体",
-        profit:19365,
-        responderId:"",
-        rewardBalance:4538,
-        role:2,
-        status:4,
-        updateTime:"2019-04-29 09:59:19",
-        userCode:"1007151957016195074"
-      }
+        // account:"18451114801",
+        // adCode:"320482",
+        // avatarUrl:"http://oss.50waizhuan.com/77c166e8-8020-461a-9c2c-3597f2a35350.jpg",
+        // createTime:"2019-04-29 09:59:19",
+        // gender:1,
+        // invitationCode:"801507",
+        // isAdmin:1,
+        // latitude:31.72322,
+        // loginInfo:"小程序",
+        // longitude:119.59794,
+        // mobileType:3,
+        // mobileVersion:"minipro 1.0",
+        // nickName:"闯进你的身体",
+        // profit:19365,
+        // responderId:"",
+        // rewardBalance:4538,
+        // role:2,
+        // status:4,
+        // updateTime:"2019-04-29 09:59:19",
+        // userCode:"1007151957016195074"
+      },
+      isLogin:'',
     }
 
     methods = {
      clickWallet(){
        wepy.navigateTo({ url: '/pages/wallet' });
        
+     },
+     logout(){
+       let self=this;
+        wx.showModal({
+          title: '确认退出登录',
+          content: '退出登录后您将无法使用此微信账号登录找人问问app',
+          success(res) {
+            if (res.confirm) {
+              self.isLogin=false;
+              self.$apply();
+              wx.clearStorageSync();
+              wepy.reLaunch({ url: '/pages/index' });
+              
+            } else if (res.cancel) {
+            }
+        }
+      })
+     },
+     login(){
+      wepy.navigateTo({ url: '/pages/login' });
      }
-      
     }
 
 
@@ -181,6 +243,9 @@
 
     onLoad() {
       let self = this
+      self.basicInfo= wx.getStorageSync('basicInfo');
+      self.isLogin=wx.getStorageSync('isLogin')==''?false:wx.getStorageSync('isLogin');
+      self.$apply();
       
     }
   }

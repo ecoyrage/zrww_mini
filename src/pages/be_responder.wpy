@@ -22,7 +22,7 @@
     <view class="section">
       <button class="login login-wechat" >成为回答者</button>
     </view>
-     <image src="../files/img/whyBeResponder.jpg" mode="widthFix" style="width:100%"/>
+     <image src="{{whyBecomeResponderPic}}" mode="widthFix" style="width:100%"/>
   
    
   </view>
@@ -57,8 +57,7 @@
       
     }
     data = {
-      invitationCode:'',//邀请码
-
+      whyBecomeResponderPic:'',
 
     }
   
@@ -76,7 +75,7 @@
 
     onLoad(options) {
       let self = this
-      self.invitationCode=options.invitationCode;
+      self.whyBecomeResponderPic=wx.getStorageSync('whyBecomeResponderPic');
       self.$apply();
 
     }

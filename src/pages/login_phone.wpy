@@ -59,11 +59,11 @@ button::after {
       <text class="zrww">{{title}}</text>
     </view>
     <view class="band phone">
-      <input class="fontarea" placeholder="输入手机号" maxlength="11" bindinput='getPhoneValue()' value='{{account}}'/>
+      <input class="fontarea" placeholder="输入手机号" maxlength="11" @input='getPhoneValue()' value='{{account}}'/>
     </view>
     <view class="band code">
-      <input class="fontarea" placeholder="输入验证码" bindinput='getCodeValue' value='{{code}}'/>
-      <button class="getCode" @tap='getVerificationCode' disabled='{{disabled}}'>{{codename}}</button>
+      <input class="fontarea" placeholder="输入验证码" @input='getCodeValue()' value='{{code}}'/>
+      <button class="getCode" @tap='getVerificationCode()' disabled='{{disabled}}'>{{codename}}</button>
     </view>
     <view class="section">
       <button class="login login-wechat"  @tap='save()'>{{submit}}</button>
@@ -94,7 +94,7 @@ button::after {
     data = {
       title:'',//标题
       submit:'',//确认框
-      type:'',//1-验证码注册登录;2-三方登录
+      type:'',//1-验证码登录;2-三方登录绑定
       account:'',//手机号
       code:'',//验证码
       codename:'获取验证码',
@@ -110,7 +110,7 @@ button::after {
 
   
     getCode(){
-      var _this = this;
+      var self = this;
       var myreg = /^(14[0-9]|13[0-9]|15[0-9]|17[0-9]|18[0-9])\d{8}$$/;
       if (this.account == "") {
         wepy.showToast({
@@ -128,12 +128,12 @@ button::after {
         return false;
       }else{
         var json={};
-        json.tel=_this.account;
-        json.type=_this.type;
+        json.tel=self.account;
+        json.type=self.type;
         wepy.request({
-          url:  _this.domain+'/ww/api/v1/common/sms',
+          url:  self.domain+'/ww/api/v1/common/sms',
           method: 'post',
-          data: {object: _this.genObj(json)},
+          data: {object: self.genObj(json)},
           header:{
             'JWT': 'true',
             'content-type':'application/json',
@@ -144,13 +144,13 @@ button::after {
               num--;
               if (num <= 0) {
                 clearInterval(timer);
-                _this.codename='重新发送';
-                _this.disabled=false;
-                _this.$apply();
+                self.codename='重新发送';
+                self.disabled=false;
+                self.$apply();
               } else {
-                _this.codename=num + "s"
-                _this.disabled=true;
-                _this.$apply();
+                self.codename=num + "s"
+                self.disabled=true;
+                self.$apply();
               }
             }, 1000)
             if(res.data.code==200){
@@ -162,14 +162,14 @@ button::after {
             }
           }
         })
-        _this.disabled=true;
-        _this.$apply();
+        self.disabled=true;
+        self.$apply();
       }
   }
   save(){
-    let _this=this;
+    let self=this;
     var myreg = /^(14[0-9]|13[0-9]|15[0-9]|17[0-9]|18[0-9])\d{8}$$/;
-    if (_this.account == "") {
+    if (self.account == "") {
       wepy.showToast({
         title: '手机号不能为空',
         icon: 'none',
@@ -184,7 +184,7 @@ button::after {
         })
         return false;
     }
-    if (_this.code == "") {
+    if (self.code == "") {
       wepy.showToast({
         title: '验证码不能为空',
         icon: 'none',
@@ -192,16 +192,16 @@ button::after {
       })
       return false;
     }
-    let type=_this.type;
+    let type=self.type;
     if(type==1){  
       var json={};
-      json.account=_this.account;
-      json.vaildCode=_this.code;
-      json.loginInfo=_this.$parent.globalData.model;
+      json.account=self.account;
+      json.vaildCode=self.code;
+      json.loginInfo=self.$parent.globalData.model;
       wepy.request({
-          url:  _this.domain+'/ww/api/v1/common/vaildCode',
+          url:  self.domain+'/ww/api/v1/common/vaildCode',
           method: 'post',
-          data: {object:_this.genObj(json)},
+          data: {object:self.genObj(json)},
           header:{
             'JWT': 'true',
             'content-type':'application/json',
@@ -209,44 +209,20 @@ button::after {
           success(res) {
             let result=res.data;
             if(result.code==100){
-              _this.accessToken=result.data.accessToken;
-              _this.randomKey=result.data.randomKey;
-              wx.setStorageSync('accessToken',  _this.accessToken);
-              wx.setStorageSync('randomKey',  _this.randomKey);
+              self.accessToken=result.data.accessToken;
+              self.randomKey=result.data.randomKey;
+              wx.setStorageSync('accessToken',  self.accessToken);
+              wx.setStorageSync('randomKey',  self.randomKey);
               wx.setStorageSync('isLogin', true);
-              _this.$apply();
-              // wepy.reLaunch({
-              //   url:'/pages/answerer_introduce'
-              // })
-              let json2={};
-              json2.loginInfo="小程序";
-              json2.adCode=_this.adCode;
-              json2.mobileType=3;
-              json2.mobileVersion= _this.$parent.globalData.mobileVersion
-              json2.latitude=_this.latitude
-              json2.longitude=_this.longitude
-              let obj=_this.genObj(json2);
-              let sign=_this.genSign(obj);
-              wepy.request({
-                url:  _this.domain+'/ww/api/v1/user/basicInfo',
-                method: 'post',
-                data: {object:obj,sign:sign},
-                header:{
-                  'JWT': 'true',
-                  'content-type':'application/json',
-                  'Authorization':'Bearer '+_this.accessToken
-                },
-                success(res) {
-                  if(res.data.code==100){
-                      wx.setStorageSync('basicInfo',res.data.data);
-                      wepy.reLaunch({
-                        url:'/pages/index'
-                      })
-                  }
-                }
-              })
-
-               
+              self.$apply();
+              if(result.data.firstReg==0){
+                self.getAdCode();
+                self.getBascicInfo();
+              }else if(result.data.firstReg==1){
+                wepy.navigateTo({
+                  url:'/pages/invitation_code'
+                })
+              }
 
             }else if(result.code==200){
               wepy.showToast({
@@ -259,9 +235,55 @@ button::after {
       })
 
     }else if(type==2){
-      wepy.redirectTo({
-        url:'/pages/invitation_code'
+      let self=this;
+      let userinfo=self.$parent.globalData.userInfo
+      let json={};
+      json.unionid=self.$parent.globalData.unionId;
+      json.nickName=userInfo.nickName
+      json.gender=userInfo.gender
+      json.avatarUrl=userInfo.avatarUrl
+      json.account=self.account
+      json.vaildCode=self.code
+      json.loginInfo="小程序";
+      let obj=self.genObj(json);
+      let sign=self.genSign(obj);
+      wepy.request({
+      url:  self.domain+'/ww/api/v1/common/oauthLogin',
+      method: 'post',
+      data: {object:obj,sign:sign},
+      header:{
+        'JWT': 'true',
+        'content-type':'application/json',
+      },
+      success: res => {
+        if(res.data.code==401){
+          resolve(-1);
+        }else if(res.data.code==200){
+          let data=res.data.data;
+          let accessToken= data.accessToken;
+          let randomKey=data.randomKey;
+          let firstReg=data.firstReg;
+          self.accessToken=accessToken;
+          self.randomKey=randomKey;
+          wx.setStorageSync('accessToken',accessToken);
+          wx.setStorageSync('randomKey',randomKey);
+          wx.setStorageSync('isLogin', true);
+          if(firstReg==1){
+            wepy.redirectTo({
+              url:'/pages/invitation_code'
+            })
+          }else{
+             wepy.relaunch({
+              url:'/pages/index'
+            })
+          }
+        }
+      }
       })
+
+
+
+    
 
     }
   

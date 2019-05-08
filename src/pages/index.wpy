@@ -142,11 +142,13 @@
         </view>
 
         <view wx-if="{{timePass5}}">
-          <view class="Title">
-            <view class="title2">自身价值<text class="blue_text">变现</text></view>
-            <button class="behave2" @tap="toBeResponder()">成为答者</button>
+          <view wx-if="{{responderStatus!=1}}">
+            <view class="Title" >
+              <view class="title2">自身价值<text class="blue_text">变现</text></view>
+              <button class="behave2" @tap="toBeResponder()">成为答者</button>
+            </view>
+            <view class='line' style="margin-top:10rpx;"></view>
           </view>
-          <view class='line' style="margin-top:10rpx;"></view>
           <view class="Title">
             <view class="title2">一次邀请，<text class="blue_text">永久</text>收益</view>
             <button class="behave2" @tap="toInviteFriends()">去了解</button>
