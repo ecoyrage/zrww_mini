@@ -67,14 +67,16 @@
         <view class="font_size12">积分总收益</view>
         <view class="font_size18">125.35</view>
         <view class="head2">
-            <view class="head2part" style="margin-left:20rpx">
+            <view class="head2part" style="margin-left:20rpx;">
                 <view class="font_size16">1015.00</view> 
                 <view class="font_size12">邀请奖励</view> 
             </view>
+            <view style="height:60rpx;margin-top:10rpx;border-left:1px #FFF solid;"></view>
             <view class="head2part">
                 <view class="font_size16">1015.00</view> 
                 <view class="font_size12">答题收益</view> 
             </view>
+             <view style="height:60rpx;margin-top:10rpx;border-left:1px #FFF solid;"></view>
             <view class="head2part" style="margin-right:20rpx;margin-bottom:20rpx;">
                 <view class="font_size16">1015.00</view> 
                 <view class="font_size12">推荐奖励</view>
@@ -97,27 +99,27 @@
 
       <view>
           <view style="display:flex" @tap="toInviteeList()">
-              <image class="wallet_icon" src="../files/img/wallet/yqjl.png"></image>
+              <image class="wallet_icon" src="../../files/img/wallet/yqjl.png"></image>
               <view class="wallet_name">邀请奖励记录</view>
-              <image class="icon_qianjin" src="../files/img/qianjin.png"></image>
+              <image class="icon_qianjin" src="../../files/img/qianjin.png"></image>
           </view>
           <view class="line"></view>
           <view style="display:flex">
-              <image class="wallet_icon" src="../files/img/wallet/dtsy.png"></image>
+              <image class="wallet_icon" src="../../files/img/wallet/dtsy.png"></image>
               <view class="wallet_name">答题收益记录</view>
-              <image class="icon_qianjin" src="../files/img/qianjin.png"></image>
+              <image class="icon_qianjin" src="../../files/img/qianjin.png"></image>
           </view>
           <view class="line"></view>
           <view style="display:flex">
-              <image class="wallet_icon" src="../files/img/wallet/tjjl.png"></image>
+              <image class="wallet_icon" src="../../files/img/wallet/tjjl.png"></image>
               <view class="wallet_name">推荐奖励记录</view>
-              <image class="icon_qianjin" src="../files/img/qianjin.png"></image>
+              <image class="icon_qianjin" src="../../files/img/qianjin.png"></image>
           </view>
           <view class="line"></view>
           <view style="display:flex">
-              <image class="wallet_icon" src="../files/img/wallet/txjl.png"></image>
+              <image class="wallet_icon" src="../../files/img/wallet/txjl.png"></image>
               <view class="wallet_name">提现记录</view>
-              <image class="icon_qianjin" src="../files/img/qianjin.png"></image>
+              <image class="icon_qianjin" src="../../files/img/qianjin.png"></image>
           </view>
       </view>
       <view style="background-color: #F6F6F6;height:500rpx;"></view>
@@ -147,7 +149,7 @@
     methods = {
      toInviteeList(){
          wepy.navigateTo({ 
-            url: '/pages/invitee_list' 
+            url: '/pages/wallet/invitee_list' 
         });
          
      }

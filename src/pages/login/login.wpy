@@ -58,7 +58,7 @@
 <script>
   import wepy from 'wepy'
   import Toast from 'wepy-com-toast'
-  import utils from "../mixins/utils";
+  import utils from "@/mixins/utils";
   export default class login extends wepy.page {
     config = {
       navigationBarTitleText: ''
@@ -91,7 +91,7 @@
         if(self.isGetUserLocation){
           self.getAdCode();
           wepy.navigateTo({
-            url:'/pages/login_phone?title=手机验证码登录&submit=登录&type=1'
+            url:'/pages/login/login_phone?title=手机验证码登录&submit=登录&type=1'
           })
         }
       }
@@ -156,14 +156,14 @@
           let firstReg= await self.oauthLogin(unionId,userInfo);
           if(firstReg==-1){
               wepy.navigateTo({
-                url:'/pages/login_phone?title=绑定手机号&submit=确认&type=2'
+                url:'/pages/login/login_phone?title=绑定手机号&submit=确认&type=2'
               })
           }else if(firstReg==0){
               self.getAdCode();
               self.getBascicInfo();
           }else if(firstReg==1){
             wepy.navigateTo({
-                url:'/pages/invitation_code'
+                url:'/pages/login/invitation_code'
             })
 
           }

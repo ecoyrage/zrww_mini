@@ -64,7 +64,7 @@ button::after {
       <text class="zrww">请输入邀请码</text>
     </view>
     <view class="band phone">
-      <input class="fontarea" placeholder="输入邀请码" maxlength="11" bindinput='getCodeValue()' value='{{code}}'/>
+      <input class="fontarea" placeholder="输入邀请码" maxlength="11" @input='getCodeValue()' value='{{code}}'/>
     </view>
     <view class="section">
       <button class="login login-wechat"  @tap='confirm({{code}})'>确认</button>
@@ -78,7 +78,7 @@ button::after {
 
 <script>
   import wepy from 'wepy'
-  import utils from "../mixins/utils";
+  import utils from "@/mixins/utils";
   export default class invitation_code extends wepy.page {
     config = {
       navigationBarTitleText: ''

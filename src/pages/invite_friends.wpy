@@ -2,19 +2,20 @@
 .login{
   display: flex;
   align-items: center;
-  justify-content: center; 
-  width: 670rpx;
-  height: 100rpx;
+  justify-content: center;  
+  width: 710rpx;
+  height: 80rpx;
   line-height: 20px;
   border-radius: 5px;
   color: #ffffff;
   font-size: 16px;
 }
 .login-wechat{
-  position:absolute;
+  position:fixed;
   bottom:20rpx;
   background-color: #5383c3;
   color: #ffffff;
+  z-index: 999;
 }
 .zrww{
   margin-top: 38rpx;
@@ -65,28 +66,7 @@ button::after {
   right:60rpx;
   margin-top:20rpx;
 }
-.blue{
-  color: rgba(83, 131, 195, 1);
-  font-size: 14px;
-  text-align: left;
-  font-weight: bold;
-}
-.balck{
-  color: rgba(51, 51, 51, 1);
-  font-size: 14px;
-  text-align: left;
-  margin-top:20rpx;
-}
-.red{
-  color: #F05654;
-  font-size: 14px;
-  margin-top:20rpx;
-}
-.desc{
-  margin-left:20rpx;
-  margin-right:20rpx;
-  margin-top:40rpx;
-}
+
 </style>
 <template>
   <view>
@@ -100,39 +80,11 @@ button::after {
     <view class="section">
       <button class="login login-wechat" >邀请好友</button>
     </view>
-    <view class="desc">
-      <view class="blue">
-        为什么要邀请好友加入
+    <scroll-view scroll-y="true" style="height:{{windowHeight-100}}rpx">
+      <view style="margin-left:20rpx;overflow:hidden">
+        <image src="{{whyInvitationPic}}" mode="widthFix"></image>
       </view>
-      <view class="balck" >
-        ·让他有更多的机会帮助他人
-      </view>
-      <view class="balck">
-        ·让别人需要找他合作/咨询/帮助的时候可以通过平台找到他
-      </view>
-       <view class="red">
-        ·他也可以成为答者，赚得收益
-      </view>
-    </view>
-    <view class="desc">
-      <view class="blue">
-        邀请别人加入，可以得到什么奖励
-      </view>
-      <view class="balck" >
-      只要是通过你的邀请码、或者通过你的
-      </view>
-
-    </view>
-    <view class="desc">
-      <view class="blue">
-        邀请好友注册时，请提醒他填写你的邀请码！
-      </view>
-      <view class="red" >
-       注意：好友注册时，仅有一次机会输入你的邀请码，注册完成后将无法补填。
-      </view>
-
-    </view>
-  
+    </scroll-view>  
    
   </view>
 </template>
@@ -167,6 +119,7 @@ button::after {
     }
     data = {
       invitationCode:'',//邀请码
+      whyInvitationPic:'',
 
 
     }
@@ -186,6 +139,7 @@ button::after {
     onLoad(options) {
       let self = this
       self.invitationCode=options.invitationCode;
+      self.whyInvitationPic=wx.getStorageSync('whyInvitationPic');
       self.$apply();
 
     }

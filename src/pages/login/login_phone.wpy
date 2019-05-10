@@ -74,7 +74,7 @@ button::after {
 
 <script>
   import wepy from 'wepy'
-  import utils from "../mixins/utils";
+  import utils from "@/mixins/utils";
   export default class login_phone extends wepy.page {
     config = {
       navigationBarTitleText: ''
@@ -270,7 +270,7 @@ button::after {
           wx.setStorageSync('isLogin', true);
           if(firstReg==1){
             wepy.redirectTo({
-              url:'/pages/invitation_code'
+              url:'/pages/login/invitation_code'
             })
           }else{
              wepy.relaunch({

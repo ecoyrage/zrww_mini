@@ -48,23 +48,44 @@
   margin-right:37rpx;
   margin-bottom:16rpx;
 }
+.grade_pic{
+  width:24rpx;
+  height: 24rpx;
+}
+.nickName{
+  text-align: left;
+  margin-top:-15rpx;
+  color:#101010;
+  font-size:12px;
+}
+.recommendumber{
+  position: absolute;
+  right:40rpx;
+  color:#5383C3;
+  font-size: 13px;
+  margin-top:20rpx;
+}
 </style>
 <template>
   <view class="questionBar">
      <view class="question_avatar">
-          <image  src="{{question.avatarUrl}}"></image>
+          <image  src="{{question.avatarUrl==''?'../files/img/avatarUrl.png':question.avatarUrl}}"></image>
       </view>
+      <view class="recommendumber">已推荐{{question.recommendumber}}个回答者待选择</view>
       <view class="question_deta">
-          <text>愿支付:</text><text style="font-size:14px;color:#5383C3">{{question.offer}}</text>
-          <text style="margin-left:80rpx;">回答者评分:</text><text style="font-size:12px;color:#5383C3">{{question.averageScore}}</text>
-          <text style="margin-left:80rpx;">退款率:</text><text style="font-size:12px;color:#5383C3">{{question.refundRate}}%</text>
+          <view class="nickName">{{question.nickName}}</view>
+          <view style="padding-top:20rpx;">
+            <image class="grade_pic" src="../files/img/grade_high.png"></image><text style="font-size:12px;color:#5383C3">{{question.averageScore}}</text>分
+            <text style="margin-left:20rpx;">愿支付:</text><text style="font-size:14px;color:#5383C3">￥{{question.offer}}</text>
+            <!-- <text style="margin-left:80rpx;">退款率:</text><text style="font-size:12px;color:#5383C3">{{question.refundRate}}%</text> -->
+          </view>
       </view>
     <view style="clear:both"></view>
     <view class="question_desc">
        <text>问题描述：</text><text style="color:#333;">{{question.questionDescribe}}</text>
     </view>
     
-      <view class="profilesPic">
+      <view class="profilesPic" wx-if="{{question.pics!=[]}}">
         <repeat for="{{question.pics}}" item="item">
           <image src="{{item}}" @tap="previewImage({{item}})"></image>
         </repeat>
@@ -96,7 +117,6 @@
 
 
     onLoad(){
-    
     }
   }
 </script>

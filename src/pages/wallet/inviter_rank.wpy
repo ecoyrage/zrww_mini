@@ -87,7 +87,7 @@
 
 <script>
   import wepy from 'wepy'
-  import utils from "../mixins/utils";
+  import utils from "@/mixins/utils";
   export default class inviter_rank extends wepy.page {
     config = {
        navigationBarTitleText: '邀请奖励排行',
@@ -139,7 +139,7 @@
                       self.noMore=true
                     }
                     for(let i=0;i<list.length;i++){
-                      list[i].invitationBalance=(self.model[i].invitationBalance/10000000000).toFixed(2);
+                      list[i].invitationBalance=self.getFullNum(self.model[i].invitationBalance/10000000000);
                       self.model.push(list[i]);
                   }
                 
@@ -170,13 +170,15 @@
                 if(res.data.code==100){
                       self.model=res.data.data.list;
                     for(let i=0;i<self.model.length;i++){
-                      self.model[i].invitationBalance=(self.model[i].invitationBalance/10000000000).toFixed(2);
+                      self.model[i].invitationBalance=self.getFullNum(self.model[i].invitationBalance/10000000000);
                     }
                     self.$apply();
                 }
             }
         })
     }
+   
+
 
 
     
@@ -202,7 +204,7 @@
               if(res.data.code==100){
                   self.model=res.data.data.list;
                   for(let i=0;i<self.model.length;i++){
-                    self.model[i].invitationBalance=(self.model[i].invitationBalance/10000000000).toFixed(2);
+                    self.model[i].invitationBalance=self.getFullNum(self.model[i].invitationBalance/10000000000);
                   }
                   // for(let i=0;i<10;i++){
                   //   self.model.push(self.model[1])

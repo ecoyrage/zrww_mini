@@ -33,25 +33,33 @@ export default class extends wepy.app {
   config = {
     pages: [
       'pages/index',
+
+      'pages/zrww/category_search',
+      'pages/zrww/search_result',
+      'pages/zrww/zrww',
+
+      'pages/wallet/wallet',//钱包
+      'pages/wallet/invitee_list',//邀请列表
+      'pages/wallet/inviter_rank',//邀请排行
+
+      
       'pages/basic_info',//个人中心、我的
-      'pages/inviter_rank',//邀请排行
       'pages/be_responder',
       'pages/invite_friends',//邀请好友
-      'pages/invitee_list',//邀请列表
+
+      'pages/login/login',
+      'pages/login/login_phone',
+      'pages/login/invitation_code',//邀请码
+      'pages/login/choose_category',//选择分类
+     
       'pages/answerer_introduce',//回答者介绍
-      'pages/login',
-      'pages/choose_category',//选择分类
-      'pages/invitation_code',//邀请码
-      'pages/login_phone',
+      
       'pages/treaty',
-      'pages/wallet',//钱包
-      
-      
     ],
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
-      navigationBarTitleText: 'WeChat',
+      navigationBarTitleText: '找人问问',
       navigationBarTextStyle: 'black'
     },
     "permission": {
@@ -99,6 +107,7 @@ export default class extends wepy.app {
     longitude:'',
     mobileVersion:'minipro 1.0',
     whyBecomeResponderPic:'',
+    whyInvitationPic:'',
   }
   
 
@@ -125,7 +134,9 @@ export default class extends wepy.app {
       dataType: 'json', //如果设为json，会尝试对返回的数据做一次 JSON.parse
       success: res => {
         wx.setStorageSync('whyBecomeResponderPic',res.data.data.whyBecomeResponderPic);
+        wx.setStorageSync('whyInvitationPic',res.data.data.whyInvitationPic);
         this.globalData.whyBecomeResponderPic=res.data.data.whyBecomeResponderPic;
+        this.globalData.whyInvitationPic=res.data.data.whyInvitationPic;
         this.globalData.categorieList=res.data.data.categorieList;
       },
       fail: () => {},

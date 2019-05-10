@@ -54,33 +54,42 @@ export default class utils extends wepy.mixin {
         }
       })
     }
+    getAdCode() {
+      let self = this;
+      wx.getLocation({
+        type: 'gcj02', // 返回可以用于wx.openLocation的经纬度
+        success(res) {
+          let latitude = res.latitude,
+            longitude = res.longitude
+          self.$parent.globalData.latitude = latitude
+          self.$parent.globalData.longitude = longitude
+          wepy.request({
+            url: 'http://api.map.baidu.com/geocoder/v2/?&location=' + latitude + ',' + longitude + '&output=json&ak=5vsXU7pSrrRWAX7c1odIcgD6fV89KasD',
+            method: 'get',
+            success: function (res) {
+              let result = res.data.result,
+                addressComponent = result.addressComponent,
+                adcode = addressComponent.adcode
+              self.$parent.globalData.adCode = adcode;
+              self.$apply();
+            },
+            error: function (res) {
+              this.getAdCode(latitude, longitude);
+            }
+          });
+        }
+      })
+    }
+    getFullNum(num) {
+      //处理非数字
+      if (isNaN(num)) { return num };
 
-  getAdCode() {
-    let self = this;
-    wx.getLocation({
-      type: 'gcj02', // 返回可以用于wx.openLocation的经纬度
-      success(res) {
-        let latitude = res.latitude,
-          longitude = res.longitude
-        self.$parent.globalData.latitude = latitude
-        self.$parent.globalData.longitude = longitude
-        wepy.request({
-          url: 'http://api.map.baidu.com/geocoder/v2/?&location=' + latitude + ',' + longitude + '&output=json&ak=5vsXU7pSrrRWAX7c1odIcgD6fV89KasD',
-          method: 'get',
-          success: function (res) {
-            let result = res.data.result,
-              addressComponent = result.addressComponent,
-              adcode = addressComponent.adcode
-            self.$parent.globalData.adCode = adcode;
-            self.$apply();
-          },
-          error: function (res) {
-            this.getAdCode(latitude, longitude);
-          }
-        });
-      }
-    })
-  }
+      //处理不需要转换的数字
+      var str = '' + num;
+      if (!/e/i.test(str)) { return num; };
+
+      return (num).toFixed(18).replace(/\.?0+$/, "");
+    }
  
 
     onLoad(){

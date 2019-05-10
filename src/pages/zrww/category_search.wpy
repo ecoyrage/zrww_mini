@@ -1,0 +1,192 @@
+<style lang="less">
+page{  
+  background: #fff;  
+  height: 100%;
+}  
+/*总体主盒子*/  
+.container {  
+  position: relative;  
+  width: 100%; 
+  height: 100%; 
+  color: #F6F6F6; 
+   
+}
+.seach_bar{
+  height: 100rpx;
+  width: 676rpx;
+}
+.search_input{
+  padding-left:60rpx;
+  height: 60rpx;
+  background-color:#f6f6f6;
+  border-radius: 5px;
+  color: rgba(153, 153, 153, 1);
+  font-size: 14px;
+}
+.search_img{
+  width: 40rpx;
+  height: 40rpx;
+  position: absolute;  
+  padding-top:10rpx;
+  padding-left:14rpx;
+}
+ /*左侧栏主盒子*/  
+.nav_left{  
+  /*设置行内块级元素（没使用定位）*/  
+  display: inline-block;  
+  width: 200rpx;  
+  height: 100%;  
+  background: #f6f6f6;  
+  text-align: center; 
+  position: absolute;
+  top: 100rpx;
+  left: 0; 
+  border-top:2rpx#F7F7F7 solid;
+ 
+}  
+/*左侧栏list的item*/  
+.nav_left .nav_left_items{  
+  height: 120rpx;  
+  line-height: 120rpx;  
+  font-size: 14px; 
+  color:#333;
+}  
+/*左侧栏list的item被选中时*/  
+.nav_left .nav_left_items.active{  
+  /*背景色变成白色*/  
+  background: #fff; 
+  font-weight: bold; 
+}  
+/*右侧栏主盒子*/  
+.nav_right{  
+  /*右侧盒子使用了绝对定位*/  
+  position: absolute;  
+  top: 100rpx;
+  right: 0;  
+  flex: 1;  
+  /*宽度75%，高度占满，并使用百分比布局*/  
+  width: 75%;  
+  height: 100%;  
+  padding: 20rpx;  
+  box-sizing: border-box;  
+  background:#fff;  
+  border-top:2rpx#F7F7F7 solid;
+}  
+/*右侧栏list的item*/  
+.nav_right .nav_right_items{  
+  /*浮动向左*/  
+  float: left;  
+  /*每个item设置宽度是33.33%*/  
+  width: 100%;  
+  height: 100rpx;  
+  text-align: left;
+  padding-left: 20rpx;  
+  border-bottom: 1px solid #dedede;  
+}  
+.nav_right .nav_right_items image{  
+  /*被图片设置宽高*/  
+  width: 60px;  
+  height: 60px;  
+  margin-top: 15px;  
+}  
+.nav_right .nav_right_items text{  
+  /*给text设成块级元素*/  
+  display: block;  
+  margin-top: 15px;  
+  font-size: 14px;  
+  color: black;
+  /*设置文字溢出部分为...*/  
+  overflow: hidden;  
+  white-space: nowrap;  
+  text-overflow: ellipsis;  
+} 
+.nodata_text
+
+.nav_img{
+  width: 80rpx;
+  height: 80rpx;
+}
+</style>
+<template>
+ <view class="container" >
+   <view class="seach_bar">
+        <image class="search_img" src="../../files/img/zrww/search_grey.png"></image>
+        <input class="search_input" placeholder="姓名、行业" value=''/>
+   </view>
+  <!--左侧栏-->
+  <view class="nav_left">
+     <repeat for="{{categoryList}}" item="item" wx:key="{{item.categoryId}}">
+      <view wx:if="{{item.level==1}}" class="nav_left_items {{curCategoryId == item.categoryId ? 'active' : ''}}" @tap="switchLeftTab({{item.categoryId}})">{{item.name}}</view>
+    </repeat>
+  </view>
+  <!--右侧栏-->
+    <view class="nav_right">
+     
+    <scroll-view scroll-y="true" style="height:{{windowHeight-100}}rpx">
+        <view>
+          <view class="nav_right_items">
+            <text @tap="chooseCate({{curCategoryId}},0)">全部</text>
+          </view>
+          <repeat wx:for="{{categoryList}}" item="item" wx:key="{{firstCategory}}">
+            <view wx:if="{{item.parentId==curCategoryId}}" class="nav_right_items">
+              <text @tap="chooseCate({{curCategoryId}},{{item.categoryId}})">{{item.name}}</text>
+            </view>
+          </repeat>
+        </view>
+    </scroll-view>
+    </view>
+
+</view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import utils from "@/mixins/utils";
+  export default class category_search extends wepy.page {
+    config = {
+      navigationBarTitleText: ''
+    }
+    components = {
+    }
+
+
+    data = {
+      categoryList:'',
+      firstCategory:[],
+      curCategoryId:'',
+    }
+    
+    mixins=[utils]
+
+    methods = {
+     switchLeftTab(id){
+      this.curCategoryId=id;
+     },
+     chooseCate(firstCategoryId,secondCategoryId){
+        wepy.navigateTo({
+            url:'/pages/zrww/search_result?firstCategoryId='+firstCategoryId+'&secondCategoryId='+secondCategoryId
+        })
+     }
+    }
+    events = {
+      // 'index-emit': (...args) => {
+      //   let $event = args[args.length - 1]
+      //   console.log(`${this.$name} receive ${$event.name} from ${$event.source.$name}`)
+      // }
+    }
+    
+
+    onLoad(options) {
+      let self=this;
+      self.categoryList=self.$parent.globalData.categorieList;
+      let firstCategory=self.firstCategory;
+      for(let i=0;i<self.categoryList.length;i++){
+        if(self.categoryList[i].level==1){
+           firstCategory.push(self.categoryList[i]);
+        }
+      }
+      self.curCategoryId=firstCategory[0].categoryId;
+      self.$apply();
+    }
+  }
+</script>

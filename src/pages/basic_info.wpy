@@ -208,7 +208,7 @@
 
     methods = {
      clickWallet(){
-       wepy.navigateTo({ url: '/pages/wallet' });
+       wepy.navigateTo({ url: '/pages/wallet/wallet' });
        
      },
      logout(){

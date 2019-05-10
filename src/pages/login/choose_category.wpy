@@ -82,7 +82,7 @@ button::after {
   
    
     <view class="section">
-      <button class="login login-wechat"  @tap='confirm()'>确认</button>
+      <button class="login login-wechat"  @tap='confirm()'>{{button}}</button>
     </view>
   
    
@@ -91,7 +91,7 @@ button::after {
 
 <script>
   import wepy from 'wepy'
-  import utils from "../mixins/utils";
+  import utils from "@/mixins/utils";
   export default class choose_category extends wepy.page {
     config = {
       navigationBarTitleText: ''
@@ -101,10 +101,16 @@ button::after {
 
     methods = {
       choose(categoryId){
+        let self=this;
         for(let i=0;i<this.categoryList.length;i++){
           let cate=this.categoryList[i];
           if(cate.categoryId==categoryId){
             cate.checked=!cate.checked;
+            if(cate.checked==true){
+              self.button="确定";
+            }else{
+              self.button="跳过";
+            }
           }else{
             cate.checked=false;
           }
@@ -113,13 +119,19 @@ button::after {
      
     }
     mixins=[utils]
-    
+
     data={
         categoryList: [],
+        button:'跳过',
+    }
+    watch={
+      categoryId(newValue, oldValue) {
+          console.log(`num value: ${oldValue} -> ${newValue}`)
+      }
     }
     confirm(){
        let self=this;
-       var categoryId='';
+       let categoryId=self.categoryId;
        for(let i=0;i<this.categoryList.length;i++){
           let cate=this.categoryList[i];
           if(cate.checked==true){
