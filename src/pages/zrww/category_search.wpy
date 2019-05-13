@@ -111,7 +111,7 @@ page{
  <view class="container" >
    <view class="seach_bar">
         <image class="search_img" src="../../files/img/zrww/search_grey.png"></image>
-        <input class="search_input" placeholder="姓名、行业" value=''/>
+        <input class="search_input" placeholder="姓名、行业" value='' @tap='toKeyWordsSearch()'/>
    </view>
   <!--左侧栏-->
   <view class="nav_left">
@@ -165,6 +165,11 @@ page{
      chooseCate(firstCategoryId,secondCategoryId){
         wepy.navigateTo({
             url:'/pages/zrww/search_result?firstCategoryId='+firstCategoryId+'&secondCategoryId='+secondCategoryId
+        })
+     },
+     toKeyWordsSearch(){
+      wepy.navigateTo({
+            url:'/pages/zrww/keywords_search'
         })
      }
     }

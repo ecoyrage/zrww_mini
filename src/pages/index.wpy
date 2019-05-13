@@ -131,7 +131,7 @@
     <view class="section">
       <button class="login login-wechat" @tap="zrww()"><image class="search_img"  src="../files/img/search.png"></image>找人问问</button>
     </view>
-    <view wx-if="{{upperQuestionList.length<=0}}">
+    <view wx:if="{{upperQuestionList.length<=0}}">
      
         <view style="text-align: center;">
           <view  class="title"><text class="blue_text">9800个答者</text>已加入</view>
@@ -141,8 +141,8 @@
         <view class="grey_space" style="margin-top:80rpx;">
         </view>
 
-        <view wx-if="{{timePass5}}">
-          <view wx-if="{{info.responderStatus!=1}}">
+        <view wx:if="{{timePass5}}">
+          <view wx:if="{{info.responderStatus!=1}}">
             <view class="Title" >
               <view class="title2">自身价值<text class="blue_text">变现</text></view>
                <button class="behave2" @tap="toBeResponder()">成为答者</button>
@@ -157,13 +157,13 @@
         </view>
 
 
-        <view wx-if="{{!timePass5}}">
-          <view wx-if="{{info.responderStatus!=1}}">
+        <view wx:if="{{!timePass5}}">
+          <view wx:if="{{info.responderStatus!=1}}">
             <indexArea>
                 <image class="icon" src="{{be_responder}}" slot="icon"></image>
                 <view class="title" slot="title">成为答者，多点人脉，赚点外快</view>
-                <view wx-if="{{info.responderStatus==2}}" class="title_check" slot="title">回答者申请审核中</view>
-                <button wx-if="{{info.responderStatus==''||info.responderStatus==undefind}}" class="behave" slot="behave" @tap="toBeResponder()">成为答者</button>
+                <view wx:if="{{info.responderStatus==2}}" class="title_check" slot="title">回答者申请审核中</view>
+                <button wx:if="{{info.responderStatus==''||info.responderStatus==undefind}}" class="behave" slot="behave" @tap="toBeResponder()">成为答者</button>
             </indexArea>
           </view>
 
@@ -175,7 +175,7 @@
         </view>
        
      </view>
-     <view wx-if="{{upperQuestionList.length>0}}">
+     <view wx:if="{{upperQuestionList.length>0}}">
         <!--upperQuestionList.questionList start  -->
         <view class="grey_space" style="margin-top:40rpx;"></view>
         <repeat for="{{upperQuestionList}}" item="item">

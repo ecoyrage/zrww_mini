@@ -1,0 +1,214 @@
+<style lang="less">
+.responder_view{
+  margin-left: 20rpx;
+}
+.head_top{
+  display: flex;
+  margin-top:40rpx;
+}
+.userinfo-avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  // margin-left:20rpx;
+}
+.avatar_img{
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+}
+.expert_img{
+  position: absolute;
+  margin-left:-30rpx;
+  width:46rpx;
+  height:46rpx;
+}
+.showName{
+  color:#444;
+  font-size: 16px;
+  margin-left:20rpx;
+  font-weight: bold;
+}
+.item_title{
+  color:#828282;
+  font-size: 12px;
+  margin-left:20rpx;
+}
+.location{
+  position: absolute;
+  right: 20rpx;
+  margin-top:10rpx;
+  color:#999;
+  font-size: 12px;
+}
+.fee{
+  color:#828282;
+  font-size: 12px;
+  position: absolute;
+  right: 20rpx;
+  margin-top:50rpx;
+}
+.company{
+  color:#333;
+  font-size: 14px;
+  margin-left:20rpx;
+  margin-top:18rpx;
+}
+.profiles{
+  padding-left:20rpx;
+  text-align: left;
+  float: left;
+  color:#828282;
+  font-size: 12px;
+  overflow: hidden;  
+  white-space: nowrap;  
+  text-overflow: ellipsis; 
+  width:600rpx; 
+}
+.profiles label{
+  width:100%; 
+  overflow: hidden;  
+  white-space: nowrap;  
+  text-overflow: ellipsis;  
+}
+.servicelabel{
+  padding-left:80rpx;
+}
+.panel_bar{
+  color:#828282;
+  font-size: 12px;
+  margin-top:20rpx;
+}
+.gery_font{
+  margin-left:120rpx;
+}
+.grade_pic{
+  width:24rpx;
+  height: 24rpx;
+}
+.little_tabs{
+  margin-top:20rpx;
+  margin-left:120rpx;
+  color:#828282;
+  font-size: 12px;
+}
+.blue_font{
+ color:#5383C3;
+}
+.little_tab{
+  position: absolute;
+  left: 300rpx;
+}
+.next_button{
+  position:absolute;
+  margin-top:-60rpx;
+  right: 20rpx;
+  width: 130rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  border-radius: 5px;
+  color: #ffffff;
+  font-size: 32rpx;
+  background-color: #5383c3;
+  color: #ffffff;
+}
+.status_img{
+  width: 100rpx;
+  height:30rpx;
+}
+.status_img image{
+  width: 100rpx;
+  height:30rpx;
+}
+</style>
+<template>
+  <view >
+     <view class="responder_view">
+        <repeat for="{{responderList}}" item="item">
+          <view class="head_top">
+              <view class="userinfo-avatar">
+                  <image  class="avatar_img" src="{{item.avatarUrl==''?'../../files/img/avatarUrl.png':item.avatarUrl}}"></image>
+                  <image  wx:if="{{item.isExpert==1}}" class="expert_img" src="../files/img/expert.png"></image>
+                  <view class="status_img">
+                      <image wx:if="{{item.isResting}}" src="../files/img/rest.png"></image>
+                  </view>
+              </view>
+              <view>
+                <view>
+                  <label class="showName">{{item.showName}}</label>
+                  <label class="item_title">{{item.title}}</label>
+                </view>
+                <view>
+                  <label class="company">{{item.company}}</label>
+                </view>
+                 <view class="profiles">
+                  <label>{{item.profiles}}</label>
+                </view>
+               
+              </view>
+              <view>
+                <label class="location">{{item.location}}</label>
+                <label class="fee">￥{{item.fee}}</label>
+              </view>
+          </view>
+          <view class="servicelabel">
+            <servicelabel :servicelabel="item.label"></servicelabel>
+          </view>
+ 
+          <view wx:if="{{item.isResting}}">
+              <view class="panel_bar">
+                  <view  class="gery_font">
+                    <label style="margin-left:-120rpx;">服务时间</label>
+                    <label>　{{item.workDay}}</label>
+                  </view>
+                  <view class="gery_font" style="margin-top:20rpx">
+                    <label >{{item.serviceTime}}</label>
+                  </view>
+              </view>
+               <button class="next_button" @tap="clickNext({{item.responderId}})">留言</button>
+           </view>
+
+           <view wx:else>
+              <view class="little_tabs">
+                <label><image class="grade_pic" src="../files/img/grade_high.png"></image><label class="blue_font">{{item.averageScore}}</label>分</label>
+                <label class="little_tab"><label class="blue_font">{{item.answerNumber}}</label>个回答</label>
+                <view style="margin-top:20rpx;">
+                  <label><label class="blue_font">{{item.responseRate}}%</label>响应率</label>
+                  <label class="little_tab">平均<label class="blue_font">{{item.averageTime}}分钟</label>响应</label>
+                </view>
+              </view>
+               <button class="next_button" @tap="clickNext({{item.responderId}})">问问</button>
+           </view>
+
+        </repeat>
+     </view>
+  </view>
+ 
+</template>
+<script>
+  import wepy from 'wepy'
+  import servicelabel from '../components/servicelabel'
+  export default class responderList extends wepy.component {
+    props = {
+      responderList: {},
+    }
+    components = {
+       servicelabel: servicelabel,
+    }
+
+    methods={
+      clickNext(id){
+       wepy.navigateTo({ url: '/pages/answerer_introduce?responderId='+id});
+       
+      }
+    }
+
+
+    onLoad(){
+    }
+  
+  
+
+
+  }
+</script>

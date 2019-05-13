@@ -97,7 +97,7 @@
 <template>
   <view>
     <view class="name_bar">
-      <view wx-if="{{isLogin}}">
+      <view wx:if="{{isLogin}}">
         <view class="userinfo-avatar">
               <image src="{{basicInfo.avatarUrl}}"></image>
         </view>
@@ -106,7 +106,7 @@
         </view>
       </view>
       
-      <view class="login" wx-if="{{!isLogin}}" @tap="login()">
+      <view class="login" wx:if="{{!isLogin}}" @tap="login()">
         <text>登录/注册 </text>
          <image src="../files/img/qianjin_white.png"></image>
       </view>
@@ -157,7 +157,7 @@
 
      </view>
       <view class="grey_space" style="height:{{windowHeight-700}}rpx;">
-        <view class="logout" @tap="logout()" wx-if="{{isLogin}}">
+        <view class="logout" @tap="logout()" wx:if="{{isLogin}}">
           <text>退出登录</text>
         </view>
       </view>

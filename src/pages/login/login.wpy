@@ -254,9 +254,6 @@
 
     onLoad(options) {
       let self = this
-      self.responderId=options.responderId;
-      self.$apply();
-  
       self.getAdCode();
     }
   }

@@ -32,10 +32,12 @@ import 'wepy-async-function'
 export default class extends wepy.app {
   config = {
     pages: [
+
       'pages/index',
 
       'pages/zrww/category_search',
       'pages/zrww/search_result',
+      'pages/zrww/keywords_search',
       'pages/zrww/zrww',
 
       'pages/wallet/wallet',//钱包
@@ -57,7 +59,7 @@ export default class extends wepy.app {
       'pages/treaty',
     ],
     window: {
-      backgroundTextStyle: 'light',
+      backgroundTextStyle: 'dark',
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: '找人问问',
       navigationBarTextStyle: 'black'
@@ -76,10 +78,6 @@ export default class extends wepy.app {
     //  "iconPath": "images/icon_consult.png",  
      pagePath: "pages/index",  
      text: "首页"  
-   },
-   {
-     pagePath: "pages/answerer_introduce",  
-     text: "回答者" 
    },
     {  
     //  "selectedIconPath": "images/icon_mine_press.png",  

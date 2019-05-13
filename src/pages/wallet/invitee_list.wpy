@@ -221,7 +221,7 @@
             <view style="display:inline-table;position:absolute;right:20rpx;margin-top:-48rpx;">
                 <button class="tixian">提现</button>
             </view>
-            <view class="invite_desc" wx-if="{{model.invitationLevel<3}}">
+            <view class="invite_desc" wx:if="{{model.invitationLevel<3}}">
                 你邀请的好友，以及好友邀请的其它人都会成为你的人脉他们在平台形成交易后，你都会获得奖励
             </view>
         </view>

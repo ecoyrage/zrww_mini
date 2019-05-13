@@ -85,7 +85,7 @@
        <text>问题描述：</text><text style="color:#333;">{{question.questionDescribe}}</text>
     </view>
     
-      <view class="profilesPic" wx-if="{{question.pics!=[]}}">
+      <view class="profilesPic" wx:if="{{question.pics!=[]}}">
         <repeat for="{{question.pics}}" item="item">
           <image src="{{item}}" @tap="previewImage({{item}})"></image>
         </repeat>
