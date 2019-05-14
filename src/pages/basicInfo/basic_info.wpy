@@ -106,7 +106,7 @@
     <view class="name_bar">
       <view wx:if="{{isLogin}}">
         <view class="userinfo-avatar">
-              <image src="{{basicInfo.avatarUrl==''?'../files/img/avatarUrl.png':basicInfo.avatarUrl}}"></image>
+              <image src="{{basicInfo.avatarUrl==''?'../../files/img/avatarUrl.png':basicInfo.avatarUrl}}"></image>
         </view>
         <view>
             <text class="nickName">{{basicInfo.nickName}}</text>
@@ -115,34 +115,34 @@
       
       <view class="login" wx:if="{{!isLogin}}" @tap="login()">
         <text>登录/注册 </text>
-         <image src="../files/img/qianjin_white.png"></image>
+         <image src="../../files/img/qianjin_white.png"></image>
       </view>
     </view>
     <view class="middle_bar">
       <view class="middle_part" style="margin-left:54rpx;"  @tap="clickWallet()">
-        <image class="menu_img" src="../files/img/basicInfo/wallet.png"></image>
+        <image class="menu_img" src="../../files/img/basicInfo/wallet.png"></image>
         <view class="menu_text">
           <text>钱包</text>
         </view>
         <view class="separator"></view>
       </view>
       
-      <view class="middle_part">
-        <image class="menu_img" src="../files/img/basicInfo/hdjl.png"></image>
+      <view class="middle_part" @tap="clickAnswer()">
+        <image class="menu_img" src="../../files/img/basicInfo/hdjl.png"></image>
         <view class="menu_text">
         <text>回答记录</text>
         </view>
         <view class="separator"></view>
       </view>
-      <view class="middle_part">
-        <image class="menu_img" src="../files/img/basicInfo/twjl.png"></image>
+      <view class="middle_part" @tap="clickQuestion()">
+        <image class="menu_img" src="../../files/img/basicInfo/twjl.png"></image>
         <view class="menu_text">
         <text>提问记录</text>
         </view>
         <view class="separator"></view>
       </view>
-      <view class="middle_part">
-        <image class="menu_img" src="../files/img/basicInfo/focus.png"></image>
+      <view class="middle_part" @tap="clickFocus()">
+        <image class="menu_img" src="../../files/img/basicInfo/focus.png"></image>
         <view class="menu_text">
         <text>关注</text>
         </view>
@@ -154,21 +154,21 @@
 
      <view>
          <view class="tab_menu">
-             <image class="tab_menu_img" src="../files/img/doubt.png"></image>
+             <image class="tab_menu_img" src="../../files/img/doubt.png"></image>
              <text>设置</text>
-              <image class="icon_qianjin" src="../files/img/qianjin.png"></image>
+              <image class="icon_qianjin" src="../../files/img/qianjin.png"></image>
               <view class='line'></view>
         </view>
          <view class="tab_menu">
-             <image class="tab_menu_img" src="../files/img/doubt.png"></image>
+             <image class="tab_menu_img" src="../../files/img/doubt.png"></image>
              <text>联系平台</text>
-              <image class="icon_qianjin" src="../files/img/qianjin.png"></image>
+              <image class="icon_qianjin" src="../../files/img/qianjin.png"></image>
              <view class='line'></view>
         </view>
          <view class="tab_menu">
-             <image class="tab_menu_img" src="../files/img/doubt.png"></image>
+             <image class="tab_menu_img" src="../../files/img/doubt.png"></image>
              <text>实名认证</text>
-              <image class="icon_qianjin" src="../files/img/qianjin.png"></image>
+              <image class="icon_qianjin" src="../../files/img/qianjin.png"></image>
         </view>
        
 
@@ -185,7 +185,7 @@
 
 <script>
   import wepy from 'wepy'
-  import utils from "../mixins/utils";
+  import utils from "@/mixins/utils";
   export default class basic_info extends wepy.page {
     config = {
       navigationBarTitleText: '我的',
@@ -225,8 +225,17 @@
 
     methods = {
      clickWallet(){
-       wepy.navigateTo({ url: '/pages/wallet/wallet' });
+      wepy.navigateTo({ url: '/pages/wallet/wallet' });
        
+     },
+     clickAnswer(){
+      wepy.navigateTo({ url: '/pages/basicInfo/answer_record' });
+     },
+     clickQuestion(){
+      wepy.navigateTo({ url: '/pages/basicInfo/question_record' });
+     },
+     clickFocus(){
+      wepy.navigateTo({ url: '/pages/basicInfo/focus' });
      },
      logout(){
        let self=this;
@@ -238,7 +247,7 @@
               self.isLogin=false;
               self.$apply();
               wx.clearStorageSync();
-              wepy.reLaunch({ url: '/pages/index' });
+              wepy.reLaunch({ url: '/pages/index/index' });
               
             } else if (res.cancel) {
             }

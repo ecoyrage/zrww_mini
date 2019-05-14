@@ -48,7 +48,7 @@ export default class utils extends wepy.mixin {
           if(res.data.code==100){
               wx.setStorageSync('basicInfo',res.data.data);
               wepy.reLaunch({
-                url:'/pages/index'
+                url:'/pages/index/index'
               })
           }
         }
@@ -80,7 +80,8 @@ export default class utils extends wepy.mixin {
         }
       })
     }
-    getFullNum(num) {
+    getRealityNum(data) {
+      let num = data/10000000000;
       //处理非数字
       if (isNaN(num)) { return num };
 

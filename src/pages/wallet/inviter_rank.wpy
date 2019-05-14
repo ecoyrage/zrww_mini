@@ -139,7 +139,7 @@
                       self.noMore=true
                     }
                     for(let i=0;i<list.length;i++){
-                      list[i].invitationBalance=self.getFullNum(self.model[i].invitationBalance/10000000000);
+                      list[i].invitationBalance=self.getRealityNum(self.model[i].invitationBalance);
                       self.model.push(list[i]);
                   }
                 
@@ -170,7 +170,7 @@
                 if(res.data.code==100){
                       self.model=res.data.data.list;
                     for(let i=0;i<self.model.length;i++){
-                      self.model[i].invitationBalance=self.getFullNum(self.model[i].invitationBalance/10000000000);
+                      self.model[i].invitationBalance=self.getRealityNum(self.model[i].invitationBalance);
                     }
                     self.$apply();
                 }
@@ -204,7 +204,7 @@
               if(res.data.code==100){
                   self.model=res.data.data.list;
                   for(let i=0;i<self.model.length;i++){
-                    self.model[i].invitationBalance=self.getFullNum(self.model[i].invitationBalance/10000000000);
+                    self.model[i].invitationBalance=self.getRealityNum(self.model[i].invitationBalance);
                   }
                   // for(let i=0;i<10;i++){
                   //   self.model.push(self.model[1])

@@ -274,7 +274,7 @@ button::after {
             })
           }else{
              wepy.relaunch({
-              url:'/pages/index'
+              url:'/pages/index/index'
             })
           }
         }

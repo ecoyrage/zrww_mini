@@ -33,6 +33,10 @@
   text-align: left;
   color:#999;
   font-size: 14px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;  
 }
 .profilesPic{
   margin-left:20rpx;
@@ -67,24 +71,25 @@
 }
 </style>
 <template>
-  <view class="questionBar">
-     <view class="question_avatar">
-          <image  src="{{question.avatarUrl==''?'../files/img/avatarUrl.png':question.avatarUrl}}"></image>
+  <view class="questionBar" >
+    <view @tap="viewQuestion({{question.questionId}})">
+      <view class="question_avatar">
+            <image  src="{{question.avatarUrl==''?'../../files/img/avatarUrl.png':question.avatarUrl}}"></image>
+        </view>
+        <view class="recommendumber">已推荐{{question.recommendumber}}个回答者待选择</view>
+        <view class="question_deta">
+            <view class="nickName">{{question.nickName}}</view>
+            <view style="padding-top:20rpx;">
+              <image class="grade_pic" src="../files/img/grade_high.png"></image><text style="font-size:12px;color:#5383C3">{{question.averageScore}}</text>分
+              <text style="margin-left:20rpx;">愿支付:</text><text style="font-size:14px;color:#5383C3">￥{{question.offer}}</text>
+              <!-- <text style="margin-left:80rpx;">退款率:</text><text style="font-size:12px;color:#5383C3">{{question.refundRate}}%</text> -->
+            </view>
+        </view>
+      <view style="clear:both"></view>
+      <view class="question_desc">
+        <text>问题描述：</text><text style="color:#333;">{{question.questionDescribe}}</text>
       </view>
-      <view class="recommendumber">已推荐{{question.recommendumber}}个回答者待选择</view>
-      <view class="question_deta">
-          <view class="nickName">{{question.nickName}}</view>
-          <view style="padding-top:20rpx;">
-            <image class="grade_pic" src="../files/img/grade_high.png"></image><text style="font-size:12px;color:#5383C3">{{question.averageScore}}</text>分
-            <text style="margin-left:20rpx;">愿支付:</text><text style="font-size:14px;color:#5383C3">￥{{question.offer}}</text>
-            <!-- <text style="margin-left:80rpx;">退款率:</text><text style="font-size:12px;color:#5383C3">{{question.refundRate}}%</text> -->
-          </view>
-      </view>
-    <view style="clear:both"></view>
-    <view class="question_desc">
-       <text>问题描述：</text><text style="color:#333;">{{question.questionDescribe}}</text>
     </view>
-    
       <view class="profilesPic" wx:if="{{question.pics!=[]}}">
         <repeat for="{{question.pics}}" item="item">
           <image src="{{item}}" @tap="previewImage({{item}})"></image>
@@ -112,7 +117,12 @@
             current: img, // 当前显示图片的http链接
             urls: this.question.pics // 需要预览的图片http链接列表
           })
+        },viewQuestion(questionId){
+           wepy.navigateTo({
+            url: '/pages/index/question_detail?questionId='+questionId
+          })
         }
+
     }
 
 

@@ -329,7 +329,7 @@
             success: res => {
                 if(res.data.code==100){
                     self.model=res.data.data;
-                    self.model.todayInvitationBalance=self.getFullNum(self.model.todayInvitationBalance/10000000000)
+                    self.model.todayInvitationBalance=self.getRealityNum(self.model.todayInvitationBalance)
                     self.$apply();
                 }
             }

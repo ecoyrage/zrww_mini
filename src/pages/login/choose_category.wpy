@@ -162,7 +162,7 @@ button::after {
             let result=res.data
              if(result.code==100){
                wepy.reLaunch({
-                url:'/pages/index'
+                url:'/pages/index/index'
               })
             }
        
