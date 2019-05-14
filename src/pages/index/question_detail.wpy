@@ -33,10 +33,6 @@
   text-align: left;
   color:#999;
   font-size: 14px;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;  
 }
 .profilesPic{
   margin-left:20rpx;
@@ -144,7 +140,7 @@
       navigationBarTitleText: '查看问题描述',
     }
     data={
-      questionId:'1127844414162145282',
+      questionId:'',
       question:'',
     }
 
@@ -194,6 +190,7 @@
 
     onLoad(options){
       let questionId=options.questionId;
+      this.questionId=questionId;
       this.getDetail();
     }
   }
