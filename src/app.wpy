@@ -33,12 +33,14 @@ export default class extends wepy.app {
   config = {
     pages: [
 
+
       'pages/index',
 
-      'pages/zrww/category_search',
       'pages/zrww/search_result',
       'pages/zrww/keywords_search',
       'pages/zrww/zrww',
+      'pages/zrww/category_search',
+
 
       'pages/wallet/wallet',//钱包
       'pages/wallet/invitee_list',//邀请列表
@@ -49,10 +51,11 @@ export default class extends wepy.app {
       'pages/be_responder',
       'pages/invite_friends',//邀请好友
 
-      'pages/login/login',
       'pages/login/login_phone',
       'pages/login/invitation_code',//邀请码
       'pages/login/choose_category',//选择分类
+      'pages/login/login',
+
      
       'pages/answerer_introduce',//回答者介绍
       
@@ -106,6 +109,7 @@ export default class extends wepy.app {
     mobileVersion:'minipro 1.0',
     whyBecomeResponderPic:'',
     whyInvitationPic:'',
+    serviceDescriptionPic:'',
   }
   
 
@@ -133,8 +137,10 @@ export default class extends wepy.app {
       success: res => {
         wx.setStorageSync('whyBecomeResponderPic',res.data.data.whyBecomeResponderPic);
         wx.setStorageSync('whyInvitationPic',res.data.data.whyInvitationPic);
+        wx.setStorageSync('serviceDescriptionPic',res.data.data.serviceDescriptionPic);
         this.globalData.whyBecomeResponderPic=res.data.data.whyBecomeResponderPic;
         this.globalData.whyInvitationPic=res.data.data.whyInvitationPic;
+        this.globalData.serviceDescriptionPic=res.data.data.serviceDescriptionPic;
         this.globalData.categorieList=res.data.data.categorieList;
       },
       fail: () => {},

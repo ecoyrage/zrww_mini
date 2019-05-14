@@ -2,7 +2,7 @@
 </style>
 <template>
   <view>
-    <image src="{{trety}}" mode="widthFix" style="width:100%"/>
+    <image src="{{treaty}}" mode="widthFix" style="width:100%"/>
   </view>
 </template>
 
@@ -18,7 +18,7 @@
 
 
     data = {
-      trety:'',
+      treaty:'',
     }
 
     methods = {
@@ -28,13 +28,8 @@
     
     onLoad(options) {
       let self = this;
-      let type=options.type;
-      if(type==1){
-        self.trety="http://oss.50waizhuan.com/fenxiangguize.png";
-      }else{
-        self.trety="";
-      }
- 
+      self.treaty=options.treaty;
+      self.$apply();
       
       
     }

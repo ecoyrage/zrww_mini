@@ -36,7 +36,7 @@
   margin-top:42rpx;
 }
 .middle_part{
-  margin-right:150rpx;
+  margin-right:90rpx;
   text-align: center;
 }
 .grey_space{
@@ -91,6 +91,13 @@
   right: 0;
   top: 90rpx;
 }
+.separator{
+  position: absolute;
+  margin-left: 150rpx;
+  margin-top:-130rpx;
+  height:120rpx;
+  border-left:1px #F6F6F6 solid;
+}
 
 
 </style>
@@ -99,7 +106,7 @@
     <view class="name_bar">
       <view wx:if="{{isLogin}}">
         <view class="userinfo-avatar">
-              <image src="{{basicInfo.avatarUrl}}"></image>
+              <image src="{{basicInfo.avatarUrl==''?'../files/img/avatarUrl.png':basicInfo.avatarUrl}}"></image>
         </view>
         <view>
             <text class="nickName">{{basicInfo.nickName}}</text>
@@ -112,25 +119,35 @@
       </view>
     </view>
     <view class="middle_bar">
-      <view class="middle_part" style="margin-left:70rpx;"  @tap="clickWallet()">
+      <view class="middle_part" style="margin-left:54rpx;"  @tap="clickWallet()">
         <image class="menu_img" src="../files/img/basicInfo/wallet.png"></image>
         <view class="menu_text">
-         <text>钱包</text>
+          <text>钱包</text>
         </view>
-      </view>
-       <view class="middle_part">
-        <image class="menu_img" src="../files/img/basicInfo/ltjl.png"></image>
-        <view class="menu_text">
-         <text>沟通历史</text>
-        </view>
-      </view>
-       <view class="middle_part">
-        <image class="menu_img" src="../files/img/basicInfo/focus.png"></image>
-        <view class="menu_text">
-         <text>关注</text>
-        </view>
+        <view class="separator"></view>
       </view>
       
+      <view class="middle_part">
+        <image class="menu_img" src="../files/img/basicInfo/hdjl.png"></image>
+        <view class="menu_text">
+        <text>回答记录</text>
+        </view>
+        <view class="separator"></view>
+      </view>
+      <view class="middle_part">
+        <image class="menu_img" src="../files/img/basicInfo/twjl.png"></image>
+        <view class="menu_text">
+        <text>提问记录</text>
+        </view>
+        <view class="separator"></view>
+      </view>
+      <view class="middle_part">
+        <image class="menu_img" src="../files/img/basicInfo/focus.png"></image>
+        <view class="menu_text">
+        <text>关注</text>
+        </view>
+      </view>
+          
     </view>
      <view class="grey_space" style="margin-top:20rpx;">
      </view>

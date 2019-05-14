@@ -125,60 +125,62 @@
   <view >
      <view class="responder_view">
         <repeat for="{{responderList}}" item="item">
-          <view class="head_top">
-              <view class="userinfo-avatar">
-                  <image  class="avatar_img" src="{{item.avatarUrl==''?'../../files/img/avatarUrl.png':item.avatarUrl}}"></image>
-                  <image  wx:if="{{item.isExpert==1}}" class="expert_img" src="../files/img/expert.png"></image>
-                  <view class="status_img">
-                      <image wx:if="{{item.isResting}}" src="../files/img/rest.png"></image>
+          <view @tap="clickNext({{item.responderId}})">
+              <view class="head_top">
+                  <view class="userinfo-avatar">
+                      <image  class="avatar_img" src="{{item.avatarUrl==''?'../../files/img/avatarUrl.png':item.avatarUrl}}"></image>
+                      <image  wx:if="{{item.isExpert==1}}" class="expert_img" src="../files/img/expert.png"></image>
+                      <view class="status_img">
+                          <image wx:if="{{item.isResting}}" src="../files/img/rest.png"></image>
+                      </view>
+                  </view>
+                  <view>
+                    <view>
+                      <label class="showName">{{item.showName}}</label>
+                      <label class="item_title">{{item.title}}</label>
+                    </view>
+                    <view>
+                      <label class="company">{{item.company}}</label>
+                    </view>
+                    <view class="profiles">
+                      <label>{{item.profiles}}</label>
+                    </view>
+                  
+                  </view>
+                  <view>
+                    <label class="location">{{item.location}}</label>
+                    <label class="fee">￥{{item.fee}}</label>
                   </view>
               </view>
-              <view>
-                <view>
-                  <label class="showName">{{item.showName}}</label>
-                  <label class="item_title">{{item.title}}</label>
-                </view>
-                <view>
-                  <label class="company">{{item.company}}</label>
-                </view>
-                 <view class="profiles">
-                  <label>{{item.profiles}}</label>
-                </view>
-               
+              <view class="servicelabel">
+                <servicelabel :servicelabel="item.label"></servicelabel>
               </view>
-              <view>
-                <label class="location">{{item.location}}</label>
-                <label class="fee">￥{{item.fee}}</label>
-              </view>
-          </view>
-          <view class="servicelabel">
-            <servicelabel :servicelabel="item.label"></servicelabel>
-          </view>
- 
-          <view wx:if="{{item.isResting}}">
-              <view class="panel_bar">
-                  <view  class="gery_font">
-                    <label style="margin-left:-120rpx;">服务时间</label>
-                    <label>　{{item.workDay}}</label>
+    
+              <view wx:if="{{item.isResting}}">
+                  <view class="panel_bar">
+                      <view  class="gery_font">
+                        <label style="margin-left:-120rpx;">服务时间</label>
+                        <label>　{{item.workDay}}</label>
+                      </view>
+                      <view class="gery_font" style="margin-top:20rpx">
+                        <label >{{item.serviceTime}}</label>
+                      </view>
                   </view>
-                  <view class="gery_font" style="margin-top:20rpx">
-                    <label >{{item.serviceTime}}</label>
-                  </view>
+                  <!-- <button class="next_button" @tap="clickNext({{item.responderId}})">留言</button> -->
               </view>
-               <button class="next_button" @tap="clickNext({{item.responderId}})">留言</button>
-           </view>
 
-           <view wx:else>
-              <view class="little_tabs">
-                <label><image class="grade_pic" src="../files/img/grade_high.png"></image><label class="blue_font">{{item.averageScore}}</label>分</label>
-                <label class="little_tab"><label class="blue_font">{{item.answerNumber}}</label>个回答</label>
-                <view style="margin-top:20rpx;">
-                  <label><label class="blue_font">{{item.responseRate}}%</label>响应率</label>
-                  <label class="little_tab">平均<label class="blue_font">{{item.averageTime}}分钟</label>响应</label>
-                </view>
+              <view wx:else>
+                  <view class="little_tabs">
+                    <label><image class="grade_pic" src="../files/img/grade_high.png"></image><label class="blue_font">{{item.averageScore}}</label>分</label>
+                    <label class="little_tab"><label class="blue_font">{{item.answerNumber}}</label>个回答</label>
+                    <view style="margin-top:20rpx;">
+                      <label><label class="blue_font">{{item.responseRate}}%</label>响应率</label>
+                      <label class="little_tab">平均<label class="blue_font">{{item.averageTime}}分钟</label>响应</label>
+                    </view>
+                  </view>
+                  <button class="next_button">问问</button>
               </view>
-               <button class="next_button" @tap="clickNext({{item.responderId}})">问问</button>
-           </view>
+          </view>
 
         </repeat>
      </view>

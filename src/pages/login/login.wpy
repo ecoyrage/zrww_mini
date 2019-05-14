@@ -36,6 +36,15 @@
 .href{
    color: #5383c3;
 }
+.wxLogin{
+ width: 48rpx;
+ height: 48rpx;
+ position:absolute;
+ z-index: 99;
+ margin-top:35rpx;
+ margin-left:-140rpx;
+}
+
 </style>
 <template>
   <view>
@@ -43,6 +52,7 @@
       <text class="zrww">找人问问，登录</text>
     </view>
     <view class="section">
+      <image class="wxLogin" src="../../files/img/login/wechat_white.png"></image>
       <button class="login login-wechat" open-type="getUserInfo"  @getuserinfo="getUserInfo">微信登录/注册</button>
     </view>
     <view class="section">
@@ -141,7 +151,7 @@
       let userInfo=e.detail.userInfo;
       if(userInfo==undefined){
          wepy.showToast({
-          title: '授权之后才能访问',
+          title: '授权之后才能登录',
           icon: 'none',
           duration: 3000
         })

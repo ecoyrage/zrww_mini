@@ -180,7 +180,7 @@
         <view class="grey_space" style="margin-top:40rpx;"></view>
         <repeat for="{{upperQuestionList}}" item="item">
             <view class="question_avatar">
-                  <image src="{{item.avatarUrl}}"></image>
+                  <image src="{{item.avatarUrl==''?'../files/img/avatarUrl.png':item.avatarUrl}}"></image>
             </view>
             <view class="question_info">
               <text class="nick_name">{{item.nickName}}</text>
@@ -440,7 +440,11 @@
       let isLogin=wx.getStorageSync('isLogin')
       self.isLogin=isLogin;
       if(isLogin){
-        self.avatarUrl=wx.getStorageSync('basicInfo').avatarUrl;
+        let avatarUrl=wx.getStorageSync('basicInfo').avatarUrl;
+        if(avatarUrl==""){
+          avatarUrl="../files/img/avatarUrl.png"
+        }
+        self.avatarUrl=avatarUrl;
       }
       self.$apply();
 

@@ -198,8 +198,8 @@
           </view>
           <view class='line'></view>
           <view class="service_bar">
-            <text @tap="zhuiwen(1)">24小时内可追问</text><image class="doubt_img" src="../files/img/doubt.png"></image>
-            <text @tap="hudong(2)" style="margin-left:84rpx;">在线互动</text><image class="doubt_img" src="../files/img/doubt.png"></image>
+            <text @tap="serviceDescriptionPic()">24小时内可追问</text><image class="doubt_img" src="../files/img/doubt.png"></image>
+            <text @tap="serviceDescriptionPic()" style="margin-left:84rpx;">在线互动</text><image class="doubt_img" src="../files/img/doubt.png"></image>
             <text wx:if="{{model.isRefund==1}}" style="margin-left:100rpx;">支持无理由退款</text>
           </view>
         </view>
@@ -223,7 +223,7 @@
      
   </scroll-view>
   <view class="section">
-    <button  open-type="launchApp" app-parameter="wechat" binderror="launchAppError" class="login login-wechat">立即咨询</button>
+    <button  open-type="launchApp" app-parameter="wechat" disabled="{{isRest}}" binderror="launchAppError" class="login login-wechat">立即咨询</button>
   </view>
  
 
@@ -263,18 +263,13 @@
 		    })
 
       },
-      zhuiwen(type){
+      serviceDescriptionPic(){
         wepy.navigateTo({
-            url:'/pages/treaty?type='+type
+            url:'/pages/treaty?treaty='+wx.getStorageSync('serviceDescriptionPic')
         })
       },
-      hudong(type){
-        wepy.navigateTo({
-            url:'/pages/treaty?type='+type
-        })
-      },
-       launchAppError(e) {
-      console.log(e.detail.errMsg)
+      launchAppError(e) {
+       console.log(e.detail.errMsg)
       },
       focus(id){
         let self=this;
