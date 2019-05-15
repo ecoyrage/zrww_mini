@@ -10,9 +10,10 @@
   padding-left:22rpx; 
 }
 .navibar{
+  position:relative;
   margin-left:20rpx;
-  width: 355px;
-  height: 184px;
+  width: 710rpx;
+  height: 368rpx;
   border-radius: 5px;
   color: rgba(16, 16, 16, 1);
   font-size: 14px;

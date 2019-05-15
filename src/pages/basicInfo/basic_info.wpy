@@ -255,7 +255,7 @@
       })
      },
      login(){
-      wepy.navigateTo({ url: '/pages/login' });
+      wepy.navigateTo({ url: '/pages/login/login' });
      }
     }
 

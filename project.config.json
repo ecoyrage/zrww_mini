@@ -1,20 +1,20 @@
 {
-	"description": "zrww",
-	"setting": {
-		"urlCheck": false,
-		"es6": false,
-		"postcss": false,
-		"minified": false,
-		"newFeature": true,
-		"nodeModules": false,
-		"autoAudits": false,
-		"checkInvalidKey": true
-	},
-	"compileType": "miniprogram",
-	"appid": "wx4619f7017b4e1f7e",
-	"projectname": "zrww",
-	"miniprogramRoot": "dist/",
-	"simulatorType": "wechat",
-	"simulatorPluginLibVersion": {},
-	"condition": {}
+    "description": "zrww",
+    "setting": {
+        "urlCheck": false,
+        "es6": false,
+        "postcss": false,
+        "minified": false,
+        "newFeature": true,
+        "nodeModules": false,
+        "autoAudits": false,
+        "checkInvalidKey": true
+    },
+    "compileType": "miniprogram",
+    "appid": "wx4619f7017b4e1f7e",
+    "projectname": "zrww",
+    "miniprogramRoot": "dist/",
+    "simulatorType": "wechat",
+    "simulatorPluginLibVersion": {},
+    "condition": {}
 }

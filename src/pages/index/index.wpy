@@ -174,7 +174,7 @@
             <button class="behave" slot="behave" @tap="toInviteFriends()">去邀请</button>
           </indexArea>
         </view>
-       
+
      </view>
      <view wx:if="{{upperQuestionList.length>0}}">
         <!--upperQuestionList.questionList start  -->
@@ -187,7 +187,7 @@
               <text class="nick_name">{{item.nickName}}</text>
                <text class="question_status" style="{{item.status==6?'color:#DF7163':''}}">{{status[item.status-1]}}</text>
               <view style="clear:both"></view>
-              <text class="end_time">{{item.endTime}}</text>
+              <text class="end_time">{{item.countDown.day}}天{{item.countDown.hou}}时{{item.countDown.min}}分{{item.countDown.sec}}秒</text>
               <view style="clear:both"></view>
               <text class="questionDescribe">{{item.questionDescribe}}</text>
             </view>
@@ -274,10 +274,10 @@
       invitationBalance:'',
       pageNum:1,
       pageSize:10,
-     
-
-
+      noMore:'',
     }
+   
+
 
     mixins=[utils]
 
@@ -288,7 +288,7 @@
             url:'/pages/login/login'
           })
         }else{
-           wepy.switchTab({
+           wepy.navigateTo({
             url:'/pages/basicInfo/basic_info'
           })
         }
@@ -324,6 +324,8 @@
           })
       }
     }
+
+
     openApp(){
        wepy.navigateTo({
           url:'/pages/login/login'
@@ -331,33 +333,71 @@
     }
 
     onPullDownRefresh(){
-      this.pageNum=1;
-      this.onLoad();
+      if(this.isLogin){
+        this.pageNum=1;
+        this.noMore=false;
+        this.onLoad();
+      }else{
+        wx.hideNavigationBarLoading();
+        wx.stopPullDownRefresh();
+      }
     }
     onReachBottom(){
-      wx.showLoading({
-      title: '玩命加载中',
-      })
-      
-      setTimeout(() => {
-        wx.hideLoading();
-      }, 1000);
-    
-      // wx.request({
-      //   url: 'https://xxx/?page=' + page,
-      //   method: "post",
-      //   // 请求头部
-      //   header: {
-      //     'content-type': 'application/text'
-      //   },
-      //   success: function (res) {
-    
-       
-      //     wx.hideLoading();
-      //   }
-      // })
-    
-        
+      if(this.isLogin){
+        if(!this.noMore){
+            let self=this;
+            wx.showLoading({
+              title: '玩命加载中',
+            })
+            let json={};
+            self.pageNum+=1;
+            json.pageNum=self.pageNum+'';
+            json.pageSize=self.pageSize+'';
+            json.firstCategoryId=self.firstCategoryId
+            json.secondCategoryId=self.secondCategoryId
+            let obj=self.genObj(json);
+            let sign=self.genSign(obj);
+            wepy.request({
+              url:  self.domain+'/ww/api/v1/index/questionList',
+              method: 'post',
+              data: {object:obj,sign:sign},
+              header:{
+                'JWT': 'true',
+                'content-type':'application/json', 
+                'Authorization':'Bearer '+self.accessToken
+              },
+              success: res => {
+                if(res.data.code==100){
+                  wx.hideLoading();
+                  let list=res.data.data.list;
+                  if(list.length==0){
+                    wx.showToast({
+                      title: '暂无更多数据',
+                      icon: 'none',
+                    })
+                    self.noMore=true
+                  }
+                  for(let i=0;i<list.length;i++){
+                    if(list[i].pics==""){
+                      list[i].pics="";
+                    }else{
+                      list[i].pics=list[i].pics.split(",");
+                    }
+                    self.questionList.push(list[i]);
+                  }
+                  self.$apply();
+                }
+              
+              }
+            })
+          }else{
+            wx.showToast({
+                title: '暂无更多数据',
+                icon: 'none',
+              })
+          }
+            
+        }
     }
     
    
@@ -427,6 +467,45 @@
        })
     }
 
+  timeFormat(param){//小于10的格式化函数
+      return param < 10 ? '0' + param : param; 
+    }
+
+  countDown(upperQuestionList){//倒计时函数
+    let self=this;
+    var timer=setInterval(function () {
+      let newTime = new Date().getTime();
+      upperQuestionList.forEach(o => {
+        let endTime = new Date(o.endTime).getTime();
+        let obj = null;
+        // 如果活动未结束，对时间进行处理
+        if (endTime - newTime > 0){
+          let time = (endTime - newTime) / 1000;
+          // 获取天、时、分、秒
+          let day = parseInt(time / (60 * 60 * 24));
+          let hou = parseInt(time % (60 * 60 * 24) / 3600);
+          let min = parseInt(time % (60 * 60 * 24) % 3600 / 60);
+          let sec = parseInt(time % (60 * 60 * 24) % 3600 % 60);
+          obj = {
+            day: self.timeFormat(day),
+            hou: self.timeFormat(hou),
+            min: self.timeFormat(min),
+            sec: self.timeFormat(sec)
+          }
+        }else{//活动已结束，全部设置为'00'
+          obj = {
+              day: '00',
+              hou: '00',
+              min: '00',
+              sec: '00'
+            }
+          }
+        o.countDown=obj
+      })
+      self.$apply();
+    }, 1000)
+
+    }
     onLoad() {
       let self = this
       let isLogin=wx.getStorageSync('isLogin')
@@ -470,11 +549,10 @@
               }
               self.info=data;
               self.upperQuestionList=data.questionList;
+              self.countDown(self.upperQuestionList);
               self.questionReward=self.getRealityNum(data.questionReward);
               self.invitationBalance=self.getRealityNum(data.invitationBalance);
               self.$apply();
-
-            
             }
           }
         });

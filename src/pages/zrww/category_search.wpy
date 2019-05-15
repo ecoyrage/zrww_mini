@@ -34,8 +34,8 @@ page{
 .nav_left{  
   /*设置行内块级元素（没使用定位）*/  
   display: inline-block;  
-  width: 200rpx;  
-  height: 100%;  
+  width: 190rpx;  
+  // height: 200%;  
   background: #f6f6f6;  
   text-align: center; 
   position: absolute;
