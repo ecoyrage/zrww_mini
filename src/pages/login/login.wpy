@@ -85,14 +85,21 @@
     mixins=[utils]
 
     methods = {
-      userAgreement(type){
-        wepy.navigateTo({
-            url:'/pages/treaty?type='+type
-          })
+      userAgreement(){
+        wx.downloadFile({
+          url: 'https://wz-public-read.oss-cn-hangzhou.aliyuncs.com/zhaorenwenwenUserRule.doc', // 仅为示例，并非真实的资源
+            success: function(res) {
+              var filePath = res.tempFilePath;
+              wx.openDocument({
+                  filePath: filePath,
+                  fileType: 'doc',
+              })
+          }
+        })
       },
       privacyProtection(type){
         wepy.navigateTo({
-            url:'/pages/treaty?type='+type
+            url:'/pages/out/privacyProtection'
           })
       },
       phone_login(){

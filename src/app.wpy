@@ -49,6 +49,8 @@ export default class extends wepy.app {
       'pages/basicInfo/question_record',//提问记录
       'pages/basicInfo/focus',//个人中心、我的
 
+      'pages/out/privacyProtection',
+
       
 
 

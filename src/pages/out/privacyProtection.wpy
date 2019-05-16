@@ -1,0 +1,13 @@
+<style>
+
+</style>
+<template>
+     <web-view src="https://wz-public-read.oss-cn-hangzhou.aliyuncs.com/ww_privacy-protocol.html"></web-view>
+</template>
+
+<script>
+import wepy from 'wepy'
+export default  class privacyProtection extends wepy.page {
+
+}
+</script>

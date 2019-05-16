@@ -22,11 +22,11 @@
   top:100rpx;
 }
 .menu_img{
-  width:100rpx;
-  height: 100rpx;
+  width:60rpx;
+  height: 60rpx;
 }
 .menu_text{
-  margin-top:-10rpx;
+  margin-top:10rpx;
   color:#444;
   font-size: 12px;
   width:100rpx;
