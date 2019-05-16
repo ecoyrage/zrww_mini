@@ -1,0 +1,170 @@
+<style lang="less">
+page{
+ height: 100%;
+}
+.contain{
+  color:#999;
+  font-size: 12px;
+  height: 100%;
+}
+.nodata{
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  height: 100%;
+} 
+ .end{
+   text-align: center;
+   font-size: 12px;
+   color:#828282;
+   margin-top:40rpx;
+ }
+
+</style>
+<template>
+ <view class="contain">
+  <responderList :responderList.sync="responderList"></responderList>
+  <view class='end' wx:if="{{noMore}}">已经全部加载完毕</view>
+  <view class="nodata" wx:if="{{nodata}}">
+     暂无内容
+   </view>
+</view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import utils from "@/mixins/utils"
+  import responderList from '@/components/responder_list'
+  export default class focus extends wepy.page {
+    config = {
+      navigationBarTitleText: '我的关注',
+      enablePullDownRefresh: true,
+    }
+    components = {
+      responderList:responderList,
+    }
+
+
+    data = {
+      nodata:'',
+      noMore:'',
+      pageNum:1,
+      pageSize:10,
+      responderList:[],
+    }
+    
+    mixins=[utils]
+
+    methods = {
+     
+    }
+    onPullDownRefresh(){
+      this.pageNum=1;
+      this.noMore=false;
+      this.$apply();
+      this.loading();
+    }
+
+    onReachBottom(){
+      if(!this.noMore){
+        let self=this;
+        wx.showLoading({
+          title: '玩命加载中',
+        })
+        let json={};
+        self.pageNum+=1;
+        json.pageNum=self.pageNum+'';
+        json.pageSize=self.pageSize+'';
+        let obj=self.genObj(json);
+        let sign=self.genSign(obj);
+        wepy.request({
+          url:  self.domain+'/ww/api/v1/user/focusResponderList',
+          method: 'post',
+          data: {object:obj,sign:sign},
+          header:{
+            'JWT': 'true',
+            'content-type':'application/json', 
+            'Authorization':'Bearer '+self.accessToken
+          },
+          success: res => {
+            if(res.data.code==100){
+              wx.hideLoading();
+              let list=res.data.data.list;
+              if(list.length==0){
+                wx.showToast({
+                  title: '暂无更多数据',
+                  icon: 'none',
+                })
+                self.noMore=true
+              }
+              for(let i=0;i<list.length;i++){
+                list[i].fee=self.getRealityNum(list[i].fee);
+                list[i].label=list[i].label.split(',');
+                list[i].isResting=self.isResting(list[i].workDay,list[i].serviceTime);
+                list[i].workDay=self.changeWorkDay(list[i].workDay);
+                self.responderList.push(list[i]);
+              }
+              self.$apply();
+            }
+          
+          }
+        })
+      }else{
+         wx.showToast({
+            title: '暂无更多数据',
+            icon: 'none',
+          })
+      }
+    }
+    events = {
+      // 'index-emit': (...args) => {
+      //   let $event = args[args.length - 1]
+      //   console.log(`${this.$name} receive ${$event.name} from ${$event.source.$name}`)
+      // }
+    }
+
+    loading(){
+      let self=this;
+      let json={};
+      json.pageNum=self.pageNum+'';
+      json.pageSize=self.pageSize+'';
+      let obj=self.genObj(json);
+      let sign=self.genSign(obj);
+      wepy.request({
+        url:  self.domain+'/ww/api/v1/user/focusResponderList',
+        method: 'post',
+        data: {object:obj,sign:sign},
+        header:{
+          'JWT': 'true',
+          'content-type':'application/json', 
+          'Authorization':'Bearer '+self.accessToken
+        },
+        success: res => {
+          if(res.data.code==100){
+            let list=res.data.data.list;
+            if(list.length==0){
+              self.nodata=true;
+            }
+            for(let i=0;i<list.length;i++){
+              list[i].fee=self.getRealityNum(list[i].fee);
+              list[i].label=list[i].label.split(',');
+              list[i].isResting=self.isResting(list[i].workDay,list[i].serviceTime);
+              list[i].workDay=self.changeWorkDay(list[i].workDay);
+            }
+            self.responderList=list;
+            wx.hideNavigationBarLoading();
+            wx.stopPullDownRefresh();
+            self.$apply();
+          }
+        
+        }
+      })
+    }
+    
+
+    onLoad(options) {
+      let self=this;
+      self.loading();
+    }
+  }
+</script>

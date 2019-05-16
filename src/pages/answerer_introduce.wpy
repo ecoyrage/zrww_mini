@@ -1,0 +1,395 @@
+<style lang="less">
+.head_top{
+  display: flex;
+  margin-left:20rpx;
+}
+.userinfo-avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  margin-left:20rpx;
+}
+.avatar_img{
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+}
+.expert_img{
+  position:fixed;
+  margin-left:-30rpx;
+  width:46rpx;
+  height:46rpx;
+}
+.showName{
+  color:#444;
+  font-size: 16px;
+  margin-left:20rpx;
+  font-weight: bold;
+}
+.model_title{
+  color:#333;
+  font-size: 14px;
+  margin-left:20rpx;
+}
+.location{
+  position: absolute;
+  top:60rpx;
+  right: 20rpx;
+  color:#999;
+  font-size: 12px;
+}
+.company{
+  color:#333;
+  font-size: 14px;
+  margin-left:20rpx;
+  margin-top:18rpx;
+}
+.head_bottom{
+  font-size: 12px;
+  margin-left:20rpx;
+  margin-top:28rpx;
+  display: flex;
+}
+.little_tab{
+  margin-left: 20rpx;
+}
+
+.blue_font{
+ color:#5383C3;
+}
+.gery_font{
+  color:#767676;
+}
+.panel_bar{
+  margin-left:20rpx;
+}
+.grade_pic{
+  width:24rpx;
+  height: 24rpx;
+}
+.profiles{
+   margin-left:20rpx;
+   margin-right:30rpx;
+   font-size:14px;
+   color:#333;
+}
+.profilesPic{
+  margin-left:20rpx;
+  margin-top:20rpx;
+  margin-right:20rpx;
+  display: flex;
+  flex-wrap: wrap; 
+}
+
+.profilesPic image{
+  width:200rpx;
+  height:200rpx;
+  margin-right:37rpx;
+  margin-bottom:16rpx;
+}
+.status_img{
+  margin-left:20rpx;
+  width: 100rpx;
+  height:30rpx;
+}
+.status_img image{
+  width: 100rpx;
+  height:30rpx;
+}
+.login{
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  width: 710rpx;
+  height: 80rpx;
+  line-height: 20px;
+  border-radius: 5px;
+  color: #ffffff;
+  font-size: 14px;
+}
+.login-wechat{
+  position: fixed;
+  bottom:10rpx;
+  background-color: #5383c3;
+  color: #ffffff;
+}
+.line{
+  width: 93%;
+  margin-top: 20rpx;
+  border-top:1rpx #BBB solid;
+}
+.service_bar{
+  font-size:12px;
+  color:#303030;
+  margin-top:10rpx;
+}
+.doubt_img{
+  width:24rpx;
+  height:24rpx;
+}
+.focus{
+  position:absolute;
+  right: 20rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  border-radius: 5px;
+  color: #ffffff;
+  font-size: 13px;
+  background-color: #f6f6f6;
+  color: #5383c3;
+}
+.focus.unfocus{
+  color:#FF0000;
+}
+
+</style>
+//回答者介绍页
+<template>
+  <view>
+    <scroll-view scroll-y="true" style="height:{{windowHeight-100}}rpx">
+      <view class="head_top">
+        <view class="userinfo-avatar">
+            <image  class="avatar_img" src="{{model.avatarUrl==''?'../files/img/avatarUrl.png':model.avatarUrl}}"></image>
+            <image  wx:if="{{model.isExpert==1}}" class="expert_img" src="../files/img/expert.png"></image>
+        </view>
+        <view>
+          <view>
+            <label class="showName">{{model.showName}}</label>
+            <label class="model_title">{{model.title}}</label>
+          </view>
+          <view>
+            <label class="company">{{model.company}}</label>
+          </view>
+        </view>
+          <button wx:if="{{model.isFocus==0}}" class="focus" @tap="focus({{responderId}})">+关注</button>
+          <button wx:if="{{model.isFocus==1}}" class="focus unfocus" @tap="unfocus({{responderId}})">取消关注</button>
+        <view>
+          <label class="location">{{model.location}}</label>
+        </view>
+      </view>
+      <view class="head_bottom">
+          <view class="status_img">
+              <image wx:if="{{isRest}}" src="../files/img/rest.png"></image>
+          </view>
+          <!-- <label wx:if="{{isRest}}" class="status_label"><text space="nbsp"> 休息中 </text></label>
+          <view style="{{isRest?'margin-left:10rpx':'margin-left:100rpx'}}"></view> -->
+          <view class="little_tabs">
+            <label class="little_tab"><image class="grade_pic" src="../files/img/grade_high.png"></image><label class="blue_font">{{model.averageScore}}</label>分</label>
+            <label class="little_tab"><label class="blue_font">{{model.answerNumber}}</label>个回答</label>
+            <label class="little_tab"><label class="blue_font">{{model.responseRate}}%</label>响应率</label>
+            <label class="little_tab">平均<label class="blue_font">{{model.averageTime}}分钟</label>响应</label>
+          </view>
+          
+      </view>
+
+      <servicelabel :servicelabel.sync="servicelabel"></servicelabel>
+
+
+
+
+      <panel>
+        <view class="title" slot="title">服务时间
+        </view>
+        <view class="panel_bar">
+          <view>
+            <label class="gery_font">{{workDay}}</label>
+          </view>
+          <view style="margin-top:20rpx">
+            <label class="gery_font">{{model.serviceTime}}</label>
+          </view>
+          <view class='line'></view>
+          <view class="service_bar">
+            <text @tap="serviceDescriptionPic()">24小时内可追问</text><image class="doubt_img" src="../files/img/doubt.png"></image>
+            <text @tap="serviceDescriptionPic()" style="margin-left:84rpx;">在线互动</text><image class="doubt_img" src="../files/img/doubt.png"></image>
+            <text wx:if="{{model.isRefund==1}}" style="margin-left:100rpx;">支持无理由退款</text>
+          </view>
+        </view>
+        
+      </panel>
+
+      <panel>
+        <view class="title" slot="title">简介</view>
+        <view class="profiles">{{model.profiles}}</view>
+        <view class="profilesPic">
+          <repeat for="{{profilesPic}}" item="item">
+            <image src="{{item}}" @tap="previewImage({{item}})"></image>
+          </repeat>
+        </view>
+
+      </panel>
+      
+      <panel wx:if="{{model.commentNumber>0}}">
+        <view class="title" slot="title">用户评论</view>
+      </panel>
+     
+  </scroll-view>
+  <view class="section">
+    <button  open-type="launchApp" app-parameter="wechat" disabled="{{isRest}}" binderror="launchAppError" class="login login-wechat">立即咨询</button>
+  </view>
+ 
+
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Panel from '../components/panel' 
+  import servicelabel from '../components/servicelabel'
+  import utils from "../mixins/utils";
+  export default class answerer_introduce extends wepy.page {
+    config = {
+      navigationBarTitleText: ''
+    }
+    components = {
+       panel: Panel,
+       servicelabel: servicelabel,
+    }
+
+    data = {
+       model:'',
+       servicelabel: [],
+       responderId:'',
+       workDay:'',
+       profilesPic:'',
+       isRest:false,
+    }
+    mixins=[utils];
+
+    methods = {
+       previewImage(img){
+        //图片预览
+        wx.previewImage({
+          current: img, // 当前显示图片的http链接
+          urls: this.profilesPic // 需要预览的图片http链接列表
+		    })
+
+      },
+      serviceDescriptionPic(){
+        wepy.navigateTo({
+            url:'/pages/treaty?treaty='+wx.getStorageSync('serviceDescriptionPic')
+        })
+      },
+      launchAppError(e) {
+       console.log(e.detail.errMsg)
+      },
+      focus(id){
+        let self=this;
+        let json={};
+        json.responderId=id;
+        let obj=self.genObj(json);
+        let sign=self.genSign(obj);
+        wepy.request({
+          url:  self.domain+'/ww/api/v1/responder/focus',
+          method: 'post',
+          data: {object:obj,sign:sign},
+          header:{
+            'JWT': 'true',
+            'content-type':'application/json',
+            'Authorization':'Bearer '+self.accessToken
+          },
+          success: res => {
+            if(res.data.code==100){
+               wepy.showToast({
+                title: "关注成功！",
+                icon: 'none',
+                duration: 2000
+              })
+              self.model.isFocus=1;
+              self.$apply();
+
+            }else if(res.data.code==200){
+               wepy.showToast({
+                title: res.data.msg,
+                icon: 'none',
+                duration: 2000
+              })
+            }
+          }
+        });
+      },
+      unfocus(id){
+        let self=this;
+        let json={};
+        json.responderId=id;
+        let obj=self.genObj(json);
+        let sign=self.genSign(obj);
+        wepy.request({
+          url:  self.domain+'/ww/api/v1/responder/cancleFocus',
+          method: 'post',
+          data: {object:obj,sign:sign},
+          header:{
+            'JWT': 'true',
+            'content-type':'application/json',
+            'Authorization':'Bearer '+self.accessToken
+          },
+          success: res => {
+            if(res.data.code==100){
+               wepy.showToast({
+                title: "取消关注成功！",
+                icon: 'none',
+                duration: 2000
+              })
+              self.model.isFocus=0;
+              self.$apply();
+
+            }else if(res.data.code==200){
+               wepy.showToast({
+                title: res.data.msg,
+                icon: 'none',
+                duration: 2000
+              })
+            }
+          }
+        });
+      }
+       
+      
+    }
+
+    events = {
+      // 'index-emit': (...args) => {
+      //   let $event = args[args.length - 1]
+      //   console.log(`${this.$name} receive ${$event.name} from ${$event.source.$name}`)
+      // }
+    }
+  
+    onLoad(options) {
+      let self = this
+      self.responderId=options.responderId;
+      self.$apply();
+      let json2={};
+      json2.responderId=self.responderId;
+      let obj=self.genObj(json2);
+      let sign=self.genSign(obj);
+      wepy.request({
+        url:  self.domain+'/ww/api/v1/responder/showDetail',
+        method: 'post',
+        data: {object:obj,sign:sign},
+        header:{
+          'JWT': 'true',
+          'content-type':'application/json',
+          'Authorization':'Bearer '+self.accessToken
+        },
+        success(res) {
+          self.model=res.data.data;
+          self.servicelabel=res.data.data.label.split(',');
+          self.workDay=self.changeWorkDay(res.data.data.workDay);
+          self.isRest=self.isResting(res.data.data.workDay,res.data.data.serviceTime);
+          self.profilesPic=res.data.data.profilesPic.split(',');
+          self.$apply();
+       
+          // console.log(self.model)
+        }
+      })
+
+   
+    }
+
+
+    
+
+
+
+    
+  }
+</script>

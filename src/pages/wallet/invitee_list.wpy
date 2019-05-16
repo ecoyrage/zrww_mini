@@ -1,0 +1,343 @@
+<style lang="less">
+.level{
+    font-weight: bold;
+    font-size: 22px;
+    text-align: center;
+    color:#333;
+}
+.level_desc{
+    text-align: center;
+    font-size:12px;
+    color:#767676;
+}
+.level_up_desc{
+    text-align: center;
+    font-size:12px;
+    color:#808080;
+    margin-top:20rpx;
+}
+.steps{
+    margin-top:30rpx;
+    margin-left:32rpx;
+}
+.progressbar {
+  font-family: montserrat, arial, verdana;
+  padding: 0;
+  text-align: center;
+  margin-bottom: 30px;
+  overflow: hidden;
+  counter-reset: step;
+  z-index: 99;
+}
+
+.progressbar li {
+  list-style-type: none;
+  font-size: 9px;
+  float: left;
+  position: relative;
+}
+
+.progressbar li:before {
+  content: counter(step);
+  counter-increment: step;
+  width: 20px;
+  line-height: 20px;
+  display: block;
+  font-size: 10px;
+  color: #333;
+  background: #F5F5F5;
+  border-radius: 20px;
+  margin: 0 auto 5px auto;
+}
+
+.progressbar li:after {
+  content: '';
+  width: calc(100% - 40rpx);
+  height: 2px;
+  background: #F5F5F5;
+  position: absolute;
+  left: calc((-100% + 40rpx) / 2);
+  top: 9px;
+}
+
+.progressbar li:first-child:after {
+  content: none;
+}
+
+.progressbar li.active:before, .progressbar li.active:after {
+  background: #5383C3;
+  color: white;
+}
+.grey_space{
+   background-color: #F6F6F6;
+   height: 12rpx;
+}
+.today_profit{
+    margin-top:24rpx;
+    margin-left:24rpx;
+    color: rgba(118, 118, 118, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-bold;
+}
+.tixian{
+    width:134rpx;
+    height: 60rpx;
+    border-radius: 5px;
+    background-color: rgba(83, 131, 195, 1);
+    color: rgba(255, 255, 255, 1);
+    font-size: 14px;
+    line-height: 60rpx;
+}
+.invite_desc{
+    margin-top:20rpx;
+    margin-left:24rpx;
+    color: rgba(83, 131, 195, 1);
+    font-size: 14px;
+    text-align: left;
+}
+.invited_desc{
+    margin-top:26rpx;
+    margin-left:28rpx;
+    font-weight: bold;
+    color: rgba(48, 48, 48, 1);
+    font-size: 14px;
+    text-align: left;
+}
+.view_rank{
+    position: absolute;
+    right:40rpx;
+}
+.icon_qianjin{
+    width:38rpx;
+    height: 48rpx;
+    position:absolute;
+    right: 0;
+    margin-top:-4rpx;
+}
+.login{
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  width: 710rpx;
+  height: 80rpx;
+  line-height: 20px;
+  border-radius: 5px;
+  color: #ffffff;
+  font-size: 14px;
+}
+.login-wechat{
+  position: fixed;
+  bottom:10rpx;
+  background-color: #5383c3;
+  color: #ffffff;
+}
+.invite_avatar {
+  float: left;
+  width: 80rpx;
+  height: 80rpx;
+  margin-left:20rpx;
+  margin-top:20rpx;
+}
+.invite_avatar image{
+  width: 80rpx;
+  height:80rpx;
+  border-radius: 50%;
+}
+.nick_name{
+    margin-left:20rpx;
+    color: rgba(51, 51, 51, 1);
+    font-size: 14px;
+}
+.is_Responder{
+    margin-left:40rpx;
+    color: rgba(83, 131, 195, 1);
+    font-size: 12px;
+}
+.provide{
+    position: absolute;
+    right:180rpx;
+    margin-top:10rpx;
+    font-size: 12px;
+}
+.contacts{
+    position: absolute;
+    right:20rpx;
+    margin-top:10rpx;
+    font-size: 12px;
+}
+.invite_time{
+    color:#999;
+    font-size: 12px;
+    margin-left:20rpx;
+}
+.total_desc{
+    position: absolute;
+    right:180rpx;
+    margin-top:10rpx;
+    font-size: 12px;
+}
+.total_profit{
+    position: absolute;
+    right:20rpx;
+    font-size: 12px;
+    margin-top:10rpx;
+    color:#F05654;
+}
+
+</style>
+<template>
+  <view>
+      <scroll-view scroll-y="true" style="height:{{windowHeight-100}}rpx">
+        <view class="level">
+                Lv.{{model.invitationLevel}}
+        </view>
+        <view class="level_desc">
+            人脉越多，等级越高，收益越多 
+        </view>
+        <view class="steps">
+                <ul class="progressbar">
+                    <li class="{{model.invitationLevel>=1?'active':''}}" style="width: 9.8%;">1级</li>
+                    <li class="{{model.invitationLevel>=2?'active':''}}" style="width: 9.8%;">2级</li>
+                    <li class="{{model.invitationLevel>=3?'active':''}}" style="width: 9.8%;">3级</li>
+                    <li class="{{model.invitationLevel>=4?'active':''}}" style="width: 9.8%;">4级</li>
+                    <li class="{{model.invitationLevel>=5?'active':''}}" style="width: 9.8%;">5级</li>
+                    <li class="{{model.invitationLevel>=6?'active':''}}" style="width: 9.8%;">6级</li>
+                    <li class="{{model.invitationLevel>=7?'active':''}}" style="width: 9.8%;">7级</li>
+                    <li class="{{model.invitationLevel>=8?'active':''}}" style="width: 9.8%;">8级</li>
+                    <li class="{{model.invitationLevel>=9?'active':''}}" style="width: 9.8%;">9级</li>
+                    <li class="{{model.invitationLevel>=10?'active':''}}" style="width: 9.8%;">10级</li>
+                </ul>
+        </view>
+        <view style="clear:both"></view>
+        <view class="level_up_desc">
+            还差{{model.nextLevelNumber}}人脉升级 
+        </view>
+        <view class="grey_space" style="margin-top:16rpx;"></view>
+        <view>
+            <view class='today_profit'>
+                今日奖励：<text style="color:#F05654">{{model.todayInvitationBalance}}元</text>，累计奖励：<text style="color:#F05654">800元</text>
+            </view>
+            <view style="display:inline-table;position:absolute;right:20rpx;margin-top:-48rpx;">
+                <button class="tixian">提现</button>
+            </view>
+            <view class="invite_desc" wx:if="{{model.invitationLevel<3}}">
+                你邀请的好友，以及好友邀请的其它人都会成为你的人脉他们在平台形成交易后，你都会获得奖励
+            </view>
+        </view>
+        <view class="grey_space" style="margin-top:28rpx;"></view>
+        <view>
+            <view class="invited_desc">
+                您已邀请<text style="color:#5383C3">{{model.invitationNumber}}位</text>好友，共有<text style="color:#5383C3">{{model.contacts}}人脉</text><text class="view_rank" @tap="viewRank()">查看排名</text>
+                <image class="icon_qianjin" src="../../files/img/qianjin.png"></image>
+            </view>
+        </view>
+        <view>
+            <view style="margin-top:20rpx;padding-top:20rpx;">
+                <view class="invite_avatar">
+                    <image src="../../files/img/avatarUrl.png"></image>
+                </view>
+                <view style="float:left">
+                    <text class="nick_name">客服</text>
+                    <text class="is_Responder">回答者</text>
+                    <text class="provide">提供</text>
+                    <text class="contacts">200人脉</text>
+                    <view style="clear:both"></view>
+                    <text class="invite_time">2019.11.30</text>
+                    <text class="total_desc">累计产生奖励</text>
+                    <text class="total_profit">1.8元</text>
+                </view>
+            </view>
+            <view style="clear:both"></view>
+            <view style="margin-top:20rpx;padding-top:20rpx;">
+                <view class="invite_avatar">
+                    <image src="../../files/img/avatarUrl.png"></image>
+                </view>
+                <view style="float:left">
+                    <text class="nick_name">客服</text>
+                    <text class="is_Responder">回答者</text>
+                    <text class="provide">提供</text>
+                    <text class="contacts">200人脉</text>
+                    <view style="clear:both"></view>
+                    <text class="invite_time">2019.11.30</text>
+                    <text class="total_desc">累计产生奖励</text>
+                    <text class="total_profit">1.8元</text>
+                </view>
+            </view>
+            <view style="clear:both"></view>
+           
+             
+
+    
+        
+        </view>
+        
+        </scroll-view>
+     <view class="section">
+      <button class="login login-wechat"  @tap='confirm()'>继续邀请</button>
+    </view>
+    
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import utils from "@/mixins/utils";
+  export default class invitee_list extends wepy.page {
+    config = {
+       navigationBarTitleText: '',
+    //    navigationBarBackgroundColor: "#5383C3",
+    }
+    components = {
+     
+    }
+
+    mixins=[utils]
+
+    data = {
+        model:'',
+      level:2,
+    }
+
+    methods = {
+        viewRank(){
+            wepy.navigateTo({ 
+                url: '/pages/wallet/inviter_rank' 
+                });
+        }
+    }
+
+
+   
+
+    onLoad() {
+        let self = this
+        let json={};
+        json.pageNum="1";
+        json.pageSize="10";
+        let obj=self.genObj(json);
+        let sign=self.genSign(obj);
+        wepy.request({
+            url:  self.domain+'/ww/api/v1/invitation/index',
+            method: 'post',
+            data: {object:obj,sign:sign},
+            header:{
+                'JWT': 'true',
+                'content-type':'application/json',
+                'Authorization':'Bearer '+self.accessToken
+            },
+            success: res => {
+                if(res.data.code==100){
+                    self.model=res.data.data;
+                    self.model.todayInvitationBalance=self.getRealityNum(self.model.todayInvitationBalance)
+                    self.$apply();
+                }
+            }
+        })
+     
+
+
+      
+    }
+  }
+</script>

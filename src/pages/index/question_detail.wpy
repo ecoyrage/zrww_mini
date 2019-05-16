@@ -1,0 +1,197 @@
+<style lang="less">
+.questionBar{
+    text-align: center;
+}
+.question_avatar {
+  float: left;
+  width: 80rpx;
+  height: 80rpx;
+  margin-left:20rpx;
+  margin-top:20rpx;
+}
+.question_avatar image{
+  width: 80rpx;
+  height:80rpx;
+  border-radius: 50%;
+}
+.line{
+    width: 100%;
+    margin-top: 50rpx;
+    border-top:4rpx#F7F7F7 solid;
+}
+.question_deta{
+  float: left;
+  margin-top:40rpx;
+  margin-left:20rpx;
+  color:#999;
+  font-size: 12px;
+}
+.question_desc{
+  margin-top:20rpx;
+  margin-left:20rpx;
+  margin-right:20rpx;
+  text-align: left;
+  color:#999;
+  font-size: 14px;
+}
+.profilesPic{
+  margin-left:20rpx;
+  margin-top:20rpx;
+  margin-right:20rpx;
+  display: flex;
+  flex-wrap: wrap; 
+}
+
+.profilesPic image{
+  width:200rpx;
+  height:200rpx;
+  margin-right:37rpx;
+  margin-bottom:16rpx;
+}
+.grade_pic{
+  width:24rpx;
+  height: 24rpx;
+}
+.nickName{
+  text-align: left;
+  margin-top:-15rpx;
+  color:#101010;
+  font-size:12px;
+}
+.recommendumber{
+  position: absolute;
+  right:40rpx;
+  color:#5383C3;
+  font-size: 13px;
+  margin-top:20rpx;
+}
+.applyOrSuggest{
+  position:absolute;
+  bottom:20rpx;
+  width:100%;
+}
+.applyOrSuggest button{
+  float: left;
+}
+.suggest{
+  margin-left:20rpx;
+  width: 336rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-radius: 5px;
+  background-color: rgba(246, 246, 246, 1);
+  color: rgba(223, 113, 99, 1);
+  font-size: 14px;
+  text-align: center;
+}
+.apply{
+  margin-left:40rpx;
+  width: 336rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-radius: 5px;
+  background-color: rgba(83, 131, 195, 1);
+  color: rgba(255, 255, 255, 1);
+  font-size: 14px;
+  text-align: center;
+}
+
+</style>
+<template>
+  <view class="questionBar">
+
+      <view @tap="viewQuestion({{question.questionId}})">
+        <view class="question_avatar">
+              <image  src="{{question.avatarUrl==''?'../../files/img/avatarUrl.png':question.avatarUrl}}"></image>
+          </view>
+          <view class="recommendumber">已推荐{{question.recommendNumber}}个回答者待选择</view>
+          <view class="question_deta">
+              <view class="nickName">{{question.nickName}}</view>
+              <view style="padding-top:20rpx;">
+                <image class="grade_pic" src="../../files/img/grade_high.png"></image><text style="font-size:12px;color:#5383C3">{{question.averageScore}}</text>分
+                <text style="margin-left:40rpx;">愿支付:</text><text style="font-size:14px;color:#5383C3">￥{{question.offer}}</text>
+                <text style="font-size:12px;color:#5383C3;margin-left:80rpx;">{{question.questionNumber}}</text><text>个提问</text>
+                <text style="font-size:12px;color:#5383C3;margin-left:80rpx;">{{question.refundRate}}%</text><text>退款率</text>
+              </view>
+          </view>
+        <view style="clear:both"></view>
+        <view class="question_desc">
+          <text>问题描述：</text><text style="color:#333;">{{question.questionDescribe}}</text>
+        </view>
+      </view>
+        <view class="profilesPic" wx:if="{{question.pics!=[]}}">
+          <repeat for="{{question.pics}}" item="item">
+            <image src="{{item}}" @tap="previewImage({{item}})"></image>
+          </repeat>
+        </view>
+
+      <view class="applyOrSuggest">
+          <button class="suggest">推荐别人(有奖励)</button>
+          <button class="apply">申请回答</button>
+      </view>
+   
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import utils from "@/mixins/utils"
+  export default class question_detail extends wepy.page {
+    config = {
+      navigationBarTitleText: '查看问题描述',
+    }
+    data={
+      questionId:'',
+      question:'',
+    }
+
+    methods={
+        previewImage(img){
+          wx.previewImage({
+            current: img, // 当前显示图片的http链接
+            urls: this.question.pics // 需要预览的图片http链接列表
+          })
+        }
+
+    }
+
+    mixins=[utils]
+
+    getDetail(){
+      let self = this
+      let json={};
+      json.questionId=self.questionId;
+      let obj=self.genObj(json);
+      let sign=self.genSign(obj);
+      wepy.request({
+          url:  self.domain+'/ww/api/v1/question/detail',
+          method: 'post',
+          data: {object:obj,sign:sign},
+          header:{
+              'JWT': 'true',
+              'content-type':'application/json',
+              'Authorization':'Bearer '+self.accessToken
+          },
+          success: res => {
+              if(res.data.code==100){
+                let question=res.data.data;
+                // question.offer=self.getRealityNum(question.offer);
+                if(question.pics==""){
+                  question.pics="";
+                }else{
+                  question.pics=question.pics.split(",");
+                }
+                self.question=question;
+                self.$apply();
+              }
+          }
+      })
+   }
+
+
+    onLoad(options){
+      let questionId=options.questionId;
+      this.questionId=questionId;
+      this.getDetail();
+    }
+  }
+</script>

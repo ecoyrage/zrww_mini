@@ -1,0 +1,249 @@
+<style lang="less">
+page{  
+  background: #fff;  
+  height: 100%;
+}  
+/*总体主盒子*/  
+.container {  
+  position: relative;  
+  width: 100%; 
+  height: 100%; 
+  color: #F6F6F6; 
+   
+}
+.seach_bar{
+  height: 100rpx;
+  width: 676rpx;
+}
+.search_input{
+  padding-left:20rpx;
+  width:85%;
+  height: 60rpx;
+  background-color:#f6f6f6;
+  color:#333 !important;
+  border-radius: 10px;
+  color: rgba(153, 153, 153, 1);
+  font-size: 14px;
+}
+.end{
+   text-align: center;
+   font-size: 12px;
+   color:#828282;
+   margin-top:40rpx;
+ }
+ .search{
+   position:absolute;
+   color:#5383C3;
+   font-size: 14px;
+   right:10rpx; 
+   top:-3rpx;
+   background-color: #fff;
+ }
+ button::after {
+  border: none;
+}
+button[disabled] {
+  color: #828282 !important;
+  background-color: #fff !important;
+}
+.responderList{
+  position:absolute;
+  top:40rpx;
+}
+</style>
+<template>
+ <view class="container" >
+   <view class="seach_bar">
+        <input class="search_input" placeholder="姓名、行业" value=''  @input='keyWordsSearch()'/>
+        <button class="search" disabled="{{disabled}}" @tap="submit()">搜索</button>
+   </view>
+  <view class="responderList">
+   <responderList :responderList.sync="responderList"></responderList>
+  </view>
+  <view class='end' wx:if="{{noMore}}">已经全部加载完毕</view>
+
+</view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import utils from "@/mixins/utils"
+  import responderList from '@/components/responder_list'
+  export default class keywords_search extends wepy.page {
+    config = {
+      navigationBarTitleText: '',
+      enablePullDownRefresh: true,
+    }
+    components = {
+      responderList:responderList,
+    }
+
+
+    data = {
+      pageNum:1,
+      pageSize:10,
+      firstCategoryId:'',
+      secondCategoryId:'',
+      responderList:'',
+      noMore:'',
+      disabled:true,
+      keywodrs:''
+    }
+    
+    mixins=[utils]
+
+    methods = {
+      submit(){
+        let self=this;
+        let json={};
+        self.pageNum=1;
+        json.pageNum=self.pageNum+'';
+        json.pageSize=self.pageSize+'';
+        json.firstCategoryId=self.firstCategoryId
+        json.secondCategoryId=self.secondCategoryId
+        json.keyWords=self.keywodrs
+        let obj=self.genObj(json);
+        let sign=self.genSign(obj);
+        wepy.request({
+          url:  self.domain+'/ww/api/v1/responder/searchList',
+          method: 'post',
+          data: {object:obj,sign:sign},
+          header:{
+            'JWT': 'true',
+            'content-type':'application/json', 
+            'Authorization':'Bearer '+self.accessToken
+          },
+          success: res => {
+            if(res.data.code==100){
+              let list=res.data.data.list
+              for(let i=0;i<list.length;i++){
+                list[i].fee=self.getRealityNum(list[i].fee);
+                list[i].label=list[i].label.split(',');
+                list[i].isResting=self.isResting(list[i].workDay,list[i].serviceTime);
+                list[i].workDay=self.changeWorkDay(list[i].workDay);
+              }
+              self.responderList=list;
+              self.$apply();
+            }
+          
+          }
+        })
+      },
+    }
+    keyWordsSearch(e){
+      this.keywodrs=e.detail.value;
+      if(this.keywodrs!=""){
+        this.disabled=false;
+      }else{
+        this.disabled=true;
+      }
+    }
+    onPullDownRefresh(){
+      this.pageNum=1;
+      this.noMore=false;
+      this.$apply();
+      this.loading();
+    }
+
+    onReachBottom(){
+      if(!this.noMore){
+        let self=this;
+        wx.showLoading({
+          title: '玩命加载中',
+        })
+        let json={};
+        self.pageNum+=1;
+        json.pageNum=self.pageNum+'';
+        json.pageSize=self.pageSize+'';
+        json.firstCategoryId=self.firstCategoryId
+        json.secondCategoryId=self.secondCategoryId
+        json.keyWords=self.keywodrs
+        let obj=self.genObj(json);
+        let sign=self.genSign(obj);
+        wepy.request({
+          url:  self.domain+'/ww/api/v1/responder/searchList',
+          method: 'post',
+          data: {object:obj,sign:sign},
+          header:{
+            'JWT': 'true',
+            'content-type':'application/json', 
+            'Authorization':'Bearer '+self.accessToken
+          },
+          success: res => {
+            if(res.data.code==100){
+              wx.hideLoading();
+              let list=res.data.data.list;
+              if(list.length==0){
+                wx.showToast({
+                  title: '暂无更多数据',
+                  icon: 'none',
+                })
+                self.noMore=true
+              }
+              for(let i=0;i<list.length;i++){
+                list[i].fee=self.getRealityNum(list[i].fee);
+                list[i].label=list[i].label.split(',');
+                list[i].isResting=self.isResting(list[i].workDay,list[i].serviceTime);
+                list[i].workDay=self.changeWorkDay(list[i].workDay);
+                self.responderList.push(list[i]);
+              }
+              self.$apply();
+            }
+          
+          }
+        })
+      }else{
+         wx.showToast({
+            title: '暂无更多数据',
+            icon: 'none',
+          })
+      }
+    }
+
+    loading(){
+      let self=this;
+      let json={};
+      json.pageNum=self.pageNum+'';
+      json.pageSize=self.pageSize+'';
+      json.firstCategoryId=self.firstCategoryId
+      json.secondCategoryId=self.secondCategoryId
+      json.keyWords=self.keywodrs
+      let obj=self.genObj(json);
+      let sign=self.genSign(obj);
+      wepy.request({
+        url:  self.domain+'/ww/api/v1/responder/searchList',
+        method: 'post',
+        data: {object:obj,sign:sign},
+        header:{
+          'JWT': 'true',
+          'content-type':'application/json', 
+          'Authorization':'Bearer '+self.accessToken
+        },
+        success: res => {
+          if(res.data.code==100){
+            self.responderList=res.data.data.list;
+            for(let i=0;i<self.responderList.length;i++){
+              self.responderList[i].fee=self.getRealityNum(self.responderList[i].fee);
+              self.responderList[i].label=self.responderList[i].label.split(',');
+              self.responderList[i].isResting=self.isResting(self.responderList[i].workDay,self.responderList[i].serviceTime);
+              self.responderList[i].workDay=self.changeWorkDay(self.responderList[i].workDay);
+            }
+            wx.hideNavigationBarLoading();
+            wx.stopPullDownRefresh();
+            self.$apply();
+          }
+        
+        }
+      })
+    }
+    
+
+    onLoad(options) {
+      let self=this;
+      self.firstCategoryId=options.firstCategoryId;
+      self.secondCategoryId=options.secondCategoryId;
+      self.$apply();
+      self.loading();
+    }
+  }
+</script>

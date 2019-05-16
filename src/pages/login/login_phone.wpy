@@ -1,0 +1,308 @@
+<style lang="less">
+.login{
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  width: 670rpx;
+  height: 100rpx;
+  line-height: 20px;
+  border-radius: 5px;
+  color: #ffffff;
+  font-size: 16px;
+}
+.login-wechat{
+  margin-top:72rpx;
+  background-color: #5383c3;
+  color: #ffffff;
+}
+.zrww{
+  margin-top: 40rpx;
+  color: #333333;
+  font-size: 24px;
+  font-weight: bold;
+}
+.band{
+  background-color: #F6F6F6;
+  width: 670rpx;
+  height:100rpx;
+  margin-left:40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+  font-size:14px;
+}
+.phone{
+  margin-top:76rpx;
+}  
+.code{
+  margin-top:58rpx;
+}
+.fontarea{
+  position: absolute;
+  left: 80rpx;
+}
+.getCode{
+  position: absolute;
+  color: #5383C3;
+  right:80rpx;
+  outline: none;
+  font-size:14px;
+}
+button::after {
+  border: none;
+}
+
+</style>
+<template>
+  <view>
+    <view class="section">
+      <text class="zrww">{{title}}</text>
+    </view>
+    <view class="band phone">
+      <input class="fontarea" placeholder="输入手机号" maxlength="11" @input='getPhoneValue()' value='{{account}}'/>
+    </view>
+    <view class="band code">
+      <input class="fontarea" placeholder="输入验证码" @input='getCodeValue()' value='{{code}}'/>
+      <button class="getCode" @tap='getVerificationCode()' disabled='{{disabled}}'>{{codename}}</button>
+    </view>
+    <view class="section">
+      <button class="login login-wechat"  @tap='save()'>{{submit}}</button>
+    </view>
+   
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import utils from "@/mixins/utils";
+  export default class login_phone extends wepy.page {
+    config = {
+      navigationBarTitleText: ''
+    }
+    components = {
+    }
+
+    methods = {
+        //获取验证码
+        getVerificationCode() {
+          this.getCode();
+        }
+    }
+
+    mixins=[utils]
+
+    data = {
+      title:'',//标题
+      submit:'',//确认框
+      type:'',//1-验证码登录;2-三方登录绑定
+      account:'',//手机号
+      code:'',//验证码
+      codename:'获取验证码',
+      disabled:false,
+    }
+    //获取input输入框的值
+    getPhoneValue(e){
+      this.account=e.detail.value;
+    }
+    getCodeValue(e) {
+      this.code=e.detail.value;
+    }
+
+  
+    getCode(){
+      var self = this;
+      var myreg = /^(14[0-9]|13[0-9]|15[0-9]|17[0-9]|18[0-9])\d{8}$$/;
+      if (this.account == "") {
+        wepy.showToast({
+          title: '手机号不能为空',
+          icon: 'none',
+          duration: 1000
+        })
+        return false;
+      } else if (!myreg.test(this.account)) {
+        wepy.showToast({
+          title: '请输入正确的手机号',
+          icon: 'none',
+          duration: 1000
+        })
+        return false;
+      }else{
+        var json={};
+        json.tel=self.account;
+        json.type=self.type;
+        wepy.request({
+          url:  self.domain+'/ww/api/v1/common/sms',
+          method: 'post',
+          data: {object: self.genObj(json)},
+          header:{
+            'JWT': 'true',
+            'content-type':'application/json',
+          },
+          success(res) {
+            var num = 61;
+            var timer = setInterval(function () {
+              num--;
+              if (num <= 0) {
+                clearInterval(timer);
+                self.codename='重新发送';
+                self.disabled=false;
+                self.$apply();
+              } else {
+                self.codename=num + "s"
+                self.disabled=true;
+                self.$apply();
+              }
+            }, 1000)
+            if(res.data.code==200){
+              wepy.showToast({
+                title: res.data.msg,
+                icon: 'none',
+                duration: 3000
+              })
+            }
+          }
+        })
+        self.disabled=true;
+        self.$apply();
+      }
+  }
+  save(){
+    let self=this;
+    var myreg = /^(14[0-9]|13[0-9]|15[0-9]|17[0-9]|18[0-9])\d{8}$$/;
+    if (self.account == "") {
+      wepy.showToast({
+        title: '手机号不能为空',
+        icon: 'none',
+        duration: 1000
+      })
+      return false;
+    }else if (!myreg.test(this.account)) {
+        wepy.showToast({
+          title: '请输入正确的手机号',
+          icon: 'none',
+          duration: 1000
+        })
+        return false;
+    }
+    if (self.code == "") {
+      wepy.showToast({
+        title: '验证码不能为空',
+        icon: 'none',
+        duration: 1000
+      })
+      return false;
+    }
+    let type=self.type;
+    if(type==1){  
+      var json={};
+      json.account=self.account;
+      json.vaildCode=self.code;
+      json.loginInfo=self.$parent.globalData.model;
+      wepy.request({
+          url:  self.domain+'/ww/api/v1/common/vaildCode',
+          method: 'post',
+          data: {object:self.genObj(json)},
+          header:{
+            'JWT': 'true',
+            'content-type':'application/json',
+          },
+          success(res) {
+            let result=res.data;
+            if(result.code==100){
+              self.accessToken=result.data.accessToken;
+              self.randomKey=result.data.randomKey;
+              wx.setStorageSync('accessToken',  self.accessToken);
+              wx.setStorageSync('randomKey',  self.randomKey);
+              wx.setStorageSync('isLogin', true);
+              self.$apply();
+              if(result.data.firstReg==0){
+                self.getAdCode();
+                self.getBascicInfo();
+              }else if(result.data.firstReg==1){
+                wepy.navigateTo({
+                  url:'/pages/invitation_code'
+                })
+              }
+
+            }else if(result.code==200){
+              wepy.showToast({
+                title: result.msg,
+                icon: 'none',
+                duration: 3000
+              })
+            }
+          }
+      })
+
+    }else if(type==2){
+      let self=this;
+      let userinfo=self.$parent.globalData.userInfo
+      let json={};
+      json.unionid=self.$parent.globalData.unionId;
+      json.nickName=userInfo.nickName
+      json.gender=userInfo.gender
+      json.avatarUrl=userInfo.avatarUrl
+      json.account=self.account
+      json.vaildCode=self.code
+      json.loginInfo="小程序";
+      let obj=self.genObj(json);
+      let sign=self.genSign(obj);
+      wepy.request({
+      url:  self.domain+'/ww/api/v1/common/oauthLogin',
+      method: 'post',
+      data: {object:obj,sign:sign},
+      header:{
+        'JWT': 'true',
+        'content-type':'application/json',
+      },
+      success: res => {
+        if(res.data.code==401){
+          resolve(-1);
+        }else if(res.data.code==200){
+          let data=res.data.data;
+          let accessToken= data.accessToken;
+          let randomKey=data.randomKey;
+          let firstReg=data.firstReg;
+          self.accessToken=accessToken;
+          self.randomKey=randomKey;
+          wx.setStorageSync('accessToken',accessToken);
+          wx.setStorageSync('randomKey',randomKey);
+          wx.setStorageSync('isLogin', true);
+          if(firstReg==1){
+            wepy.redirectTo({
+              url:'/pages/login/invitation_code'
+            })
+          }else{
+             wepy.relaunch({
+              url:'/pages/index/index'
+            })
+          }
+        }
+      }
+      })
+
+
+
+    
+
+    }
+  
+  }
+
+    events = {
+      // 'index-emit': (...args) => {
+      //   let $event = args[args.length - 1]
+      //   console.log(`${this.$name} receive ${$event.name} from ${$event.source.$name}`)
+      // }
+    }
+
+    onLoad(options) {
+      let self = this
+      self.title=options.title
+      self.submit=options.submit
+      self.type=options.type
+      self.$apply();
+      
+    }
+  }
+</script>
