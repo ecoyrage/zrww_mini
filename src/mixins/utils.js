@@ -68,9 +68,11 @@ export default class utils extends wepy.mixin {
             method: 'get',
             success: function (res) {
               let result = res.data.result,
-                addressComponent = result.addressComponent,
-                adcode = addressComponent.adcode
+                  addressComponent = result.addressComponent,
+                  adcode = addressComponent.adcode,
+                  district = addressComponent.district;
               self.$parent.globalData.adCode = adcode;
+              self.$parent.globalData.district = district
               self.$apply();
             },
             error: function (res) {

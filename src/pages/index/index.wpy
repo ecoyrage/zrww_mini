@@ -5,14 +5,32 @@
   font-size: 18px;
 }
 .userinfo-avatar {
-  width: 48rpx;
-  height: 48rpx;
+  width: 80rpx;
+  height: 80rpx;
   margin-left:20rpx;
 }
 .userinfo-avatar image{
-  width: 48rpx;
-  height:48rpx;
+  width: 80rpx;
+  height:80rpx;
   border-radius: 50%;
+}
+.zrww_logo{
+   width: 150rpx;
+   height:38rpx;
+   position:absolute;
+   top:0;
+   left:130rpx;
+  
+}
+.zrww_logo image{
+   width: 150rpx;
+   height:38rpx;
+   
+}
+.zrww_logo text{
+  color: rgba(153, 153, 153, 1);
+  font-size: 12px;
+  display: block;
 }
 .login{
   display: flex;
@@ -125,6 +143,10 @@
      <view class="userinfo-avatar" @tap="userInfo()">
           <image  src="{{avatarUrl}}"></image>
       </view>
+      <view class="zrww_logo">
+          <image  src="../../files/img/zrww.png"></image>
+          <text>{{district}}</text>
+      </view>
     <view class="section">
       <text class="zrww">找任何人，问任何事</text>
     </view>
@@ -187,7 +209,12 @@
               <text class="nick_name">{{item.nickName}}</text>
                <text class="question_status" style="{{item.status==6?'color:#DF7163':''}}">{{status[item.status-1]}}</text>
               <view style="clear:both"></view>
-              <text class="end_time">{{item.countDown.day}}天{{item.countDown.hou}}时{{item.countDown.min}}分{{item.countDown.sec}}秒</text>
+              <view wx:if="{{item.status!=8}}">
+                <text class="end_time">{{item.countDown.day}}天{{item.countDown.hou}}时{{item.countDown.min}}分{{item.countDown.sec}}秒</text>  
+              </view>
+              <view wx:else>
+                <text class="end_time"></text>  
+              </view>
               <view style="clear:both"></view>
               <text class="questionDescribe">{{item.questionDescribe}}</text>
             </view>
@@ -225,6 +252,7 @@
   import indexArea from '@/components/index_area' 
   import utils from "@/mixins/utils"
   import questionList from '@/components/question_list'
+  import Panel from '@/components/panel' 
 
   export default class index extends wepy.page {
     config = {
@@ -233,7 +261,8 @@
     }
     components = {
       indexArea:indexArea,
-      questionList:questionList
+      questionList:questionList,
+       panel: Panel,
     }
 
     data = {
@@ -258,6 +287,7 @@
       upperQuestionList:[],
       timePass5:false,
       status:[
+        '待支付',
         '审核中',
         '审核驳回',
         '审核通过',
@@ -275,6 +305,7 @@
       pageNum:1,
       pageSize:10,
       noMore:'',
+      district:''
     }
    
 
@@ -510,6 +541,7 @@
       let self = this
       let isLogin=wx.getStorageSync('isLogin')
       self.isLogin=isLogin;
+      self.district=self.$parent.globalData.district;
       if(isLogin){
         let avatarUrl=wx.getStorageSync('basicInfo').avatarUrl;
         if(avatarUrl==""){

@@ -218,9 +218,9 @@
 
       </panel>
       
-      <panel wx:if="{{model.commentNumber>0}}">
+      <!-- <panel wx:if="{{model.commentNumber>0}}">
         <view class="title" slot="title">用户评论</view>
-      </panel>
+      </panel> -->
      
   </scroll-view>
   <view class="section">

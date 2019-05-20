@@ -116,12 +116,14 @@ export default class extends wepy.app {
     model:'',//登录手机信息
     categorieList:'',
     adCode:null,
+    district:'',//当前位置城市
     latitude:'',
     longitude:'',
     mobileVersion:'minipro 1.0',
     whyBecomeResponderPic:'',
     whyInvitationPic:'',
     serviceDescriptionPic:'',
+
   }
   
 
