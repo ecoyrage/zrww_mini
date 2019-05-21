@@ -1,0 +1,65 @@
+<style lang="less">
+.comment_avatar {
+  width: 80rpx;
+  height: 80rpx;
+  margin-left:20rpx;
+  margin-top:20rpx;
+}
+.comment_avatar image{
+  width: 80rpx;
+  height:80rpx;
+  border-radius: 50%;
+}
+.comment{
+  margin-top:-80rpx;
+  margin-left:120rpx;
+  color:#999;
+  font-size: 14px;
+}
+.nodata{
+  color:#999;
+  font-size:12px;
+  text-align: center;
+  margin-top:50rpx;
+} 
+</style>
+<template>
+<view>
+  <view wx:if="{{commentList.length>0}}">
+     <repeat for="{{commentList}}" item="item">
+       <view class="comment_avatar">
+            <image  src="{{item.avatarUrl}}"></image>
+       </view>
+        <view class="comment">
+            <view class="comment_nickName">{{item.nickName}}</view>
+            <view style="position:absolute;right:40rpx;margin-top:-40rpx;">
+             <image class="grade_pic" src="../files/img/grade_high.png"></image>
+              {{item.score}}分
+            </view>
+             <view style="color:#333">
+                {{item.content}}
+             </view>
+            <view>
+             {{item.createTime}}
+             </view>
+           
+        </view>
+        <view style="clear:both"></view>
+      </repeat>
+  </view>
+  <view wx:else class="nodata">
+    暂无评论
+  </view>
+</view>
+ 
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class commentList extends wepy.component {
+    props = {
+      commentList:{}
+    }
+
+  }
+</script>

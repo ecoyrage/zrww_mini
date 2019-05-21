@@ -24,7 +24,7 @@
   margin-top:40rpx;
   margin-left:20rpx;
   color:#999;
-  font-size: 12px;
+  font-size: 14px;
 }
 .question_desc{
   margin-top:20rpx;
@@ -95,11 +95,20 @@
   font-size: 14px;
   text-align: center;
 }
+.commentTitle{
+  font-size:14px;
+  color:#333;
+  font-weight: bold;
+  display: block;
+  margin-left:20rpx;
+  margin-top:40rpx;
+}
 
 </style>
 <template>
+<view>
+  <scroll-view scroll-y="true" style="height:{{windowHeight-100}}rpx">
   <view class="questionBar">
-
       <view @tap="viewQuestion({{question.questionId}})">
         <view class="question_avatar">
               <image  src="{{question.avatarUrl==''?'../../files/img/avatarUrl.png':question.avatarUrl}}"></image>
@@ -125,16 +134,26 @@
           </repeat>
         </view>
 
-      <view class="applyOrSuggest">
+     
+  </view>
+
+<view>
+    <text class="commentTitle">回答者对用户的评价</text>
+    <commentList :commentList.sync="commentList">
+    </commentList>
+</view>
+ </scroll-view>
+  <view class="applyOrSuggest">
           <button class="suggest">推荐别人(有奖励)</button>
           <button class="apply">申请回答</button>
-      </view>
-   
-  </view>
+    </view>
+</view>
+
 </template>
 <script>
   import wepy from 'wepy'
   import utils from "@/mixins/utils"
+  import commentList from "@/components/comment_list"
   export default class question_detail extends wepy.page {
     config = {
       navigationBarTitleText: '查看问题描述',
@@ -142,6 +161,7 @@
     data={
       questionId:'',
       question:'',
+      commentList:'',
     }
 
     methods={
@@ -152,6 +172,10 @@
           })
         }
 
+    }
+
+    components = {
+      commentList:commentList,
     }
 
     mixins=[utils]
@@ -181,6 +205,7 @@
                   question.pics=question.pics.split(",");
                 }
                 self.question=question;
+                self.commentList=question.commentList;
                 self.$apply();
               }
           }
