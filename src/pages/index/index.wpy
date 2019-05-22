@@ -89,18 +89,6 @@
 .blue_text{
  color:#5383C3;
 }
-.question_avatar {
-  float: left;
-  width: 80rpx;
-  height: 80rpx;
-  margin-left:30rpx;
-  margin-top:30rpx;
-}
-.question_avatar image{
-  width: 80rpx;
-  height:80rpx;
-  border-radius: 50%;
-}
 .question_info{
   float: left;
   margin-top:20rpx;

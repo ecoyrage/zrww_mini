@@ -4,14 +4,14 @@
 }
 .question_avatar {
   float: left;
-  width: 80rpx;
-  height: 80rpx;
+  width: 60rpx;
+  height: 60rpx;
   margin-left:20rpx;
   margin-top:20rpx;
 }
 .question_avatar image{
-  width: 80rpx;
-  height:80rpx;
+  width: 60rpx;
+  height:60rpx;
   border-radius: 50%;
 }
 .line{
