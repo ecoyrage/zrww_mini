@@ -59,7 +59,7 @@
       <button class="login login-phone" @tap="phone_login()">手机验证码登录</button>
     </view>
     <view class="section">
-      <text class="trety">登录即代表你同意</text><text class="trety href" @tap="userAgreement(1)">《用户协议》</text><text class="trety">和</text><text class="trety href" @tap="privacyProtection(2)">《隐私保护》</text>
+      <text class="trety">登录即代表你同意</text><text class="trety href" @tap="userAgreement()">《用户协议》</text><text class="trety">和</text><text class="trety href" @tap="privacyProtection()">《隐私保护》</text>
     </view>
      <toast />
   </view>
@@ -97,9 +97,9 @@
           }
         })
       },
-      privacyProtection(type){
+      privacyProtection(){
         wepy.navigateTo({
-            url:'/pages/out/privacyProtection'
+            url:'/pages/out/privacyProtection?html='+'https://wz-public-read.oss-cn-hangzhou.aliyuncs.com/ww_privacy-protocol.html'
           })
       },
       phone_login(){

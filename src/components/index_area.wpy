@@ -1,51 +1,42 @@
 <style lang="less">
 .indexArea {
   width: 100%;
-  text-align: center;
-  font-size: 12px;
+  text-align: left;
+  
 }
-.icon{
-  width:102rpx;
-  height:100rpx;
-  margin-top:32rpx;
-}
-.icon2{
-  width:116rpx;
-  height:100rpx;
-  margin-top:32rpx;
-}
-.title_check{
-  margin-top:28rpx;
-  font-size: 14px;
-  color:#0089FF;
-}
+
 .title {
-  margin-top:28rpx;
   font-size: 14px;
-  color:#999;
+  color:#333;
+  font-weight: bold;
+  margin:30rpx 30rpx;
 }
-.behave{
-  margin-top:28rpx;
-  width:152rpx;
-  height: 60rpx;
-  background-color: #F6F6F6;
-  color:#5383c3;
-  text-align: center;
+.subtitle{
+  color: rgba(153, 153, 153, 1);
   font-size: 12px;
-  border-radius: 5px;
+  margin:-20rpx 30rpx;
+  width:528rpx;
+}
+
+.icon{
+  width:80rpx;
+  height:70rpx;
+  position:absolute;
+  right:30rpx;
+  margin-top:-30rpx;
+
 }
 </style>
 <template>
   <view class="indexArea">
-    <slot name="icon"   class="icon"  src="" ></slot>
+   
     <slot name="title"  class="title" >
       Title
     </slot>
-    <slot name="behave" class="behave">
-      Name
+    <slot name="subtitle"  class="subtitle" >
+      subtitle
     </slot>
-    <view class="grey_space" style="margin-top:24rpx;">
-    </view>
+    <slot name="icon"   class="icon"  src="" ></slot>
   </view>
 </template>
 <script>

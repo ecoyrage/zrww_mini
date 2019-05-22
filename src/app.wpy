@@ -32,11 +32,11 @@ import 'wepy-async-function'
 export default class extends wepy.app {
   config = {
     pages: [
-      
+
       'pages/index/index',
       'pages/index/question_detail',
+      'pages/index/connectUs',
 
-      
 
       'pages/zrww/search_result',
       'pages/zrww/keywords_search',
@@ -49,8 +49,6 @@ export default class extends wepy.app {
       'pages/basicInfo/focus',//个人中心、我的
 
       'pages/out/privacyProtection',
-
-      
 
 
       'pages/wallet/wallet',//钱包
@@ -151,9 +149,11 @@ export default class extends wepy.app {
         wx.setStorageSync('whyBecomeResponderPic',res.data.data.whyBecomeResponderPic);
         wx.setStorageSync('whyInvitationPic',res.data.data.whyInvitationPic);
         wx.setStorageSync('serviceDescriptionPic',res.data.data.serviceDescriptionPic);
+        wx.setStorageSync('commonProblemList',res.data.data.commonProblemList);
         this.globalData.whyBecomeResponderPic=res.data.data.whyBecomeResponderPic;
         this.globalData.whyInvitationPic=res.data.data.whyInvitationPic;
         this.globalData.serviceDescriptionPic=res.data.data.serviceDescriptionPic;
+        this.globalData.commonProblemList=res.data.data.commonProblemList;
         this.globalData.categorieList=res.data.data.categorieList;
       },
       fail: () => {},

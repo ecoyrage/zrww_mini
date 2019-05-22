@@ -2,12 +2,20 @@
 
 </style>
 <template>
-     <web-view src="https://wz-public-read.oss-cn-hangzhou.aliyuncs.com/ww_privacy-protocol.html"></web-view>
+     <web-view src="{{html}}"></web-view>
 </template>
 
 <script>
 import wepy from 'wepy'
 export default  class privacyProtection extends wepy.page {
-
+     
+     data = {
+      html:"",
+    }
+     onLoad(options) {
+          let self = this
+          self.html=options.html;
+          self.$apply();
+     }
 }
 </script>

@@ -25,7 +25,7 @@
 <template>
   <view class="questionList">
       <view  wx:if="{{questionList.length>0}}">
-        <view  wx:if="{{questionReward==0}}" class="title_first">这些问题待解答<text class="grey_text">(直接回答/推荐别人回答，享<text class="red_text">高额奖励</text>)</text></view>
+        <view  wx:if="{{questionReward==0||questionReward==null}}" class="title_first">这些问题待解答<text class="grey_text">(直接回答/推荐别人回答，享<text class="red_text">高额奖励</text>)</text></view>
         <view  wx:if="{{questionReward!=0}}" class="title_first">推荐回答问题<text class="grey_text">(你推荐答者回答问题累计奖励<text class="red_text">{{questionReward}}元</text>)</text></view>
       </view>
      <view>

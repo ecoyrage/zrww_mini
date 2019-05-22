@@ -1,8 +1,14 @@
 <style lang="less">
 .zrww{
-  margin-top: 40rpx;
-  color: #333333;
-  font-size: 18px;
+  width: 692rpx;
+  height: 300rpx;
+  line-height: 20px;
+  border-radius: 5px;
+  text-align: left;
+  box-shadow: 0px 0px 0px 0px rgba(170, 170, 170, 1);
+  border: 1px solid rgba(51, 51, 51, 1);
+  background-color: #fff;
+
 }
 .userinfo-avatar {
   width: 80rpx;
@@ -18,7 +24,7 @@
    width: 150rpx;
    height:38rpx;
    position:absolute;
-   top:0;
+   margin-top:-80rpx;
    left:130rpx;
   
 }
@@ -129,10 +135,22 @@
     font-size: 14px;
     line-height: 60rpx;
 }
+.lxwm_img{
+  width:48rpx;
+  height: 48rpx;
+  position:absolute;
+  right:20rpx;
+  top:0rpx;
+}
+.roollingtitle{
+  font-size:14px;
+  color:#999;
+  margin:22rpx 0;
+}
 </style>
 <template>
   <view>
-        
+    <view style="background-color: #F6F6F6">
      <view class="userinfo-avatar" @tap="userInfo()">
           <image  src="{{avatarUrl}}"></image>
       </view>
@@ -140,21 +158,52 @@
           <image  src="../../files/img/zrww.png"></image>
           <text>{{district}}</text>
       </view>
-    <view class="section">
-      <text class="zrww">找任何人，问任何事</text>
+      <view>
+       <image class="lxwm_img" @tap="connectUs()" src="../../files/img/lxwm.png"></image>
+      </view>
+      <view style="display:flex;align-items:center;justify-content:center;height: 380rpx;">
+        <view class="zrww" @tap="zrww()">
+          <view style="color:#333;font-size:18px;font-weight:bold;margin:20rpx 20rpx;">输入想找的人  ·  想问的事</view>
+          <view style="color:#999;font-size:14px;margin:30rpx 20rpx;">无论你想找什么人、沟通什么事、需要什么帮助，都可以提交给平台</view>   
+        </view>
+      </view>
     </view>
-    <view class="section">
-      <button class="login login-wechat" @tap="zrww()"><image class="search_img"  src="../../files/img/search.png"></image>找人问问</button>
-    </view>
+  
     <view wx:if="{{upperQuestionList.length<=0}}">
-     
-        <view style="text-align: center;">
-          <view  class="title"><text class="blue_text">9800个答者</text>已加入</view>
-          <view  class="title">已帮助了<text class="blue_text">1888人</text></view>
-          <view  class="title">目前<text class="blue_text">500个</text>问题在解决中</view>
-        </view>
-        <view class="grey_space" style="margin-top:80rpx;">
-        </view>
+
+        <swiper  autoplay="{{autoplay}}" interval="5000"  duration="1000" circular="true" style="height:200rpx;">
+            <repeat for="{{rollingdata}}" item="item">
+              <swiper-item>
+                <view wx:if="{{item.jumpType==-1}}" style="text-align: center;"> 
+                  <swiper  autoplay="true" interval="3000" vertical="true" duration="1000" circular="true" style="height:200rpx;">
+                        <swiper-item>
+                          <repeat for="{{item.data}}" item="swiperText" index="index">
+                            <view wx:if="{{index<=2}}" class="roollingtitle">{{swiperText[0]}}<text class="blue_text">{{swiperText[1]}}</text>{{swiperText[2]}}</view>
+                         </repeat>
+                        </swiper-item>
+                         <swiper-item>
+                          <repeat for="{{item.data}}" item="swiperText" index="index">
+                            <view wx:if="{{index>2}}" class="roollingtitle">{{swiperText[0]}}<text class="blue_text">{{swiperText[1]}}</text>{{swiperText[2]}}</view>
+                         </repeat>
+                        </swiper-item>
+                  </swiper>
+                </view>
+                <view wx:elif="{{item.jumpType==5}}" @tap="toOutHtml({{item.jumpTarget}})"> 
+                  <image src="{{item.fileUrl}}"  mode="widthFix" style="width: 100%;"/>
+                </view>
+                <view wx:elif="{{item.jumpType==8}}" @tap="toAnswererIntroduce({{item.jumpTarget}})"> 
+                  <image src="{{item.fileUrl}}"  mode="widthFix" style="width: 100%;"/>
+                </view>
+                 <view wx:elif="{{item.jumpType==9}}"> 
+                   <video src="{{item.jumpTarget}}" @play="changeAutoplay()" @pause="ended()" @ended="ended()" style="width:100%;height:200rpx;"  poster="{{item.fileUrl}}" controls show-fullscreen-btn></video>
+                </view>
+             
+              </swiper-item>
+            </repeat>
+        </swiper>
+        <view class="grey_space"></view>
+
+       
 
         <view wx:if="{{timePass5}}">
           <view wx:if="{{info.responderStatus!=1}}">
@@ -169,31 +218,32 @@
             <button class="behave2" @tap="toInviteFriends()">去了解</button>
           </view>
           <view class="grey_space" style="margin-top:10rpx;"></view>
-        </view>
+      </view>
 
 
-        <view wx:if="{{!timePass5}}">
+      <view wx:if="{{!timePass5}}">
           <view wx:if="{{info.responderStatus!=1}}">
             <indexArea>
                 <image class="icon" src="{{be_responder}}" slot="icon"></image>
-                <view class="title" slot="title">成为答者，多点人脉，赚点外快</view>
-                <view wx:if="{{info.responderStatus==3}}" class="title_check" slot="title" style="color:#F05654">申请被驳回</view>
-                <view wx:if="{{info.responderStatus==2}}" class="title_check" slot="title">回答者申请审核中</view>
-                <button wx:if="{{info.responderStatus==''||info.responderStatus==undefind}}" class="behave" slot="behave" @tap="toBeResponder()">成为答者</button>
+                <view class="title" slot="title">成为服务者、价值变现</view>
+                <view class="subtitle" slot="subtitle">希望你也可以成为服务者，服务他人的同时让自身更有价值。</view>
             </indexArea>
           </view>
-
+       <view class="grey_space" style="margin-top:80rpx;height:5rpx;"></view>
           <indexArea>
-            <image class="icon2" src="{{go_invite}}" slot="icon"></image>
-            <view class="title" slot="title">邀请好友，坐享收益</view>
-            <button class="behave" slot="behave" @tap="toInviteFriends()">去邀请</button>
+            <image class="icon" src="{{go_invite}}" slot="icon"></image>
+            <view class="title" slot="title">一次邀请、永久收益</view>
+            <view class="subtitle" slot="subtitle">邀请朋友加入我们，让他们的价值得到发挥，让我们也可以给他们提供帮助</view>
           </indexArea>
-        </view>
-
+      </view>
+     <view class="grey_space" style="margin-top:80rpx;"></view>
      </view>
+
+
+
      <view wx:if="{{upperQuestionList.length>0}}">
         <!--upperQuestionList.questionList start  -->
-        <view class="grey_space" style="margin-top:40rpx;"></view>
+        <!-- <view class="grey_space" style="margin-top:40rpx;"></view> -->
         <repeat for="{{upperQuestionList}}" item="item">
             <view class="question_avatar">
                   <image src="{{item.avatarUrl==''?'../../files/img/avatarUrl.png':item.avatarUrl}}"></image>
@@ -225,7 +275,7 @@
         </view>
         <view class='line' style="margin-top:10rpx;"></view>
         <view style="height:100rpx;">
-          <view style="padding-top:40rpx;margin-left:20rpx;color:#999;font-size:14px;">已邀请<text class="blue_text">{{info.invitationNumber}}位</text>好友，共有<text class="blue_text">{{info.contacts}}人脉</text>，累计奖励<text class="blue_text">{{invitationBalance}}元</text></view>
+          <view style="padding-top:40rpx;margin-left:20rpx;color:#999;font-size:14px;">已邀请<text class="blue_text">{{info.invitationNumber}}位</text>好友，共有<text class="blue_text">{{info.contacts}}人脉</text>，累计奖励<text class="blue_text">{{info.invitationBalance}}元</text></view>
           <!-- <image class="icon_qianjin" style="margin-top:-40rpx;" src="../../files/img/qianjin.png"></image> -->
         </view>
        
@@ -237,19 +287,7 @@
     <questionList :questionList.sync="questionList" :questionReward.sync="questionReward"></questionList>
 
 
-      <!-- <swiper  autoplay="{{autoplay}}" interval="3000" duration="1000" circular="true" style="height:500rpx;">
-            <repeat wx:for="{{imgUrls}}" wx:key="123">
-              <swiper-item>
-              <view style="position:absolute"> {{item.src}}</view>
-                <view wx:if="{{item.type==1}}">
-                  <image src="{{item.src}}" class="slide-image" width="100%" height="150rpx" />
-                </view>
-                <view wx:else> 
-                   <video src="{{item.src}}" @play="changeAutoplay()" @pause="ended()" @ended="ended()" style="width:100%" height="150rpx" poster="http://oss.50waizhuan.com/bb73889e-1c55-4804-bc4a-1b3666d8b958.jpg" controls show-fullscreen-btn></video>
-                </view>
-              </swiper-item>
-            </repeat>
-        </swiper> -->
+    
     
     
   </view>
@@ -266,6 +304,7 @@
     config = {
       navigationBarTitleText: '',
       enablePullDownRefresh: true,
+      navigationBarBackgroundColor: "#F6F6F6",
     }
     components = {
       indexArea:indexArea,
@@ -279,18 +318,6 @@
       be_responder:"../../files/img/be_responder.png",
       isLogin:'',
       questionList:[
-        // {
-        //   "questionId":"1122336040693051393",
-        //   "avatarUrl":"http://oss.50waizhuan.com/bb73889e-1c55-4804-bc4a-1b3666d8b958.jpg",
-        //   "nickName":"测试",
-        //   "refundRate":0,
-        //   "pics":"http://oss.50waizhuan.com/39250798-54f8-4427-a91d-f6044840c243.jpg,http://oss.50waizhuan.com/b4a59c4a-583d-4f8b-8834-7b3dc92f1654.jpg",
-        //   "recommendumber":0,
-        //   "status":3,
-        //   "questionDescribe":"xxx",
-        //   "averageScore":"5",
-        //   "questionNumber":0
-        // }
       ],
       upperQuestionList:[],
       timePass5:false,
@@ -309,19 +336,11 @@
       ],
       questionReward:'',
       info:'',
-      invitationBalance:'',
       pageNum:1,
       pageSize:10,
       noMore:'',
       district:'',
-      imgUrls:[
-      {
-        'src':'http://oss.50waizhuan.com/bb73889e-1c55-4804-bc4a-1b3666d8b958.jpg',
-        'type':'1'
-      },{
-        'src':'http://video.50waizhuan.com/a770ce30-f922-4daf-89fd-88708556b4db.mp4',
-        'type':'2'
-      }
+      rollingdata:[
       ],
       autoplay:true,
        
@@ -374,11 +393,31 @@
             url:'/pages/be_responder'
           })
         }
-
       },
       zrww(){
           wepy.navigateTo({
             url:'/pages/zrww/zrww'
+          })
+      },
+      connectUs(){
+        wepy.navigateTo({
+            url:'/pages/index/connectUs'
+        })
+      },
+      toAnswererIntroduce(responderId){
+         if(!this.isLogin){
+          wepy.navigateTo({
+            url:'/pages/login/login'
+          })
+        }else{
+          wepy.navigateTo({
+              url:'/pages/answerer_introduce?responderId='+responderId
+          })
+        }
+      },
+      toOutHtml(html){
+          wepy.navigateTo({
+            url:'/pages/out/privacyProtection?html='+html
           })
       }
     }
@@ -391,17 +430,13 @@
     }
 
     onPullDownRefresh(){
-      if(this.isLogin){
         this.pageNum=1;
         this.noMore=false;
         this.onLoad();
-      }else{
         wx.hideNavigationBarLoading();
         wx.stopPullDownRefresh();
-      }
     }
     onReachBottom(){
-      if(this.isLogin){
         if(!this.noMore){
             let self=this;
             wx.showLoading({
@@ -416,7 +451,7 @@
             let obj=self.genObj(json);
             let sign=self.genSign(obj);
             wepy.request({
-              url:  self.domain+'/ww/api/v1/index/questionList',
+              url:  self.domain+'/ww/api/v1/common/questionList',
               method: 'post',
               data: {object:obj,sign:sign},
               header:{
@@ -454,8 +489,6 @@
                 icon: 'none',
               })
           }
-            
-        }
     }
     
    
@@ -477,7 +510,7 @@
           let obj=self.genObj(json);
           let sign=self.genSign(obj);
           wepy.request({
-            url:  self.domain+'/ww/api/v1/index/questionList',
+            url:  self.domain+'/ww/api/v1/common/questionList',
             method: 'post',
             data: {object:obj,sign:sign},
             header:{
@@ -488,38 +521,31 @@
             success: res => {
               if(res.data.code==100){
                 let list=res.data.data.list
-                self.questionList=list
+                let rollingInforsList=res.data.data.rollingInforsList
+                let advList=res.data.data.advList
+                let rollingInfors={};
+                rollingInforsList.forEach((data,index)=>{
+                  rollingInforsList[index]=data.replace("<",",").replace(">",",").split(",");
+                })
+                rollingInfors.jumpType=-1;
+                rollingInfors.data=rollingInforsList;
+                self.rollingdata=[];
+                self.rollingdata.push(rollingInfors);
+                advList.forEach(adv=>{
+                   self.rollingdata.push(adv);
+                })
+                self.questionList=list;
                 for(let i=0;i<self.questionList.length;i++){
                   if(self.questionList[i].pics==""){
                     self.questionList[i].pics="";
                   }else{
                     self.questionList[i].pics=self.questionList[i].pics.split(",");
                   }
-                  // if(self.questionList[i].nickName.substring(0,2)=="匿名"){
-                  //   let userCode= wx.getStorageSync('basicInfo').userCode;
-                  //   userCode=userCode.substring(userCode.length-4,userCode.length)
-                  //   self.questionList[i].nickName="匿名用户"+userCode
-                  // }
                 }
                 wx.hideNavigationBarLoading();
                 wx.stopPullDownRefresh();
                 self.$apply();
               }
-            // let objeee={
-            //       "questionId":"1122336040693051393",
-            //       "avatarUrl":"http://oss.50waizhuan.com/bb73889e-1c55-4804-bc4a-1b3666d8b958.jpg",
-            //       "nickName":"测试",
-            //       "refundRate":0,
-            //       "pics":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1556970326987&di=fc38dfff295815226b35c2eb2fe56a1e&imgtype=0&src=http%3A%2F%2Fi4.hexun.com%2F2018-08-01%2F193647293.jpg,https://cloud.githubusercontent.com/assets/2182004/20554704/9997932c-b198-11e6-9840-3edae2194f47.png",
-            //       "recommendumber":0,
-            //       "status":3,
-            //       "questionDescribe":"xxx",
-            //       "averageScore":"5",
-            //       "questionNumber":0
-            //   }
-            //   objeee.pics=objeee.pics.split(",");
-              // this.questionList.push(objeee);
-              // this.$apply();
             }
 
        })
@@ -582,7 +608,6 @@
       let obj=self.genObj(json);
       let sign=self.genSign(obj);
       if(self.accessToken!=""){
-
         wepy.request({
           url:  self.domain+'/ww/api/v1/index/info',
           method: 'post',
@@ -610,17 +635,15 @@
               self.upperQuestionList=data.questionList;
               self.countDown(self.upperQuestionList);
               self.questionReward=self.getRealityNum(data.questionReward);
-              self.invitationBalance=self.getRealityNum(data.invitationBalance);
+              self.info.invitationBalance=self.getRealityNum(data.invitationBalance);
+              self.info.answerBalance=self.getRealityNum(data.answerBalance);
               self.$apply();
             }
           }
         });
-        this.getQuestionList();
-
       }
 
-
-
+    this.getQuestionList();
 
       
     }

@@ -1,0 +1,104 @@
+<style lang="less">
+page{
+  width: 100%;
+}
+.login{
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  width: 710rpx;
+  height: 80rpx;
+  line-height: 20px;
+  border-radius: 5px;
+  color: #ffffff;
+  font-size: 14px;
+}
+.login-wechat{
+  position: fixed;
+  bottom:10rpx;
+  background-color: #5383c3;
+  color: #ffffff;
+}
+.title{
+  font-size: 14px;
+  color:#333;
+  font-weight: bold;
+  height:120rpx;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: left; 
+  border-bottom:4rpx #F6F6F6 solid;
+}
+.title text{
+  margin-left:30rpx;
+}
+</style>
+<template>
+  <view>
+
+       <scroll-view scroll-y="true" style="height:{{windowHeight-100}}rpx">
+        <repeat for="{{commonProblemList}}" item="item" index="index">
+         <view class="title" @tap="click({{item.fileUrl}})">
+            <text>{{index+1}}.{{item.fileName}}</text>
+          </view>
+        </repeat>
+
+       </scroll-view>
+
+
+      <view class="section">
+          <button  open-type="launchApp" class="login login-wechat">联系人工客服</button>
+      </view>
+
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import utils from "@/mixins/utils"
+  export default class connectUs extends wepy.page {
+    config = {
+     navigationBarTitleText: '常见问题',
+    }
+    components = {
+    
+    }
+
+    data = {
+       commonProblemList:'',
+    }
+   
+
+
+    mixins=[utils]
+
+
+    methods = {
+      click(url){
+           wepy.navigateTo({
+            url:'/pages/treaty?treaty='+url
+        })
+      }
+    }
+
+
+   
+
+
+    events = {
+      // 'index-emit': (...args) => {
+      //   let $event = args[args.length - 1]
+      //   console.log(`${this.$name} receive ${$event.name} from ${$event.source.$name}`)
+      // }
+    }
+ 
+
+    
+  
+    onLoad() {
+       this.commonProblemList=wx.getStorageSync('commonProblemList');
+       this.$apply();
+    }
+  }
+</script>
