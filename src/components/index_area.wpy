@@ -20,10 +20,10 @@
 
 .icon{
   width:80rpx;
-  height:70rpx;
+  height:80rpx;
   position:absolute;
   right:30rpx;
-  margin-top:-30rpx;
+  margin-top:-50rpx;
 
 }
 </style>
