@@ -28,6 +28,12 @@
   left:52rpx;
   margin-top:60rpx;
 }
+.tuijian{
+  width:126rpx;
+  height: 48rpx;
+  position:absolute;
+  right:0rpx;
+}
 .title{
   color: rgba(51, 51, 51, 1);
   font-size: 18px;
@@ -63,6 +69,18 @@
     <view class="desc">
       你可以尝试以下两种方式找到可以解决需求的人
     </view>
+
+     <view class="navibar" style="margin-top:100rpx;">
+       <image class="tuijian" src="../../files/img/zrww/tuijian.png"></image>
+      <view>
+        <image class="icon" src="../../files/img/zrww/fwpt.png"></image>
+        <text class="title">直接问平台</text>
+        <text class="subtitle">将你要找的人或要问的事提交至平台</text>
+        <image class="icon_qianjin" src="../../files/img/qianjin.png"></image>
+        <image class="desc_image" mode="widthFix" src="../../files/img/zrww/fwpt_desc.png"></image>
+      </view>
+    </view>
+        
     <view class="navibar" style="margin-top:100rpx;">
       <view @tap="search()">
         <image class="icon" src="../../files/img/zrww/flzc.png"></image>
@@ -71,17 +89,6 @@
         <image class="icon_qianjin" src="../../files/img/qianjin.png"></image>
         <image class="desc_image" src="../../files/img/zrww/flzc_desc.png"></image>
       </view>
-
-    </view>
-     <view class="navibar" style="margin-top:100rpx;">
-      <view>
-        <image class="icon" src="../../files/img/zrww/fwpt.png"></image>
-        <text class="title">直接问平台</text>
-        <text class="subtitle">将你要找的人或要问的事提交至平台</text>
-        <image class="icon_qianjin" src="../../files/img/qianjin.png"></image>
-        <image class="desc_image" mode="widthFix" src="../../files/img/zrww/fwpt_desc.png"></image>
-      </view>
-
     </view>
    
   </view>

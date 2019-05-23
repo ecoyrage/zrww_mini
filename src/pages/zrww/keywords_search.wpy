@@ -231,7 +231,9 @@ button[disabled] {
             wx.hideNavigationBarLoading();
             wx.stopPullDownRefresh();
             self.$apply();
-          }
+          }else if(res.data.code==730){
+            wepy.redirectTo({ url: '/pages/login/login' });
+          } 
         
         }
       })

@@ -46,8 +46,8 @@ page{
 }  
 /*左侧栏list的item*/  
 .nav_left .nav_left_items{  
-  height: 120rpx;  
-  line-height: 120rpx;  
+  height: 100rpx;  
+  line-height: 100rpx;  
   font-size: 14px; 
   color:#333;
 }  
@@ -56,6 +56,8 @@ page{
   /*背景色变成白色*/  
   background: #fff; 
   font-weight: bold; 
+  color:#5383C3;
+  border-left:10rpx#5383C3 solid;
 }  
 /*右侧栏主盒子*/  
 .nav_right{  
@@ -93,8 +95,9 @@ page{
   /*给text设成块级元素*/  
   display: block;  
   margin-top: 15px;  
-  font-size: 14px;  
-  color: black;
+  font-size: 16px;  
+  color: #101010;
+  font-weight: bold;
   /*设置文字溢出部分为...*/  
   overflow: hidden;  
   white-space: nowrap;  

@@ -32,7 +32,8 @@ import 'wepy-async-function'
 export default class extends wepy.app {
   config = {
     pages: [
-
+     
+      
       'pages/index/index',
       'pages/index/question_detail',
       'pages/index/connectUs',
@@ -40,8 +41,8 @@ export default class extends wepy.app {
 
       'pages/zrww/search_result',
       'pages/zrww/keywords_search',
-      'pages/zrww/zrww',
       'pages/zrww/category_search',
+      'pages/zrww/zrww',
       
       'pages/basicInfo/basic_info',//个人中心、我的
       'pages/basicInfo/answer_record', //回答记录

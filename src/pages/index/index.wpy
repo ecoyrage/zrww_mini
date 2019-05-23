@@ -127,7 +127,14 @@
   width:48rpx;
   height: 48rpx;
   position:absolute;
-  right:20rpx;
+  right:40rpx;
+  top:0rpx;
+}
+.search_img{
+  width:48rpx;
+  height: 48rpx;
+  position:absolute;
+  right:120rpx;
   top:0rpx;
 }
 .roollingtitle{
@@ -148,6 +155,7 @@
       </view>
       <view>
        <image class="lxwm_img" @tap="connectUs()" src="../../files/img/lxwm.png"></image>
+        <image class="search_img" @tap="search()" src="../../files/img/search_black.png"></image>
       </view>
       <view style="display:flex;align-items:center;justify-content:center;height: 380rpx;">
         <view class="zrww" @tap="zrww()">
@@ -166,12 +174,12 @@
                   <swiper  autoplay="true" interval="3000" vertical="true" duration="1000" circular="true" style="height:200rpx;">
                         <swiper-item>
                           <repeat for="{{item.data}}" item="swiperText" index="index">
-                            <view wx:if="{{index<=2}}" class="roollingtitle">{{swiperText[0]}}<text class="blue_text">{{swiperText[1]}}</text>{{swiperText[2]}}</view>
+                            <view wx:if="{{index/3<1}}" class="roollingtitle">{{swiperText[0]}}<text class="blue_text">{{swiperText[1]}}</text>{{swiperText[2]}}</view>
                          </repeat>
                         </swiper-item>
                          <swiper-item>
                           <repeat for="{{item.data}}" item="swiperText" index="index">
-                            <view wx:if="{{index>2}}" class="roollingtitle">{{swiperText[0]}}<text class="blue_text">{{swiperText[1]}}</text>{{swiperText[2]}}</view>
+                            <view wx:if="{{index/3>=1&&index/3<2}}" class="roollingtitle">{{swiperText[0]}}<text class="blue_text">{{swiperText[1]}}</text>{{swiperText[2]}}</view>
                          </repeat>
                         </swiper-item>
                   </swiper>
@@ -407,6 +415,11 @@
           wepy.navigateTo({
             url:'/pages/out/privacyProtection?html='+html
           })
+      },
+      search(){
+        wepy.navigateTo({ 
+          url: '/pages/zrww/category_search' 
+        });
       }
     }
 

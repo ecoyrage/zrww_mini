@@ -53,6 +53,7 @@
   border-top:4rpx #F6F6F6 solid;
   margin-left:76rpx;
   margin-top: 20rpx;
+  z-index: 99;
 }
 .tab_menu{
   height: 100rpx;
@@ -98,7 +99,17 @@
   height:120rpx;
   border-left:1px #F6F6F6 solid;
 }
-
+.shezhi{
+  display: inline;
+  font-size:14px;
+  position: absolute;
+  padding-top:20rpx;
+  padding-left:20rpx;
+  background-color: transparent;
+}
+button::after {
+  border: none;
+}
 
 </style>
 <template>
@@ -153,23 +164,23 @@
      </view>
 
      <view>
-         <view class="tab_menu">
-             <image class="tab_menu_img" src="../../files/img/doubt.png"></image>
-             <text>设置</text>
-              <image class="icon_qianjin" src="../../files/img/qianjin.png"></image>
-              <view class='line'></view>
-        </view>
-         <view class="tab_menu">
-             <image class="tab_menu_img" src="../../files/img/doubt.png"></image>
+        <view class="tab_menu">
+             <image class="tab_menu_img" src="../../files/img/basicInfo/lxpt.png"></image>
              <text>联系平台</text>
               <image class="icon_qianjin" src="../../files/img/qianjin.png"></image>
              <view class='line'></view>
         </view>
-         <view class="tab_menu">
+        <view class="tab_menu">
+             <image class="tab_menu_img" src="../../files/img/basicInfo/shezhi.png"></image>
+             <button class="shezhi" open-type="openSetting">设置</button>
+              <image class="icon_qianjin" src="../../files/img/qianjin.png"></image>
+              <view class='line'></view>
+        </view>
+         <!-- <view class="tab_menu">
              <image class="tab_menu_img" src="../../files/img/doubt.png"></image>
              <text>实名认证</text>
               <image class="icon_qianjin" src="../../files/img/qianjin.png"></image>
-        </view>
+        </view> -->
        
 
      </view>
