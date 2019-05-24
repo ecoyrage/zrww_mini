@@ -258,6 +258,7 @@ button::after {
               self.isLogin=false;
               self.$apply();
               wx.clearStorageSync();
+              self.$parent.onLaunch();
               wepy.reLaunch({ url: '/pages/index/index' });
               
             } else if (res.cancel) {

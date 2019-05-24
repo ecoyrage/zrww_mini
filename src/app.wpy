@@ -139,7 +139,7 @@ export default class extends wepy.app {
        }
       });
     wepy.request({
-      url: this.globalData.domain+'/ww/api/v1/common/sys', //开发者服务器接口地址",
+      url: this.globalData.domain+'/ww/api/v1/common/sys',
       method: 'post',
       header:{
           'JWT': 'true',
@@ -151,6 +151,7 @@ export default class extends wepy.app {
         wx.setStorageSync('whyInvitationPic',res.data.data.whyInvitationPic);
         wx.setStorageSync('serviceDescriptionPic',res.data.data.serviceDescriptionPic);
         wx.setStorageSync('commonProblemList',res.data.data.commonProblemList);
+        wx.setStorageSync('questionCaseList',res.data.data.questionCaseList);
         this.globalData.whyBecomeResponderPic=res.data.data.whyBecomeResponderPic;
         this.globalData.whyInvitationPic=res.data.data.whyInvitationPic;
         this.globalData.serviceDescriptionPic=res.data.data.serviceDescriptionPic;

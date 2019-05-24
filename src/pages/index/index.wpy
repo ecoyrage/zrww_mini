@@ -91,7 +91,7 @@
 }
 .question_info{
   float: left;
-  margin-top:20rpx;
+  margin-top:10rpx;
 }
 .nick_name{
   margin-left:20rpx;
@@ -112,7 +112,7 @@
 .questionDescribe{
   margin-left:20rpx;
   color: rgba(153, 153, 153, 1);
-  font-size: 12px;
+  font-size: 10px;
 }
 .chakan{
     width:134rpx;
@@ -160,7 +160,7 @@
       <view style="display:flex;align-items:center;justify-content:center;height: 380rpx;">
         <view class="zrww" @tap="zrww()">
           <view style="color:#333;font-size:18px;font-weight:bold;margin:20rpx 20rpx;">输入想找的人  ·  想问的事</view>
-          <view style="color:#999;font-size:14px;margin:30rpx 20rpx;">无论你想找什么人、沟通什么事、需要什么帮助，都可以提交给平台</view>   
+          <view style="color:#999;font-size:14px;margin:100rpx 20rpx;">{{questionCaseList}}</view>   
         </view>
       </view>
     </view>
@@ -241,38 +241,63 @@
         <!--upperQuestionList.questionList start  -->
         <!-- <view class="grey_space" style="margin-top:40rpx;"></view> -->
         <repeat for="{{upperQuestionList}}" item="item">
-            <view class="question_avatar">
-                  <image src="{{item.avatarUrl==''?'../../files/img/avatarUrl.png':item.avatarUrl}}"></image>
-            </view>
-            <view class="question_info">
-              <text class="nick_name">{{item.nickName}}</text>
-               <text class="question_status" style="{{item.status==6?'color:#DF7163':''}}">{{status[item.status-1]}}</text>
-              <view style="clear:both"></view>
-              <view wx:if="{{item.status!=8}}">
-                <text class="end_time">{{item.countDown.day}}天{{item.countDown.hou}}时{{item.countDown.min}}分{{item.countDown.sec}}秒</text>  
+            <view wx:if="{{item.status==1||item.status==2||item.status==6||item.status==7}}" @tap="viewQuestion({{item.questionId}})">
+              <view class="question_avatar">
+                    <image src="{{item.avatarUrl==''?'../../files/img/avatarUrl.png':item.avatarUrl}}"></image>
               </view>
-              <view wx:else>
-                <text class="end_time"></text>  
+              <view class="question_info">
+                <text class="nick_name">{{item.responderShowName}}</text>
+                <text class="question_status" style="{{item.status==2||item.status==6||item.status==7?'color:#DF7163':''}}">{{status[item.status]}}</text>
+                <view style="clear:both"></view>
+                <view wx:if="{{item.status==2}}">
+                  <text class="end_time">{{item.createTime}}</text>
+                </view>
+                <view wx:else>
+                  <text class="end_time"></text>  
+                </view>
+                <view style="clear:both"></view>
+                <text class="questionDescribe">简述：{{item.questionDescribe}}</text>
               </view>
               <view style="clear:both"></view>
-              <text class="questionDescribe">{{item.questionDescribe}}</text>
             </view>
-            <view style="display:inline-table;position:absolute;right:20rpx;margin-top:40rpx;">
-                <button class="chakan" >查看</button>
+
+            <view wx:else>
+              <view class="question_avatar">
+                    <image src="{{item.avatarUrl==''?'../../files/img/avatarUrl.png':item.avatarUrl}}"></image>
+              </view>
+              <view class="question_info">
+                <text class="nick_name">{{item.responderShowName}}</text>
+                <text class="question_status" style="{{item.status==6?'color:#DF7163':''}}">{{status[item.status]}}<text wx:if="{{item.status==3&&item.recommendNumber>0}}">,已收到{{item.recommendNumber}}个推荐</text></text>
+                <view style="clear:both"></view>
+                <view wx:if="{{item.status==3}}">
+                  <text class="end_time">剩余：{{item.countDown.day}}天{{item.countDown.hou}}时{{item.countDown.min}}分{{item.countDown.sec}}秒</text>  
+                </view>
+                <view wx:else>
+                  <text class="end_time"></text>  
+                </view>
+                <view style="clear:both"></view>
+                <text class="questionDescribe">简述：{{item.questionDescribe}}</text>
+              </view>
+              <view style="display:inline-table;position:absolute;right:20rpx;margin-top:40rpx;">
+                  <button class="chakan" >查看</button>
+              </view>
+              <view style="clear:both"></view>
             </view>
-            <view style="clear:both"></view>
+            
+
+
         </repeat>
 
       <view class="grey_space" style="margin-top:40rpx;"></view>
       <view >
         <view style="height:100rpx;">
-          <view style="padding-top:40rpx;margin-left:20rpx;color:#999;font-size:14px;">已回答<text class="blue_text">{{info.answerNumber}}个</text>问题，共赚<text class="blue_text">{{info.answerBalance}}元</text></view>
+          <view style="padding-top:40rpx;margin-left:20rpx;color:#999;font-size:12px;">已回答<text class="blue_text">{{info.answerNumber}}个</text>问题，共赚<text class="blue_text">{{info.answerBalance}}元</text></view>
           <!-- <image class="icon_qianjin" style="margin-top:-40rpx;" src="../../files/img/qianjin.png"></image> -->
         </view>
         <view class='line' style="margin-top:10rpx;"></view>
-        <view style="height:100rpx;">
-          <view style="padding-top:40rpx;margin-left:20rpx;color:#999;font-size:14px;">已邀请<text class="blue_text">{{info.invitationNumber}}位</text>好友，共有<text class="blue_text">{{info.contacts}}人脉</text>，累计奖励<text class="blue_text">{{info.invitationBalance}}元</text></view>
-          <!-- <image class="icon_qianjin" style="margin-top:-40rpx;" src="../../files/img/qianjin.png"></image> -->
+        <view style="height:100rpx;" @tap="toInviteeList()">
+          <view style="padding-top:40rpx;margin-left:20rpx;color:#999;font-size:12px;">已邀请<text class="blue_text">{{info.invitationNumber}}位</text>好友，共有<text class="blue_text">{{info.contacts}}人脉</text>，累计奖励<text class="blue_text" >{{info.invitationBalance}}元</text></view>
+          <image class="icon_qianjin" style="margin-top:-40rpx;" src="../../files/img/qianjin.png"></image>
         </view>
        
       </view>
@@ -321,8 +346,9 @@
         '待支付',
         '审核中',
         '审核驳回',
-        '审核通过',
+        '发布中',
         '等待接单',
+        '接单超时',
         '取消订单',
         '拒绝',
         '交流中',
@@ -339,6 +365,7 @@
       rollingdata:[
       ],
       autoplay:true,
+      questionCaseList:''
        
     }
    
@@ -390,6 +417,12 @@
           })
         }
       },
+      toInviteeList(){
+         wepy.navigateTo({ 
+            url: '/pages/wallet/invitee_list' 
+        });
+         
+     },
       zrww(){
           wepy.navigateTo({
             url:'/pages/zrww/zrww'
@@ -420,7 +453,12 @@
         wepy.navigateTo({ 
           url: '/pages/zrww/category_search' 
         });
-      }
+      },
+      viewQuestion(questionId){
+           wepy.navigateTo({
+            url: '/pages/index/question_detail?questionId='+questionId+'&showQuestionOnly=true'
+          })
+        }
     }
 
 
@@ -593,7 +631,7 @@
     }
     onLoad() {
       let self = this
-      let isLogin=wx.getStorageSync('isLogin')
+      let isLogin=wx.getStorageSync('isLogin');
       self.isLogin=isLogin;
       self.district=self.$parent.globalData.district;
       if(isLogin){
@@ -603,6 +641,12 @@
         }
         self.avatarUrl=avatarUrl;
       }
+      let questionCaseList=wx.getStorageSync('questionCaseList');
+      if(questionCaseList!=""){
+        let random=Math.floor(Math.random()*questionCaseList.length)
+        self.questionCaseList=questionCaseList[random].fileName;
+      }
+    
       self.$apply();
 
       let json={};
@@ -633,6 +677,9 @@
                 self.$apply();
               }
               self.info=data;
+              // if(self.avatarUrl=="../../files/img/avatarUrl.png"&&data.avatarUrl!=""){
+              //   self.avatarUrl=data.avatarUrl;
+              // }
               self.upperQuestionList=data.questionList;
               self.countDown(self.upperQuestionList);
               self.questionReward=self.getRealityNum(data.questionReward);

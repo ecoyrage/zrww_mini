@@ -233,7 +233,25 @@
             </view>
         </view>
         <view>
-            <view style="margin-top:20rpx;padding-top:20rpx;">
+             <repeat for="{{model.userRecommendList}}" item="item">
+                <view style="margin-top:20rpx;padding-top:20rpx;">
+                    <view class="invite_avatar">
+                        <image src="{{item.avatarUrl}}"></image>
+                    </view>
+                    <view style="float:left">
+                        <text class="nick_name">{{item.nickName}}</text>
+                        <text class="is_Responder" wx:if="{{item.isResponder==1}}">回答者</text>
+                        <text class="provide">提供</text>
+                        <text class="contacts">{{item.recommendNumber}}人脉</text>
+                        <view style="clear:both"></view>
+                        <text class="invite_time">{{item.createTime}}</text>
+                        <text class="total_desc">累计产生奖励</text>
+                        <text class="total_profit">{{item.invitationReward}}元</text>
+                    </view>
+                </view>
+                <view style="clear:both"></view>
+            </repeat>
+            <!-- <view style="margin-top:20rpx;padding-top:20rpx;">
                 <view class="invite_avatar">
                     <image src="../../files/img/avatarUrl.png"></image>
                 </view>
@@ -249,6 +267,8 @@
                 </view>
             </view>
             <view style="clear:both"></view>
+
+
             <view style="margin-top:20rpx;padding-top:20rpx;">
                 <view class="invite_avatar">
                     <image src="../../files/img/avatarUrl.png"></image>
@@ -264,7 +284,7 @@
                     <text class="total_profit">1.8元</text>
                 </view>
             </view>
-            <view style="clear:both"></view>
+            <view style="clear:both"></view> -->
            
              
 
@@ -295,8 +315,7 @@
     mixins=[utils]
 
     data = {
-        model:'',
-      level:2,
+      model:'',
     }
 
     methods = {

@@ -21,7 +21,7 @@
 }
 .question_deta{
   float: left;
-  margin-top:40rpx;
+  margin-top:30rpx;
   margin-left:20rpx;
   color:#999;
   font-size: 12px;
@@ -79,7 +79,7 @@
         <view class="recommendumber">已推荐{{question.recommendumber}}个回答者待选择</view>
         <view class="question_deta">
             <view class="nickName">{{question.nickName}}</view>
-            <view style="padding-top:20rpx;">
+            <view style="padding-top:10rpx;">
               <image class="grade_pic" src="../files/img/grade_high.png"></image><text style="font-size:12px;color:#5383C3">{{question.averageScore}}</text>分
               <text style="margin-left:20rpx;">愿支付:</text><text style="font-size:14px;color:#5383C3">￥{{question.offer}}</text>
               <!-- <text style="margin-left:80rpx;">退款率:</text><text style="font-size:12px;color:#5383C3">{{question.refundRate}}%</text> -->

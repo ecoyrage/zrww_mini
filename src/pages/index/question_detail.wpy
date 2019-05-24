@@ -107,46 +107,76 @@
 </style>
 <template>
 <view>
-  <scroll-view scroll-y="true" style="height:{{windowHeight-100}}rpx">
-  <view class="questionBar">
-      <view @tap="viewQuestion({{question.questionId}})">
-        <view class="question_avatar">
-              <image  src="{{question.avatarUrl==''?'../../files/img/avatarUrl.png':question.avatarUrl}}"></image>
-          </view>
-          <view class="recommendumber">已推荐{{question.recommendNumber}}个回答者待选择</view>
-          <view class="question_deta">
-              <view class="nickName">{{question.nickName}}</view>
-              <view style="padding-top:20rpx;">
-                <image class="grade_pic" src="../../files/img/grade_high.png"></image><text style="font-size:12px;color:#5383C3">{{question.averageScore}}</text>分
-                <text style="margin-left:40rpx;">愿支付:</text><text style="font-size:14px;color:#5383C3">￥{{question.offer}}</text>
-                <text style="font-size:12px;color:#5383C3;margin-left:80rpx;">{{question.questionNumber}}</text><text>个提问</text>
-                <text style="font-size:12px;color:#5383C3;margin-left:80rpx;">{{question.refundRate}}%</text><text>退款率</text>
+  <view wx:if="{{showQuestionOnly}}"> 
+    <view class="questionBar">
+              <view @tap="viewQuestion({{question.questionId}})">
+                <view class="question_avatar">
+                      <image  src="{{question.avatarUrl==''?'../../files/img/avatarUrl.png':question.avatarUrl}}"></image>
+                  </view>
+                  <view class="recommendumber">已推荐{{question.recommendNumber}}个回答者待选择</view>
+                  <view class="question_deta">
+                      <view class="nickName">{{question.nickName}}</view>
+                      <view style="padding-top:20rpx;">
+                        <image class="grade_pic" src="../../files/img/grade_high.png"></image><text style="font-size:12px;color:#5383C3">{{question.averageScore}}</text>分
+                        <text style="margin-left:40rpx;">愿支付:</text><text style="font-size:14px;color:#5383C3">￥{{question.offer}}</text>
+                        <text style="font-size:12px;color:#5383C3;margin-left:80rpx;">{{question.questionNumber}}</text><text>个提问</text>
+                        <text style="font-size:12px;color:#5383C3;margin-left:80rpx;">{{question.refundRate}}%</text><text>退款率</text>
+                      </view>
+                  </view>
+                <view style="clear:both"></view>
+                <view class="question_desc">
+                  <text>问题描述：</text><text style="color:#333;display:block;margin-top:20rpx;">{{question.questionDescribe}}</text>
+                </view>
               </view>
+                <view class="profilesPic" wx:if="{{question.pics!=[]}}">
+                  <repeat for="{{question.pics}}" item="item">
+                    <image src="{{item}}" @tap="previewImage({{item}})"></image>
+                  </repeat>
+                </view>
           </view>
-        <view style="clear:both"></view>
-        <view class="question_desc">
-          <text>问题描述：</text><text style="color:#333;">{{question.questionDescribe}}</text>
-        </view>
-      </view>
-        <view class="profilesPic" wx:if="{{question.pics!=[]}}">
-          <repeat for="{{question.pics}}" item="item">
-            <image src="{{item}}" @tap="previewImage({{item}})"></image>
-          </repeat>
-        </view>
-
-     
   </view>
+  <view wx:else>
+     <scroll-view scroll-y="true" style="height:{{windowHeight-100}}rpx">
+          <view class="questionBar">
+              <view @tap="viewQuestion({{question.questionId}})">
+                <view class="question_avatar">
+                      <image  src="{{question.avatarUrl==''?'../../files/img/avatarUrl.png':question.avatarUrl}}"></image>
+                  </view>
+                  <view class="recommendumber">已推荐{{question.recommendNumber}}个回答者待选择</view>
+                  <view class="question_deta">
+                      <view class="nickName">{{question.nickName}}</view>
+                      <view style="padding-top:20rpx;">
+                        <image class="grade_pic" src="../../files/img/grade_high.png"></image><text style="font-size:12px;color:#5383C3">{{question.averageScore}}</text>分
+                        <text style="margin-left:40rpx;">愿支付:</text><text style="font-size:14px;color:#5383C3">￥{{question.offer}}</text>
+                        <text style="font-size:12px;color:#5383C3;margin-left:80rpx;">{{question.questionNumber}}</text><text>个提问</text>
+                        <text style="font-size:12px;color:#5383C3;margin-left:80rpx;">{{question.refundRate}}%</text><text>退款率</text>
+                      </view>
+                  </view>
+                <view style="clear:both"></view>
+                <view class="question_desc">
+                  <text>问题描述：</text><text style="color:#333;display:block;margin-top:20rpx;">{{question.questionDescribe}}</text>
+                </view>
+              </view>
+                <view class="profilesPic" wx:if="{{question.pics!=[]}}">
+                  <repeat for="{{question.pics}}" item="item">
+                    <image src="{{item}}" @tap="previewImage({{item}})"></image>
+                  </repeat>
+                </view>
+          </view>
+        <view>
+            <text class="commentTitle">回答者对用户的评价</text>
+            <commentList :commentList.sync="commentList">
+            </commentList>
+        </view>
+      </scroll-view>
+      <view class="applyOrSuggest">
+            <button class="suggest">推荐别人(有奖励)</button>
+            <button class="apply">申请回答</button>
+      </view>
+  </view>
+  
 
-<view>
-    <text class="commentTitle">回答者对用户的评价</text>
-    <commentList :commentList.sync="commentList">
-    </commentList>
-</view>
- </scroll-view>
-  <view class="applyOrSuggest">
-          <button class="suggest">推荐别人(有奖励)</button>
-          <button class="apply">申请回答</button>
-    </view>
+
 </view>
 
 </template>
@@ -162,6 +192,7 @@
       questionId:'',
       question:'',
       commentList:'',
+      showQuestionOnly:'',
     }
 
     methods={
@@ -218,6 +249,7 @@
     onLoad(options){
       let questionId=options.questionId;
       this.questionId=questionId;
+      this.showQuestionOnly=options.showQuestionOnly;
       this.getDetail();
     }
   }
