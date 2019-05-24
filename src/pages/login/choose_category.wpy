@@ -68,7 +68,7 @@ button::after {
 <template>
   <view>
     <view class="section">
-      <text class="zrww">选择你的分类</text>
+      <text class="zrww">选择你的擅长的领域</text>
     </view>
     <scroll-view scroll-y="true" style="height:{{windowHeight-180}}rpx">
       <view class="category">

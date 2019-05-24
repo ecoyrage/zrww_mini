@@ -1,15 +1,22 @@
 <style lang="less">
 .indexArea {
   width: 100%;
-  text-align: left;
-  
+  text-align: center;
+  height:220rpx;
+}
+.icon{
+  width:50rpx;
+  height:50rpx;
+  margin-top:16rpx;
 }
 
-.title {
+.indexArea_title {
   font-size: 14px;
-  color:#333;
-  font-weight: bold;
-  margin:30rpx 30rpx;
+  color:#000;
+  margin:20rpx 0;
+  overflow: hidden;  
+  white-space: nowrap;  
+  text-overflow: ellipsis; 
 }
 .subtitle{
   color: rgba(153, 153, 153, 1);
@@ -17,26 +24,35 @@
   margin:-20rpx 30rpx;
   width:528rpx;
 }
-
-.icon{
-  width:80rpx;
-  height:80rpx;
-  position:absolute;
-  right:30rpx;
-  margin-top:-50rpx;
-
+.behave{
+  margin-top:-10rpx;
+  width:152rpx;
+  height: 60rpx;
+  background-color: #5383C3;
+  color:#FFF;
+  text-align: center;
+  font-size:14px;
+  border-radius: 5px;
+  line-height: 60rpx;
+  display:block;
+}
+.behave_reject{
+  background-color: #F6F6F6;
+  color:#F05654;
+  font-size:14px;
+  width:380rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  border-radius: 5px;
 }
 </style>
 <template>
   <view class="indexArea">
-   
-    <slot name="title"  class="title" >
+    <slot name="icon"   class="icon"  src="" ></slot>
+    <slot name="indexArea_title"  class="indexArea_title" >
       Title
     </slot>
-    <slot name="subtitle"  class="subtitle" >
-      subtitle
-    </slot>
-    <slot name="icon"   class="icon"  src="" ></slot>
+     <slot name="behave" class="behave">Name </slot>
   </view>
 </template>
 <script>

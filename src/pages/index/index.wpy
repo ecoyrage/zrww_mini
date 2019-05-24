@@ -199,45 +199,13 @@
         </swiper>
         <view class="grey_space"></view>
 
-       
+        
 
-        <view wx:if="{{timePass5}}">
-          <view wx:if="{{info.responderStatus!=1}}">
-            <view class="Title" >
-              <view class="title2">自身价值<text class="blue_text">变现</text></view>
-               <button class="behave2" @tap="toBeResponder()">成为答者</button>
-              </view>
-            <view class='line' style="margin-top:10rpx;"></view>
-          </view>
-          <view class="Title">
-            <view class="title2">一次邀请，<text class="blue_text">永久</text>收益</view>
-            <button class="behave2" @tap="toInviteFriends()">去了解</button>
-          </view>
-          <view class="grey_space" style="margin-top:10rpx;"></view>
       </view>
 
 
-      <view wx:if="{{!timePass5}}">
-          <view wx:if="{{info.responderStatus!=1}}">
-            <indexArea>
-                <image class="icon" src="{{be_responder}}" slot="icon"></image>
-                <view class="title" slot="title">成为服务者、价值变现</view>
-                <view class="subtitle" slot="subtitle">希望你也可以成为服务者，服务他人的同时让自身更有价值。</view>
-            </indexArea>
-          </view>
-       <view class="grey_space" style="margin-top:80rpx;height:5rpx;"></view>
-          <indexArea>
-            <image class="icon" src="{{go_invite}}" slot="icon"></image>
-            <view class="title" slot="title">一次邀请、永久收益</view>
-            <view class="subtitle" slot="subtitle">邀请朋友加入我们，让他们的价值得到发挥，让我们也可以给他们提供帮助</view>
-          </indexArea>
-      </view>
-     <view class="grey_space" style="margin-top:80rpx;"></view>
-     </view>
 
-
-
-     <view wx:if="{{upperQuestionList.length>0}}">
+     <view wx:else>
         <!--upperQuestionList.questionList start  -->
         <!-- <view class="grey_space" style="margin-top:40rpx;"></view> -->
         <repeat for="{{upperQuestionList}}" item="item">
@@ -287,12 +255,82 @@
 
 
         </repeat>
+      <view class="grey_space" style=""></view>
+      <!--upperQuestionList.questionList end  -->
+     </view>
 
-      <view class="grey_space" style="margin-top:40rpx;"></view>
-      <view >
+     <view wx:if="{{isLogin}}">
+          <view wx:if="{{timePass5}}">
+              <view wx:if="{{info.isResponder==0 && info.responderStatus!=3 && info.responderStatus!=5}}"> 
+                  <view class="Title" >
+                  <view class="title2">自身价值<text class="blue_text">变现</text></view>
+                  <button class="behave2" @tap="toBeResponder()">成为答者</button>
+                  </view>
+              </view>
+              <view wx:elif="{{info.isResponder==1 && info.responderStatus!=3 && info.responderStatus!=5}}"> 
+                <view style="height:100rpx;">
+                  <view style="padding-top:40rpx;margin-left:20rpx;color:#999;font-size:12px;">已回答<text class="blue_text">{{info.answerNumber}}个</text>问题，共赚<text class="blue_text">{{info.answerBalance}}元</text></view>
+                  <image class="icon_qianjin" style="margin-top:-40rpx;" src="../../files/img/qianjin.png"></image>
+                </view>
+              </view>
+              <view wx:elif="{{info.responderStatus==3||info.responderStatus==5}}"> 
+                <indexArea>
+                    <image class="icon" src="{{be_responder_reject}}" slot="icon"></image>
+                    <view class="indexArea_title" slot="indexArea_title" style="color:#999">驳回理由：{{info.rejectRemark}}</view>
+                    <button class="behave_reject" slot="behave" wx:if="{{info.responderStatus==3}}">新增申请被驳回，去处理</button>
+                    <button class="behave_reject" slot="behave" wx:else>修改申请被驳回，去处理</button>
+                </indexArea>
+              </view>
+              <view class='line' style="margin-top:10rpx;"></view>
+              <view wx:if="{{info.invitationNumber==0}}">
+                <view class="Title">
+                <view class="title2">一次邀请，<text class="blue_text">永久</text>收益</view>
+                <button class="behave2" @tap="toInviteFriends()">去了解</button>
+                </view>
+              </view>
+              <view wx:else>
+                <view style="height:100rpx;" @tap="toInviteeList()">
+                  <view style="padding-top:40rpx;margin-left:20rpx;color:#999;font-size:12px;">已邀请<text class="blue_text">{{info.invitationNumber}}位</text>好友，共有<text class="blue_text">{{info.contacts}}人脉</text>，累计奖励<text class="blue_text" >{{info.invitationBalance}}元</text></view>
+                  <image class="icon_qianjin" style="margin-top:-40rpx;" src="../../files/img/qianjin.png"></image>
+                </view>
+              </view>
+            <view class="grey_space" style="margin-top:10rpx;"></view>
+          </view>
+
+
+          <view wx:else>
+            <view wx:if="{{info.responderStatus==0}}"> 
+              <indexArea>
+                  <image class="icon" src="{{be_responder}}" slot="icon"></image>
+                  <view class="indexArea_title" slot="indexArea_title">成为答者，价值变现，赚点外快</view>
+                  <button class="behave" slot="behave" style="width:180rpx;" wx:if="{{info.isResponder==0}}" @tap="toBeResponder()">成为答者</button>
+                  <button class="behave" slot="behave" wx:else>查看</button>
+              </indexArea>
+            </view>
+            <view wx:elif="{{info.responderStatus==3||info.responderStatus==5}}"> 
+              <indexArea>
+                  <image class="icon" src="{{be_responder_reject}}" slot="icon"></image>
+                  <view class="indexArea_title" slot="indexArea_title" style="color:#999">驳回理由：{{info.rejectRemark}}</view>
+                  <button class="behave_reject" slot="behave" wx:if="{{info.responderStatus==3}}">新增申请被驳回，去处理</button>
+                  <button class="behave_reject" slot="behave" wx:else>修改申请被驳回，去处理</button>
+              </indexArea>
+            </view>
+               
+            <view class="grey_space" style="height:5rpx;"></view>
+                <indexArea>
+                  <image class="icon" src="{{go_invite}}" slot="icon"></image>
+                  <view class="indexArea_title" slot="indexArea_title">一次邀请、永久收益</view>
+                  <button class="behave" slot="behave" wx:if="{{info.invitationNumber>0}}" @tap="toInviteeList()">查看</button>
+                  <button class="behave" slot="behave" wx:else @tap="toInviteFriends()">去邀请</button>
+                </indexArea>
+          </view>
+
+          <view class="grey_space" style=""></view>
+
+             <!-- <view >
         <view style="height:100rpx;">
           <view style="padding-top:40rpx;margin-left:20rpx;color:#999;font-size:12px;">已回答<text class="blue_text">{{info.answerNumber}}个</text>问题，共赚<text class="blue_text">{{info.answerBalance}}元</text></view>
-          <!-- <image class="icon_qianjin" style="margin-top:-40rpx;" src="../../files/img/qianjin.png"></image> -->
+          <image class="icon_qianjin" style="margin-top:-40rpx;" src="../../files/img/qianjin.png"></image>
         </view>
         <view class='line' style="margin-top:10rpx;"></view>
         <view style="height:100rpx;" @tap="toInviteeList()">
@@ -301,9 +339,23 @@
         </view>
        
       </view>
-      <view class="grey_space" style="margin-top:10rpx;"></view>
-      <!--upperQuestionList.questionList end  -->
-     </view>
+      <view class="grey_space" style="margin-top:10rpx;"></view> -->
+
+    </view>
+    <view wx:else>
+        <indexArea>
+            <image class="icon" src="{{be_responder}}" slot="icon"></image>
+            <view class="indexArea_title" slot="indexArea_title">成为答者，价值变现，赚点外快</view>
+            <button class="behave" slot="behave" style="width:180rpx;" @tap="toBeResponder()">成为答者</button>
+        </indexArea>
+        <view class="grey_space" style="height:5rpx;"></view>
+        <indexArea>
+          <image class="icon" src="{{go_invite}}" slot="icon"></image>
+          <view class="indexArea_title" slot="indexArea_title">一次邀请、永久收益</view>
+          <button class="behave" slot="behave" @tap="toInviteFriends()">去邀请</button>
+        </indexArea>
+        <view class="grey_space" style=""></view>
+    </view>
 
     <questionList :questionList.sync="questionList" :questionReward.sync="questionReward"></questionList>
 
@@ -337,6 +389,7 @@
       avatarUrl:"../../files/img/avatarUrl.png",
       go_invite:"../../files/img/go_invite.png",
       be_responder:"../../files/img/be_responder.png",
+      be_responder_reject:"../../files/img/be_responder_reject.png",
       isLogin:'',
       questionList:[
       ],
@@ -407,15 +460,9 @@
         }
       },
       toBeResponder(){
-        if(!this.isLogin){
-          wepy.navigateTo({
-            url:'/pages/login/login'
-          })
-        }else{
           wepy.navigateTo({
             url:'/pages/be_responder'
           })
-        }
       },
       toInviteeList(){
          wepy.navigateTo({ 
