@@ -1,4 +1,7 @@
 <style lang="less">
+page{
+  background-color: #F6F6F6;
+}
 .zrww{
   width: 692rpx;
   height: 300rpx;
@@ -75,6 +78,7 @@
 
 .behave2{
   margin-top:20rpx;
+  margin-bottom:10rpx;
   margin-right:20rpx;
   // line-height:-16rpx;
   // float:right;
@@ -167,7 +171,7 @@
   
     <view wx:if="{{upperQuestionList.length<=0}}">
 
-        <swiper  autoplay="{{autoplay}}" interval="5000"  duration="1000" circular="true" style="height:200rpx;">
+        <swiper  autoplay="{{autoplay}}" interval="5000"  duration="1000" circular="true" style="height:200rpx;background-color: #FFF;">
             <repeat for="{{rollingdata}}" item="item">
               <swiper-item>
                 <view wx:if="{{item.jumpType==-1}}" style="text-align: center;"> 
@@ -197,7 +201,7 @@
               </swiper-item>
             </repeat>
         </swiper>
-        <view class="grey_space"></view>
+        <view class="grey_space" style="height:20rpx;"></view>
 
         
 
@@ -207,7 +211,6 @@
 
      <view wx:else>
         <!--upperQuestionList.questionList start  -->
-        <!-- <view class="grey_space" style="margin-top:40rpx;"></view> -->
         <repeat for="{{upperQuestionList}}" item="item">
             <view wx:if="{{item.status==1||item.status==2||item.status==6||item.status==7}}" @tap="viewQuestion({{item.questionId}})">
               <view class="question_avatar">
@@ -255,12 +258,12 @@
 
 
         </repeat>
-      <view class="grey_space" style=""></view>
+      <view class="grey_space"></view>
       <!--upperQuestionList.questionList end  -->
      </view>
 
-     <view wx:if="{{isLogin}}">
-          <view wx:if="{{timePass5}}">
+     <view wx:if="{{isLogin}}" style="background-color: #FFF;">
+          <view wx:if="{{timePass5}}" >
               <view wx:if="{{info.isResponder==0 && info.responderStatus!=3 && info.responderStatus!=5}}"> 
                   <view class="Title" >
                   <view class="title2">自身价值<text class="blue_text">变现</text></view>
@@ -281,7 +284,7 @@
                     <button class="behave_reject" slot="behave" wx:else>修改申请被驳回，去处理</button>
                 </indexArea>
               </view>
-              <view class='line' style="margin-top:10rpx;"></view>
+              <view class='line' style="margin-top:0rpx;"></view>
               <view wx:if="{{info.invitationNumber==0}}">
                 <view class="Title">
                 <view class="title2">一次邀请，<text class="blue_text">永久</text>收益</view>
@@ -294,7 +297,7 @@
                   <image class="icon_qianjin" style="margin-top:-40rpx;" src="../../files/img/qianjin.png"></image>
                 </view>
               </view>
-            <view class="grey_space" style="margin-top:10rpx;"></view>
+            <!-- <view class="grey_space" style="margin-top:10rpx;"></view> -->
           </view>
 
 
@@ -342,7 +345,7 @@
       <view class="grey_space" style="margin-top:10rpx;"></view> -->
 
     </view>
-    <view wx:else>
+    <view wx:else style="background-color: #FFF;">
         <indexArea>
             <image class="icon" src="{{be_responder}}" slot="icon"></image>
             <view class="indexArea_title" slot="indexArea_title">成为答者，价值变现，赚点外快</view>
