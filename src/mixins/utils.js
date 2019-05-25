@@ -71,6 +71,7 @@ export default class utils extends wepy.mixin {
                   addressComponent = result.addressComponent,
                   adcode = addressComponent.adcode,
                   district = addressComponent.district;
+              if (district == "金坛市") district="金坛区"
               self.$parent.globalData.adCode = adcode;
               self.$parent.globalData.district = district
               self.$apply();

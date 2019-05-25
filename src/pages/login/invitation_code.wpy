@@ -139,6 +139,7 @@ button::after {
        
       },
       skip(){
+        let self=this;
         let json={};
         json.invitationCode='';
         let obj=self.genObj(json);
@@ -155,7 +156,7 @@ button::after {
             let result=res.data
             if(result.code==100){
                 wepy.redirectTo({
-                url:'/pages/choose_category'
+                url:'/pages/login/choose_category'
               })
             }else{
                 wepy.showToast({

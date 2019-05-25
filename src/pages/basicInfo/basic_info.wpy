@@ -257,10 +257,10 @@ button::after {
             if (res.confirm) {
               self.isLogin=false;
               self.$apply();
-              wx.clearStorageSync();
-              self.$parent.onLaunch();
+              wx.removeStorageSync('accessToken');
+              wx.removeStorageSync('randomKey');
+              wx.removeStorageSync('isLogin');
               wepy.reLaunch({ url: '/pages/index/index' });
-              
             } else if (res.cancel) {
             }
         }

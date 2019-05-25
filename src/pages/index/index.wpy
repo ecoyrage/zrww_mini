@@ -679,6 +679,7 @@ page{
     }, 1000)
 
     }
+   
     onLoad() {
       let self = this
       let isLogin=wx.getStorageSync('isLogin');
@@ -696,7 +697,6 @@ page{
         let random=Math.floor(Math.random()*questionCaseList.length)
         self.questionCaseList=questionCaseList[random].fileName;
       }
-    
       self.$apply();
 
       let json={};
