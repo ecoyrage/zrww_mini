@@ -258,7 +258,7 @@ page{
 
 
         </repeat>
-      <view class="grey_space"></view>
+      <view class="grey_space" style="height:20rpx;"></view>
       <!--upperQuestionList.questionList end  -->
      </view>
 

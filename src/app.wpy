@@ -37,6 +37,7 @@ export default class extends wepy.app {
       'pages/index/question_detail',
       'pages/index/connectUs',
       'pages/index/my_responderList',
+      'pages/index/connect_customer',
 
 
       'pages/zrww/search_result',
