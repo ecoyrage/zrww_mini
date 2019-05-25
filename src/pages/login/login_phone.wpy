@@ -59,10 +59,10 @@ button::after {
       <text class="zrww">{{title}}</text>
     </view>
     <view class="band phone">
-      <input class="fontarea" placeholder="输入手机号" maxlength="11" @input='getPhoneValue()' value='{{account}}'/>
+      <input class="fontarea"  type="number" placeholder="输入手机号" maxlength="11" @input='getPhoneValue()' value='{{account}}'/>
     </view>
     <view class="band code">
-      <input class="fontarea" placeholder="输入验证码" @input='getCodeValue()' value='{{code}}'/>
+      <input class="fontarea"  type="number" placeholder="输入验证码" @input='getCodeValue()' value='{{code}}'/>
       <button class="getCode" @tap='getVerificationCode()' disabled='{{disabled}}'>{{codename}}</button>
     </view>
     <view class="section">

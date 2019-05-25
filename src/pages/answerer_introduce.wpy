@@ -223,7 +223,7 @@
       </panel> -->
      
   </scroll-view>
-  <view class="section">
+  <view class="section" wx:if="{{hidden!=1}}">
     <button  open-type="launchApp" app-parameter="wechat" disabled="{{isRest}}" binderror="launchAppError" class="login login-wechat">立即咨询</button>
   </view>
  
@@ -252,6 +252,7 @@
        workDay:'',
        profilesPic:'',
        isRest:false,
+       hidden:'',
     }
     mixins=[utils];
 
@@ -356,6 +357,7 @@
     onLoad(options) {
       let self = this
       self.responderId=options.responderId;
+      self.hidden=options.hidden;
       self.$apply();
       let json2={};
       json2.responderId=self.responderId;

@@ -188,7 +188,7 @@
                       <label class="little_tab">平均<label class="blue_font">{{item.averageTime}}分钟</label>响应</label>
                     </view>
                   </view>
-                  <button class="next_button">问问</button>
+                  <button class="next_button" wx:if="{{hidden==true}}">问问</button>
               </view>
           </view>
 
@@ -203,6 +203,7 @@
   export default class responderList extends wepy.component {
     props = {
       responderList: {},
+      hidden:{},
     }
     components = {
        servicelabel: servicelabel,
@@ -210,7 +211,7 @@
 
     methods={
       clickNext(id){
-       wepy.navigateTo({ url: '/pages/answerer_introduce?responderId='+id});
+       wepy.navigateTo({ url: '/pages/answerer_introduce?responderId='+id+'&hidden='+this.hidden});
        
       }
     }

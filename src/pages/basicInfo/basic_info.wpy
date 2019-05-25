@@ -90,7 +90,7 @@
   height: 48rpx;
   position:absolute;
   right: 0;
-  top: 90rpx;
+  top: 80rpx;
 }
 .separator{
   position: absolute;
@@ -237,7 +237,6 @@ button::after {
     methods = {
      clickWallet(){
       wepy.navigateTo({ url: '/pages/wallet/wallet' });
-       
      },
      clickAnswer(){
       wepy.navigateTo({ url: '/pages/basicInfo/answer_record' });

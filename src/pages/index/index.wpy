@@ -209,7 +209,7 @@ page{
 
 
 
-     <view wx:else>
+     <view wx:else style="background-color: #FFF;">
         <!--upperQuestionList.questionList start  -->
         <repeat for="{{upperQuestionList}}" item="item">
             <view wx:if="{{item.status==1||item.status==2||item.status==6||item.status==7}}" @tap="viewQuestion({{item.questionId}})">
@@ -221,7 +221,7 @@ page{
                 <text class="question_status" style="{{item.status==2||item.status==6||item.status==7?'color:#DF7163':''}}">{{status[item.status]}}</text>
                 <view style="clear:both"></view>
                 <view wx:if="{{item.status==2}}">
-                  <text class="end_time">{{item.createTime}}</text>
+                  <text class="end_time">驳回原因：{{item.rejectRemark}}</text>
                 </view>
                 <view wx:else>
                   <text class="end_time"></text>  
@@ -302,12 +302,12 @@ page{
 
 
           <view wx:else>
-            <view wx:if="{{info.responderStatus==0}}"> 
+            <view wx:if="{{info.responderStatus==0||info.responderStatus==1}}"> 
               <indexArea>
                   <image class="icon" src="{{be_responder}}" slot="icon"></image>
                   <view class="indexArea_title" slot="indexArea_title">成为答者，价值变现，赚点外快</view>
                   <button class="behave" slot="behave" style="width:180rpx;" wx:if="{{info.isResponder==0}}" @tap="toBeResponder()">成为答者</button>
-                  <button class="behave" slot="behave" wx:else>查看</button>
+                  <button class="behave" slot="behave" wx:else @tap="toMyResponderList()">查看</button>
               </indexArea>
             </view>
             <view wx:elif="{{info.responderStatus==3||info.responderStatus==5}}"> 
@@ -328,7 +328,7 @@ page{
                 </indexArea>
           </view>
 
-          <view class="grey_space" style=""></view>
+          <view class="grey_space" style="height:20rpx;"></view>
 
              <!-- <view >
         <view style="height:100rpx;">
@@ -357,7 +357,7 @@ page{
           <view class="indexArea_title" slot="indexArea_title">一次邀请、永久收益</view>
           <button class="behave" slot="behave" @tap="toInviteFriends()">去邀请</button>
         </indexArea>
-        <view class="grey_space" style=""></view>
+        <view class="grey_space" style="height:20rpx;"></view>
     </view>
 
     <questionList :questionList.sync="questionList" :questionReward.sync="questionReward"></questionList>
@@ -401,7 +401,7 @@ page{
       status:[
         '待支付',
         '审核中',
-        '审核驳回',
+        '被驳回',
         '发布中',
         '等待接单',
         '接单超时',
@@ -508,7 +508,15 @@ page{
            wepy.navigateTo({
             url: '/pages/index/question_detail?questionId='+questionId+'&showQuestionOnly=true'
           })
-        }
+        },
+      stopTouchMove(){
+         return false;
+      },
+      toMyResponderList(){
+        wepy.navigateTo({
+          url: '/pages/index/my_responderList?hidden=1',
+        })
+      }
     }
 
 

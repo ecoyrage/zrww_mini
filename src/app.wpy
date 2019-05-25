@@ -33,10 +33,10 @@ export default class extends wepy.app {
   config = {
     pages: [
      
-      
       'pages/index/index',
       'pages/index/question_detail',
       'pages/index/connectUs',
+      'pages/index/my_responderList',
 
 
       'pages/zrww/search_result',
