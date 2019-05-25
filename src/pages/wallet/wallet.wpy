@@ -104,19 +104,19 @@
               <image class="icon_qianjin" src="../../files/img/qianjin.png"></image>
           </view>
           <view class="line"></view>
-          <view style="display:flex">
+          <view style="display:flex" @tap="toNoContent()">
               <image class="wallet_icon" src="../../files/img/wallet/dtsy.png"></image>
               <view class="wallet_name">答题收益记录</view>
               <image class="icon_qianjin" src="../../files/img/qianjin.png"></image>
           </view>
           <view class="line"></view>
-          <view style="display:flex">
+          <view style="display:flex" @tap="toNoContent()">
               <image class="wallet_icon" src="../../files/img/wallet/tjjl.png"></image>
               <view class="wallet_name">推荐奖励记录</view>
               <image class="icon_qianjin" src="../../files/img/qianjin.png"></image>
           </view>
           <view class="line"></view>
-          <view style="display:flex">
+          <view style="display:flex" @tap="toNoContent()">
               <image class="wallet_icon" src="../../files/img/wallet/txjl.png"></image>
               <view class="wallet_name">提现记录</view>
               <image class="icon_qianjin" src="../../files/img/qianjin.png"></image>
@@ -152,6 +152,11 @@
             url: '/pages/wallet/invitee_list' 
         });
          
+     },
+     toNoContent(){
+         wepy.navigateTo({ 
+            url: '/pages/no_content' 
+        });
      }
       
     }

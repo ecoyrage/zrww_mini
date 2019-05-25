@@ -1,0 +1,39 @@
+<style lang="less">
+page{
+ height: 100%;
+}
+.contain{
+  color:#999;
+  font-size: 12px;
+  height: 100%;
+}
+.nodata{
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  height: 100%;
+} 
+</style>
+<template>
+ <view class="contain">
+   <view class="nodata">
+     暂无内容
+   </view>
+</view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class no_content extends wepy.page {
+    config = {
+      navigationBarTitleText: "",
+    }
+ 
+    data = {
+    }
+
+    onLoad(options) {
+     
+    }
+  }
+</script>

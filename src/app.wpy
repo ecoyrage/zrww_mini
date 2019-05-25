@@ -61,6 +61,7 @@ export default class extends wepy.app {
       
       'pages/be_responder',
       'pages/invite_friends',//邀请好友
+      'pages/no_content',//暂无内容
 
       'pages/login/login_phone',
       'pages/login/invitation_code',//邀请码
