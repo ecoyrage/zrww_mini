@@ -131,7 +131,7 @@
 } 
 </style>
 <template>
-  <view>
+  <view style="margin-bottom:80rpx;">
      <view wx:if="{{responderList.length==0}}" class='nodata'>暂无内容</view>
      <view class="responder_view">
         <repeat for="{{responderList}}" item="item">

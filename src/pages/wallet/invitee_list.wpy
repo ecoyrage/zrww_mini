@@ -294,7 +294,7 @@
         
         </scroll-view>
      <view class="section">
-      <button class="login login-wechat"  @tap='confirm()'>继续邀请</button>
+      <button class="login login-wechat" @tap="toInviteFriends()">继续邀请</button>
     </view>
     
   </view>
@@ -323,7 +323,12 @@
             wepy.navigateTo({ 
                 url: '/pages/wallet/inviter_rank' 
                 });
-        }
+        },
+        toInviteFriends(){
+          wepy.navigateTo({
+            url:'/pages/invite_friends?invitationCode='+  wx.getStorageSync('basicInfo').invitationCode
+          })
+      }
     }
 
 

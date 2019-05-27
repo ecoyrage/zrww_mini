@@ -15,6 +15,9 @@ export default  class privacyProtection extends wepy.page {
      onLoad(options) {
           let self = this
           self.html=options.html;
+          if(options.inviteCode!=null){
+            self.html=self.html+"?inviteCode="+options.inviteCode
+          }
           self.$apply();
      }
 }

@@ -381,6 +381,7 @@ page{
       navigationBarTitleText: '',
       enablePullDownRefresh: true,
       navigationBarBackgroundColor: "#F6F6F6",
+      backgroundColor:'#f6f6f6',
     }
     components = {
       indexArea:indexArea,

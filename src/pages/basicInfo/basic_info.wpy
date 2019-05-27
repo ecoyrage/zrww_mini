@@ -103,9 +103,11 @@
   display: inline;
   font-size:14px;
   position: absolute;
-  padding-top:20rpx;
+  padding-top:15rpx;
   padding-left:20rpx;
   background-color: transparent;
+  width: 80%;
+  text-align: left;
 }
 button::after {
   border: none;
@@ -184,7 +186,7 @@ button::after {
        
 
      </view>
-      <view class="grey_space" style="height:{{windowHeight-600}}rpx;">
+      <view class="grey_space" style="height:{{windowHeight-500}}rpx;">
         <view class="logout" @tap="logout()" wx:if="{{isLogin}}">
           <text>退出登录</text>
         </view>
@@ -201,6 +203,8 @@ button::after {
     config = {
       navigationBarTitleText: '我的',
       navigationBarBackgroundColor: "#5383C3",
+      backgroundColor:'#5383C3',
+      enablePullDownRefresh: true,
     }
     components = {
      
@@ -270,6 +274,18 @@ button::after {
      }
     }
 
+    onReachBottom() {
+      wx.setBackgroundColor({
+        backgroundColor: '#F6F6F6', // 窗口的背景色为白色
+      })
+    }
+    onPullDownRefresh(){
+       wx.setBackgroundColor({
+        backgroundColor: '#5383C3', // 窗口的背景色为白色
+      })
+      wx.hideNavigationBarLoading() //完成停止加载
+      wx.stopPullDownRefresh() //停止下拉刷新
+    }
 
     events = {
       // 'index-emit': (...args) => {

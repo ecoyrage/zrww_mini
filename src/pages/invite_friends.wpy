@@ -78,7 +78,7 @@ button::after {
       <view class="copy">复制</view>
     </view>
     <view class="section">
-      <button class="login login-wechat" >邀请好友</button>
+      <button open-type="share" class="login login-wechat" >邀请好友</button>
     </view>
     <scroll-view scroll-y="true" style="height:{{windowHeight-100}}rpx">
       <view style="margin-left:20rpx;overflow:hidden">
@@ -94,7 +94,8 @@ button::after {
   import utils from "../mixins/utils";
   export default class invite_friends extends wepy.page {
     config = {
-      navigationBarTitleText: '邀请好友'
+      navigationBarTitleText: '邀请好友',
+       backgroundColor:'#FFF',
     }
     components = {
     }
@@ -114,6 +115,13 @@ button::after {
             })
           }
         })
+      },
+      onShareAppMessage(res) {
+        let path='/pages/out/privacyProtection?html='+wx.getStorageSync('basicInfo').zrwwdownloadUrl.replace("?","&");
+        return {
+          title: '',
+          path: path
+        }
       }
       
     }
