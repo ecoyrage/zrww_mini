@@ -64,7 +64,7 @@ export default class utils extends wepy.mixin {
           self.$parent.globalData.latitude = latitude
           self.$parent.globalData.longitude = longitude
           wepy.request({
-            url: 'http://api.map.baidu.com/geocoder/v2/?&location=' + latitude + ',' + longitude + '&output=json&ak=5vsXU7pSrrRWAX7c1odIcgD6fV89KasD',
+            url: 'https://api.map.baidu.com/geocoder/v2/?&location=' + latitude + ',' + longitude + '&output=json&ak=5vsXU7pSrrRWAX7c1odIcgD6fV89KasD',
             method: 'get',
             success: function (res) {
               let result = res.data.result,

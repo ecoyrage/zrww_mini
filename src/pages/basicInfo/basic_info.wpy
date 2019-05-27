@@ -166,12 +166,12 @@ button::after {
      </view>
 
      <view>
-        <view class="tab_menu">
+        <!-- <view class="tab_menu">
              <image class="tab_menu_img" src="../../files/img/basicInfo/lxpt.png"></image>
              <text>联系平台</text>
               <image class="icon_qianjin" src="../../files/img/qianjin.png"></image>
              <view class='line'></view>
-        </view>
+        </view> -->
         <view class="tab_menu">
              <image class="tab_menu_img" src="../../files/img/basicInfo/shezhi.png"></image>
              <button class="shezhi" open-type="openSetting">设置</button>
@@ -186,7 +186,7 @@ button::after {
        
 
      </view>
-      <view class="grey_space" style="height:{{windowHeight-500}}rpx;">
+      <view class="grey_space" style="height:{{windowHeight-480}}rpx;">
         <view class="logout" @tap="logout()" wx:if="{{isLogin}}">
           <text>退出登录</text>
         </view>

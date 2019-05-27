@@ -65,20 +65,20 @@
   <view>
       <view class="head">
         <view class="font_size12">积分总收益</view>
-        <view class="font_size18">125.35</view>
+        <view class="font_size18">00.00</view>
         <view class="head2">
             <view class="head2part" style="margin-left:20rpx;">
-                <view class="font_size16">1015.00</view> 
+                <view class="font_size16">00.00</view> 
                 <view class="font_size12">邀请奖励</view> 
             </view>
             <view style="height:60rpx;margin-top:10rpx;border-left:1px #FFF solid;"></view>
             <view class="head2part">
-                <view class="font_size16">1015.00</view> 
+                <view class="font_size16">00.00</view> 
                 <view class="font_size12">答题收益</view> 
             </view>
              <view style="height:60rpx;margin-top:10rpx;border-left:1px #FFF solid;"></view>
             <view class="head2part" style="margin-right:20rpx;margin-bottom:20rpx;">
-                <view class="font_size16">1015.00</view> 
+                <view class="font_size16">00.00</view> 
                 <view class="font_size12">推荐奖励</view>
             </view>
         </view>
@@ -88,10 +88,10 @@
       <view class="jfye">
           <view>
                 <text style="margin-left:88rpx;font-size:14px;color:#333">积分余额</text>
-                <text style="margin-left:42rpx;font-size:20px;color:#333;font-weight:bold">105.00</text>
-                <view style="display:inline-table;position:absolute;right:20rpx;">
+                <text style="margin-left:42rpx;font-size:20px;color:#333;font-weight:bold">00.00</text>
+                <!-- <view style="display:inline-table;position:absolute;right:20rpx;">
                     <button class="tixian">提现</button>
-                </view>
+                </view> -->
           </view>
       </view>
 

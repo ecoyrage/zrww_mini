@@ -163,6 +163,7 @@
           duration: 3000
         })
       }else{
+      
         self.getUserLocation();
         if(self.isGetUserLocation){
           self.$parent.globalData.userInfo=userInfo;
@@ -171,6 +172,12 @@
           self.$parent.globalData.unionId=unionId;
           self.$apply();
           let firstReg= await self.oauthLogin(unionId,userInfo);
+          wx.showToast({
+              title: '登录中',
+              icon: 'loading',
+              duration: 3000,
+              mask:true
+          })
           if(firstReg==-1){
               wepy.navigateTo({
                 url:'/pages/login/login_phone?title=绑定手机号&submit=确认&type=2'

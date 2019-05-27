@@ -216,11 +216,11 @@
         <view class="grey_space" style="margin-top:16rpx;"></view>
         <view>
             <view class='today_profit'>
-                今日奖励：<text style="color:#F05654">{{model.todayInvitationBalance}}元</text>，累计奖励：<text style="color:#F05654">800元</text>
+                今日奖励：<text style="color:#F05654">{{model.todayInvitationBalance}}元</text>，累计奖励：<text style="color:#F05654">0元</text>
             </view>
-            <view style="display:inline-table;position:absolute;right:20rpx;margin-top:-48rpx;">
+            <!-- <view style="display:inline-table;position:absolute;right:20rpx;margin-top:-48rpx;">
                 <button class="tixian">提现</button>
-            </view>
+            </view> -->
             <view class="invite_desc" wx:if="{{model.invitationLevel<3}}">
                 你邀请的好友，以及好友邀请的其它人都会成为你的人脉他们在平台形成交易后，你都会获得奖励
             </view>
@@ -251,40 +251,7 @@
                 </view>
                 <view style="clear:both"></view>
             </repeat>
-            <!-- <view style="margin-top:20rpx;padding-top:20rpx;">
-                <view class="invite_avatar">
-                    <image src="../../files/img/avatarUrl.png"></image>
-                </view>
-                <view style="float:left">
-                    <text class="nick_name">客服</text>
-                    <text class="is_Responder">回答者</text>
-                    <text class="provide">提供</text>
-                    <text class="contacts">200人脉</text>
-                    <view style="clear:both"></view>
-                    <text class="invite_time">2019.11.30</text>
-                    <text class="total_desc">累计产生奖励</text>
-                    <text class="total_profit">1.8元</text>
-                </view>
-            </view>
-            <view style="clear:both"></view>
-
-
-            <view style="margin-top:20rpx;padding-top:20rpx;">
-                <view class="invite_avatar">
-                    <image src="../../files/img/avatarUrl.png"></image>
-                </view>
-                <view style="float:left">
-                    <text class="nick_name">客服</text>
-                    <text class="is_Responder">回答者</text>
-                    <text class="provide">提供</text>
-                    <text class="contacts">200人脉</text>
-                    <view style="clear:both"></view>
-                    <text class="invite_time">2019.11.30</text>
-                    <text class="total_desc">累计产生奖励</text>
-                    <text class="total_profit">1.8元</text>
-                </view>
-            </view>
-            <view style="clear:both"></view> -->
+            
            
              
 
