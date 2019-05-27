@@ -249,9 +249,9 @@ page{
                 <view style="clear:both"></view>
                 <text class="questionDescribe">简述：{{item.questionDescribe}}</text>
               </view>
-              <view style="display:inline-table;position:absolute;right:20rpx;margin-top:40rpx;">
+              <!-- <view style="display:inline-table;position:absolute;right:20rpx;margin-top:40rpx;">
                   <button class="chakan" >查看</button>
-              </view>
+              </view> -->
               <view style="clear:both"></view>
             </view>
             

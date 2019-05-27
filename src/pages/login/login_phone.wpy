@@ -220,7 +220,7 @@ button::after {
                 self.getBascicInfo();
               }else if(result.data.firstReg==1){
                 wepy.navigateTo({
-                  url:'/pages/invitation_code'
+                  url:'/pages/login/invitation_code'
                 })
               }
 
