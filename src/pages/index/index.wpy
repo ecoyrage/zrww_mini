@@ -2,17 +2,27 @@
 page{
   background-color: #F6F6F6;
 }
+.head{
+  position:fixed;
+  height: 90rpx;
+  background-color: #5383c3;
+  width: 100%;
+  z-index: 999;
+
+}
 .zrww{
   width: 692rpx;
   height: 300rpx;
   line-height: 20px;
-  border-radius: 5px;
+  border-radius: 10px;
   text-align: left;
-  box-shadow: 0px 0px 0px 0px rgba(170, 170, 170, 1);
-  border: 1px solid rgba(51, 51, 51, 1);
-  background-color: #fff;
+  // box-shadow: 0px 0px 0px 0px rgba(170, 170, 170, 1);
+  // border: 1px solid rgba(51, 51, 51, 1);
+  background-color: #FFF;
+  margin-top:100rpx;
 
 }
+
 .userinfo-avatar {
   width: 80rpx;
   height: 80rpx;
@@ -36,11 +46,7 @@ page{
    height:38rpx;
    
 }
-.zrww_logo text{
-  color: rgba(153, 153, 153, 1);
-  font-size: 12px;
-  display: block;
-}
+
 .login{
   display: flex;
   align-items: center;
@@ -49,13 +55,13 @@ page{
   height: 100rpx;
   line-height: 20px;
   border-radius: 5px;
-  color: #ffffff;
+  color: #EEEEEE;
   font-size: 32rpx;
 }
 .login-wechat{
   margin-top:40rpx;
   background-color: #5383c3;
-  color: #ffffff;
+  color: #EEEEEE;
 }
 .grey_space{
    background-color: #F6F6F6;
@@ -146,25 +152,57 @@ page{
   color:#999;
   margin:22rpx 0;
 }
+.zhaorenwenwen{
+  color:#FFF;
+  font-size:18px;
+  font-weight: bold;
+}
+.district{
+  color: #FFF;
+  font-size: 12px;
+  display: block;
+}
+.kefu{
+  color: rgba(255, 255, 255, 1);
+  font-size: 8px;
+  position:absolute;
+  right:48rpx;
+  top:50rpx;
+}
+.renmaiquan{
+  color: rgba(255, 255, 255, 1);
+  font-size: 8px;
+  position:absolute;
+  right:120rpx;
+  top:50rpx;
+}
 </style>
 <template>
   <view>
-    <view style="background-color: #F6F6F6">
-     <view class="userinfo-avatar" @tap="userInfo()">
-          <image  src="{{avatarUrl}}"></image>
+    <view style="background-color:#5383C3">
+      <view class="head">
+        <view class="userinfo-avatar" @tap="userInfo()">
+              <image  src="{{avatarUrl}}"></image>
+          </view>
+          <view class="zrww_logo">
+              <!-- <image  src="../../files/img/zrww.png"></image> -->
+              <text class="zhaorenwenwen">找人问问</text>
+              <text class="district">{{district}}</text>
+          </view>
+          <view>
+          <image class="lxwm_img" @tap="connectUs()" src="../../files/img/lxwm.png"></image>
+          <text class="kefu">客服</text>
+          <image class="search_img" @tap="search()" src="../../files/img/search_black.png"></image>
+          <text class="renmaiquan">人脉圈</text>
+          </view>
       </view>
-      <view class="zrww_logo">
-          <image  src="../../files/img/zrww.png"></image>
-          <text>{{district}}</text>
-      </view>
-      <view>
-       <image class="lxwm_img" @tap="connectUs()" src="../../files/img/lxwm.png"></image>
-        <image class="search_img" @tap="search()" src="../../files/img/search_black.png"></image>
-      </view>
-      <view style="display:flex;align-items:center;justify-content:center;height: 380rpx;">
+      <view style="display:flex;align-items:center;justify-content:center;height: 480rpx;">
         <view class="zrww" @tap="zrww()">
-          <view style="color:#333;font-size:18px;font-weight:bold;margin:20rpx 20rpx;">输入想找的人  ·  想问的事</view>
-          <view style="color:#999;font-size:14px;margin:100rpx 20rpx;">{{questionCaseList}}</view>   
+          <view style="color:#333;font-size:18px;margin:30rpx 30rpx;">输入想找的人  ·  想问的事</view>
+          <view style="color:#999;font-size:14px;margin:10rpx 30rpx;">可以这样输入：</view>   
+          <view style="color:#999;font-size:14px;margin:10rpx 30rpx;">{{questionCaseList1}}</view>
+          <view style="color:#999;font-size:14px;margin:10rpx 30rpx;">{{questionCaseList2}}</view>  
+          <view style="color:#999;font-size:14px;margin:0rpx 30rpx;">......</view>    
         </view>
       </view>
     </view>
@@ -380,8 +418,8 @@ page{
     config = {
       navigationBarTitleText: '',
       enablePullDownRefresh: true,
-      navigationBarBackgroundColor: "#F6F6F6",
-      backgroundColor:'#f6f6f6',
+      navigationBarBackgroundColor: "#5383C3",
+      backgroundColor:'#5383C3',
     }
     components = {
       indexArea:indexArea,
@@ -422,7 +460,8 @@ page{
       rollingdata:[
       ],
       autoplay:true,
-      questionCaseList:''
+      questionCaseList1:'',
+      questionCaseList2:''
        
     }
    
@@ -703,8 +742,13 @@ page{
       }
       let questionCaseList=wx.getStorageSync('questionCaseList');
       if(questionCaseList!=""){
-        let random=Math.floor(Math.random()*questionCaseList.length)
-        self.questionCaseList=questionCaseList[random].fileName;
+        let random1=Math.floor(Math.random()*questionCaseList.length);
+        let random2=Math.floor(Math.random()*questionCaseList.length);
+        while(random2==random1){
+          random2=Math.floor(Math.random()*questionCaseList.length);
+        }
+        self.questionCaseList1=questionCaseList[random1].fileName;
+        self.questionCaseList2=questionCaseList[random2].fileName;
       }
       self.$apply();
 

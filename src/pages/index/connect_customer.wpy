@@ -12,8 +12,10 @@
   import responderList from '@/components/responder_list'
   export default class connect_customer extends wepy.page {
     config = {
-      navigationBarTitleText: '',
-      // enablePullDownRefresh: true,
+      navigationBarTitleText: '人工客服',
+      navigationBarBackgroundColor: "#EEE",
+      backgroundColor:'#EEE',
+      enablePullDownRefresh: true,
     }
     components = {
       responderList:responderList,
@@ -28,6 +30,12 @@
 
     methods = {
      
+    }
+    
+    onPullDownRefresh(){
+      this.onLoad();
+      wepy.hideNavigationBarLoading();
+      wepy.stopPullDownRefresh();
     }
   
     

@@ -1,17 +1,17 @@
 <style lang="less">
 .head_top{
   display: flex;
-  margin-left:20rpx;
+  margin-top:20rpx;
 }
 .userinfo-avatar {
-  width: 100rpx;
-  height: 100rpx;
+  width: 80rpx;
+  height: 80rpx;
   border-radius: 50%;
-  margin-left:20rpx;
+  margin-left:30rpx;
 }
 .avatar_img{
-  width: 100rpx;
-  height: 100rpx;
+  width: 80rpx;
+  height: 80rpx;
   border-radius: 50%;
 }
 .expert_img{
@@ -21,33 +21,26 @@
   height:46rpx;
 }
 .showName{
-  color:#444;
-  font-size: 16px;
+  color:#333;
+  font-size: 14px;
   margin-left:20rpx;
   font-weight: bold;
 }
 .model_title{
-  color:#333;
-  font-size: 14px;
+  color:#888;
+  font-size: 12px;
   margin-left:20rpx;
 }
-.location{
-  position: absolute;
-  top:60rpx;
-  right: 20rpx;
-  color:#999;
-  font-size: 12px;
-}
+
 .company{
-  color:#333;
-  font-size: 14px;
+  color:#888;
+  font-size: 12px;
   margin-left:20rpx;
   margin-top:18rpx;
 }
 .head_bottom{
   font-size: 12px;
   margin-left:20rpx;
-  margin-top:28rpx;
   display: flex;
 }
 .little_tab{
@@ -61,34 +54,38 @@
   color:#767676;
 }
 .panel_bar{
-  margin-left:20rpx;
+  color:#828282;
+  font-size: 12px;
+  margin-top:20rpx;
+  margin-left:130rpx;
 }
 .grade_pic{
   width:24rpx;
   height: 24rpx;
 }
 .profiles{
-   margin-left:20rpx;
+   margin-top:20rpx;
+   margin-left:30rpx;
    margin-right:30rpx;
    font-size:14px;
    color:#333;
 }
 .profilesPic{
-  margin-left:20rpx;
+  margin-left:30rpx;
   margin-top:20rpx;
-  margin-right:20rpx;
+  margin-right:30rpx;
   display: flex;
   flex-wrap: wrap; 
 }
 
 .profilesPic image{
-  width:200rpx;
-  height:200rpx;
-  margin-right:37rpx;
-  margin-bottom:16rpx;
+  width:211rpx;
+  height:211rpx;
+  margin-right:20rpx;
+  margin-bottom:20rpx;
 }
 .status_img{
-  margin-left:20rpx;
+  margin-left:-10rpx;
   width: 100rpx;
   height:30rpx;
 }
@@ -113,11 +110,6 @@
   background-color: #5383c3;
   color: #ffffff;
 }
-.line{
-  width: 93%;
-  margin-top: 20rpx;
-  border-top:1rpx #BBB solid;
-}
 .service_bar{
   font-size:12px;
   color:#303030;
@@ -141,17 +133,55 @@
 .focus.unfocus{
   color:#FF0000;
 }
-
+.little_tabs{
+  margin-top:20rpx;
+  margin-left:120rpx;
+  color:#828282;
+  font-size: 12px;
+}
+.little_tab{
+  position: absolute;
+  left: 300rpx;
+}
+.fee{
+  color:#F05654;
+  font-size: 12px;
+  position: absolute;
+  right: 30rpx;
+  margin-top:50rpx;
+  font-weight: bold;
+}
+.location{
+  position: absolute;
+  top:30rpx;
+  right: -10rpx;
+  color:#888;
+  font-size: 12px;
+  overflow: hidden;  
+  white-space: nowrap;  
+  text-overflow: ellipsis; 
+  width:150rpx; 
+}
+.isExpert{
+  height: 100rpx;
+  display: flex;
+  align-items: center;
+  justify-content: left;  
+  margin-left:120rpx;
+}
 </style>
 //回答者介绍页
 <template>
   <view>
-    <scroll-view scroll-y="true" style="height:{{windowHeight-100}}rpx">
+    <scroll-view scroll-y="true" style="height:{{windowHeight-100}}rpx" @scrolltolower="showMore()" @scrolltoupper="reLoad()">
       <view class="head_top">
         <view class="userinfo-avatar">
             <image  class="avatar_img" src="{{model.avatarUrl==''?'../files/img/avatarUrl.png':model.avatarUrl}}"></image>
-            <image  wx:if="{{model.isExpert==1}}" class="expert_img" src="../files/img/expert.png"></image>
+            <view class="status_img">
+                  <image wx:if="{{isRest}}" src="../files/img/rest.png"></image>
+            </view>
         </view>
+     
         <view>
           <view>
             <label class="showName">{{model.showName}}</label>
@@ -161,66 +191,64 @@
             <label class="company">{{model.company}}</label>
           </view>
         </view>
-          <button wx:if="{{model.isFocus==0}}" class="focus" @tap="focus({{responderId}})">+关注</button>
-          <button wx:if="{{model.isFocus==1}}" class="focus unfocus" @tap="unfocus({{responderId}})">取消关注</button>
+         
+          <!-- <button wx:if="{{model.isFocus==0}}" class="focus" @tap="focus({{responderId}})">+关注</button>
+          <button wx:if="{{model.isFocus==1}}" class="focus unfocus" @tap="unfocus({{responderId}})">取消关注</button> -->
         <view>
           <label class="location">{{model.location}}</label>
-        </view>
-      </view>
-      <view class="head_bottom">
-          <view class="status_img">
-              <image wx:if="{{isRest}}" src="../files/img/rest.png"></image>
-          </view>
-          <!-- <label wx:if="{{isRest}}" class="status_label"><text space="nbsp"> 休息中 </text></label>
-          <view style="{{isRest?'margin-left:10rpx':'margin-left:100rpx'}}"></view> -->
-          <view class="little_tabs">
-            <label class="little_tab"><image class="grade_pic" src="../files/img/grade_high.png"></image><label class="blue_font">{{model.averageScore}}</label>分</label>
-            <label class="little_tab"><label class="blue_font">{{model.answerNumber}}</label>个回答</label>
-            <label class="little_tab"><label class="blue_font">{{model.responseRate}}%</label>响应率</label>
-            <label class="little_tab">平均<label class="blue_font">{{model.averageTime}}分钟</label>响应</label>
-          </view>
-          
-      </view>
-
-      <servicelabel :servicelabel.sync="servicelabel"></servicelabel>
-
-
-
-
-      <panel>
-        <view class="title" slot="title">服务时间
-        </view>
-        <view class="panel_bar">
-          <view>
-            <label class="gery_font">{{workDay}}</label>
-          </view>
-          <view style="margin-top:20rpx">
-            <label class="gery_font">{{model.serviceTime}}</label>
-          </view>
-          <view class='line'></view>
-          <view class="service_bar">
-            <text @tap="serviceDescriptionPic()">24小时内可追问</text><image class="doubt_img" src="../files/img/doubt.png"></image>
-            <text @tap="serviceDescriptionPic()" style="margin-left:84rpx;">在线互动</text><image class="doubt_img" src="../files/img/doubt.png"></image>
-            <text wx:if="{{model.isRefund==1}}" style="margin-left:100rpx;">支持无理由退款</text>
-          </view>
+          <label class="fee">{{model.fee==0?'免费':'￥'+model.fee}}</label>
         </view>
         
-      </panel>
+      </view>
+      <view style="margin-left:90rpx">
+        <servicelabel :servicelabel.sync="servicelabel"></servicelabel>
+      </view>
+      <view class="head_bottom">
+          <view class="little_tabs">
+            <label><image class="grade_pic" src="../files/img/grade_high.png"></image><label class="blue_font">{{model.averageScore}}</label>分</label>
+            <label class="little_tab">被咨询<label class="blue_font">{{model.answerNumber}}次</label></label>
+            <view style="margin-top:20rpx;">
+              <label><label class="blue_font">{{model.responseRate}}%</label>响应率</label>
+              <label class="little_tab">平均<label class="blue_font">{{model.averageTime}}分钟</label>响应</label>
+            </view>
+          </view>
+      </view>
+       <view class="panel_bar">
+          <view>
+            <label style="margin-left:-110rpx;font-size:12px;color:#333">服务时间</label>
+            <label style="margin-left:20rpx">{{workDay}}</label>
+          </view>
+          <view style="margin-left:6rpx;margin-top:20rpx;color:#888">
+            <label>{{model.serviceTime}}</label>
+          </view>
+      </view>
+
+      <view style="margin-top:20rpx;">
+      </view>
 
       <panel>
         <view class="title" slot="title">简介</view>
         <view class="profiles">{{model.profiles}}</view>
         <view class="profilesPic">
-          <repeat for="{{profilesPic}}" item="item">
+          <repeat for="{{profilesPic}}" item="item" wx:if="{{profilesPic!=''}}">
             <image src="{{item}}" @tap="previewImage({{item}})"></image>
           </repeat>
         </view>
 
       </panel>
       
-      <!-- <panel wx:if="{{model.commentNumber>0}}">
-        <view class="title" slot="title">用户评论</view>
-      </panel> -->
+      <panel >
+        <view class="title" slot="title">保障</view>
+        <view class="isExpert" @tap="serviceDescriptionPic()">{{model.isExpert==1?'专家认证·':''}}{{model.isRefund==1?'可退款·':''}}24小时可追问</view>
+        <image class="icon_qianjin" style="right:30rpx;margin-top:-70rpx;"  src="../files/img/qianjin.png"></image>
+      </panel>
+
+      <panel >
+        <view class="title" slot="title">用户评价({{model.commentNumber}})</view>
+        <commentList :commentList.sync="commentList">
+        </commentList>
+      </panel>
+     
      
   </scroll-view>
   <view class="section" wx:if="{{hidden!=1}}">
@@ -235,14 +263,18 @@
   import wepy from 'wepy'
   import Panel from '../components/panel' 
   import servicelabel from '../components/servicelabel'
-  import utils from "../mixins/utils";
+  import utils from "../mixins/utils"
+  import commentList from "@/components/comment_list"
   export default class answerer_introduce extends wepy.page {
     config = {
-      navigationBarTitleText: ''
+      navigationBarTitleText: '详情',
+      navigationBarBackgroundColor: "#EEE",
+      backgroundColor:"#EEE", 
     }
     components = {
        panel: Panel,
        servicelabel: servicelabel,
+       commentList:commentList,
     }
 
     data = {
@@ -253,6 +285,10 @@
        profilesPic:'',
        isRest:false,
        hidden:'',
+       pageNum:1,
+       pageSize:10,
+       commentList:'',
+       noMore:false,
     }
     mixins=[utils];
 
@@ -345,8 +381,64 @@
       }
        
       
-    }
+    }  
 
+
+    reLoad(){
+        this.pageNum=1;
+        this.noMore=false;
+        this.onLoad();
+        wx.hideNavigationBarLoading();
+        wx.stopPullDownRefresh();
+    }
+    showMore(){
+        if(!this.noMore){
+            let self=this;
+            wx.showLoading({
+              title: '玩命加载中',
+            })
+            let json={};
+            self.pageNum+=1;
+            json.pageNum=self.pageNum+'';
+            json.pageSize=self.pageSize+'';
+            json.responderId=self.responderId;
+            let obj=self.genObj(json);
+            let sign=self.genSign(obj);
+            wepy.request({
+              url:  self.domain+'/ww/api/v1/responder/commentList',
+              method: 'post',
+              data: {object:obj,sign:sign},
+              header:{
+                'JWT': 'true',
+                'content-type':'application/json', 
+                'Authorization':'Bearer '+self.accessToken
+              },
+              success: res => {
+                if(res.data.code==100){
+                  wx.hideLoading();
+                  let list=res.data.data.list;
+                  if(list.length==0){
+                    wx.showToast({
+                      title: '暂无更多数据',
+                      icon: 'none',
+                    })
+                    self.noMore=true
+                  }
+                  for(let i=0;i<list.length;i++){
+                    self.commentList.push(list[i]);
+                  }
+                  self.$apply();
+                }
+              
+              }
+            })
+          }else{
+            wx.showToast({
+                title: '暂无更多数据',
+                icon: 'none',
+              })
+          }
+    }
     events = {
       // 'index-emit': (...args) => {
       //   let $event = args[args.length - 1]
@@ -356,17 +448,21 @@
   
     onLoad(options) {
       let self = this
-      self.responderId=options.responderId;
-      self.hidden=options.hidden;
+      if(self.responderId==""){
+        self.responderId=options.responderId;
+      }
+      if(options!=undefined&&options.hidden!=undefined){
+        self.hidden=options.hidden;
+      }
       self.$apply();
       let json2={};
       json2.responderId=self.responderId;
-      let obj=self.genObj(json2);
-      let sign=self.genSign(obj);
+      let obj2=self.genObj(json2);
+      let sign2=self.genSign(obj2);
       wepy.request({
         url:  self.domain+'/ww/api/v1/responder/showDetail',
         method: 'post',
-        data: {object:obj,sign:sign},
+        data: {object:obj2,sign:sign2},
         header:{
           'JWT': 'true',
           'content-type':'application/json',
@@ -379,8 +475,27 @@
           self.isRest=self.isResting(res.data.data.workDay,res.data.data.serviceTime);
           self.profilesPic=res.data.data.profilesPic.split(',');
           self.$apply();
-       
-          // console.log(self.model)
+        }
+      })
+
+      let json3={};
+      json3.responderId=self.responderId;
+      json3.pageNum=self.pageNum+'';
+      json3.pageSize=self.pageSize+'';
+      let obj3=self.genObj(json3);
+      let sign3=self.genSign(obj3);
+      wepy.request({
+        url:  self.domain+'/ww/api/v1/responder/commentList',
+        method: 'post',
+        data: {object:obj3,sign:sign3},
+        header:{
+          'JWT': 'true',
+          'content-type':'application/json',
+          'Authorization':'Bearer '+self.accessToken
+        },
+        success(res) {
+          self.commentList=res.data.data.list;
+          self.$apply();
         }
       })
 

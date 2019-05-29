@@ -32,12 +32,16 @@ import 'wepy-async-function'
 export default class extends wepy.app {
   config = {
     pages: [
-     
+
       'pages/index/index',
-      'pages/index/question_detail',
-      'pages/index/connectUs',
+      'pages/index/connect_customer', //客服
+      'pages/answerer_introduce',//回答者介绍
       'pages/index/my_responderList',
-      'pages/index/connect_customer',
+      'pages/index/question_detail',// 问题详情
+      'pages/index/connectUs',
+
+
+
 
 
       'pages/zrww/search_result',
@@ -69,7 +73,6 @@ export default class extends wepy.app {
       'pages/login/login',
 
      
-      'pages/answerer_introduce',//回答者介绍
       
       'pages/treaty',
     ],
@@ -108,8 +111,8 @@ export default class extends wepy.app {
     userInfo: null,
     basicInfo:null,
     unionId:'',
-    // domain:'http://192.168.1.253',
-    domain:'https://app.50waizhuan.com',
+    domain:'http://192.168.1.253',
+    // domain:'https://app.50waizhuan.com',
     accessToken:'',
     randomKey:'',
     isLogin:false,

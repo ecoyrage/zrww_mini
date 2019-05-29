@@ -2,8 +2,8 @@
 .comment_avatar {
   width: 80rpx;
   height: 80rpx;
-  margin-left:20rpx;
-  margin-top:20rpx;
+  margin-left:30rpx;
+  margin-top:30rpx;
 }
 .comment_avatar image{
   width: 80rpx;
@@ -16,33 +16,61 @@
   color:#999;
   font-size: 14px;
 }
+.comment_nickName{
+  font-size:14px;
+  color:#888;
+}
+.content{
+  color:#333;
+  font-size:12px;
+  margin-top:20rpx;
+  margin-right:30rpx;
+}
+.createTime{
+  font-size:10px;
+  color:#888;
+  margin-top:20rpx;
+}
+.flex{
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+}
+.line{
+  width: 93%;
+  margin-top: 30rpx;
+  border-top:1rpx #EEE solid;
+}
 .nodata{
   color:#999;
   font-size:12px;
   text-align: center;
   margin-top:50rpx;
 } 
+
 </style>
 <template>
 <view>
   <view wx:if="{{commentList.length>0}}">
      <repeat for="{{commentList}}" item="item">
        <view class="comment_avatar">
-            <image  src="{{item.avatarUrl}}"></image>
+            <image src="{{item.avatarUrl==''?'../files/img/avatarUrl.png':item.avatarUrl}}"></image>
        </view>
         <view class="comment">
             <view class="comment_nickName">{{item.nickName}}</view>
             <view style="position:absolute;right:40rpx;margin-top:-40rpx;">
-             <image class="grade_pic" src="../files/img/grade_high.png"></image>
-              {{item.score}}分
-            </view>
-             <view style="color:#333">
-                {{item.content}}
-             </view>
-            <view>
-             {{item.createTime}}
-             </view>
+              <image wx:if="{{item.score>=1}}" class="grade_pic" src="../files/img/grade_high.png"></image>
+              <image wx:if="{{item.score>=2}}" class="grade_pic" src="../files/img/grade_high.png"></image>
+              <image wx:if="{{item.score>=3}}" class="grade_pic" src="../files/img/grade_high.png"></image>
+              <image wx:if="{{item.score>=4}}" class="grade_pic" src="../files/img/grade_high.png"></image>
+              <image wx:if="{{item.score>=5}}" class="grade_pic" src="../files/img/grade_high.png"></image>
+            </view> 
+            <view class="content">{{item.content}}</view>
+            <view class="createTime">{{item.createTime}}</view>
            
+        </view>
+        <view class="flex">
+          <view class="line"></view>
         </view>
         <view style="clear:both"></view>
       </repeat>
