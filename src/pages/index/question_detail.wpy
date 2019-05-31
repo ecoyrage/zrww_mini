@@ -1,4 +1,7 @@
 <style lang="less">
+// page{
+//   background-color: #FFF;
+// }
 .questionBar{
     text-align: center;
 }
@@ -25,14 +28,15 @@
   margin-left:20rpx;
   color:#999;
   font-size: 14px;
+  margin-bottom:20rpx;
 }
 .question_desc{
   margin-top:20rpx;
   margin-left:20rpx;
   margin-right:20rpx;
   text-align: left;
-  color:#999;
-  font-size: 14px;
+  font-size:16px;
+  color:#333;
 }
 .profilesPic{
   margin-left:20rpx;
@@ -43,10 +47,10 @@
 }
 
 .profilesPic image{
-  width:200rpx;
-  height:200rpx;
-  margin-right:37rpx;
-  margin-bottom:16rpx;
+  width:215rpx;
+  height:215rpx;
+  margin-right:20rpx;
+  margin-bottom:20rpx;
 }
 .grade_pic{
   width:24rpx;
@@ -55,19 +59,14 @@
 .nickName{
   text-align: left;
   margin-top:-15rpx;
-  color:#101010;
-  font-size:12px;
+  color:#444;
+  font-size:14px;
+  font-weight: bold;
 }
-.recommendumber{
-  position: absolute;
-  right:40rpx;
-  color:#5383C3;
-  font-size: 13px;
-  margin-top:20rpx;
-}
+
 .applyOrSuggest{
   position:absolute;
-  bottom:20rpx;
+  bottom:10rpx;
   width:100%;
 }
 .applyOrSuggest button{
@@ -103,29 +102,48 @@
   margin-left:20rpx;
   margin-top:40rpx;
 }
+.location{
+  float: left;
+  color:#5383C3;
+  font-size: 13px;
+  text-align: left;
+  margin-left:20rpx;
+  font-weight:bold;
+}
+.recommendumber{
+  float: right;
+  color:#5383C3;
+  font-size: 13px;
+  text-align: right;
+  margin-right:20rpx;
+  font-weight:bold;
+}
 
 </style>
 <template>
 <view>
   <view wx:if="{{showQuestionOnly}}"> 
     <view class="questionBar">
-              <view @tap="viewQuestion({{question.questionId}})">
+            <panel >
+                <view class="title" slot="title">发布者</view>
+            </panel>
+              <view>
                 <view class="question_avatar">
-                      <image  src="{{question.avatarUrl==''?'../../files/img/avatarUrl.png':question.avatarUrl}}"></image>
+                      <image  src="{{question.avatarUrl==''?'/files/img/avatarUrl.png':question.avatarUrl}}"></image>
                   </view>
-                  <view class="recommendumber">已推荐{{question.recommendNumber}}个回答者待选择</view>
+                 
                   <view class="question_deta">
                       <view class="nickName">{{question.nickName}}</view>
                       <view style="padding-top:20rpx;">
                         <image class="grade_pic" src="../../files/img/grade_high.png"></image><text style="font-size:12px;color:#5383C3">{{question.averageScore}}</text>分
                         <text style="margin-left:40rpx;">愿支付:</text><text style="font-size:14px;color:#5383C3">￥{{question.offer}}</text>
-                        <text style="font-size:12px;color:#5383C3;margin-left:80rpx;">{{question.questionNumber}}</text><text>个提问</text>
-                        <text style="font-size:12px;color:#5383C3;margin-left:80rpx;">{{question.refundRate}}%</text><text>退款率</text>
+                        <text style="font-size:12px;color:#5383C3;margin-left:60rpx;">{{question.questionNumber}}</text><text>个提问</text>
+                        <text style="font-size:12px;color:#5383C3;margin-left:60rpx;">{{question.refundRate}}%</text><text>退款率</text>
                       </view>
                   </view>
                 <view style="clear:both"></view>
                 <view class="question_desc">
-                  <text>问题描述：</text><text style="color:#333;display:block;margin-top:20rpx;">{{question.questionDescribe}}</text>
+                   <text style="display:block;margin-top:20rpx;">{{question.questionDescribe}}</text>
                 </view>
               </view>
                 <view class="profilesPic" wx:if="{{question.pics!=[]}}">
@@ -136,35 +154,45 @@
           </view>
   </view>
   <view wx:else>
-     <scroll-view scroll-y="true" style="height:{{windowHeight-100}}rpx">
-          <view class="questionBar">
-              <view @tap="viewQuestion({{question.questionId}})">
-                <view class="question_avatar">
-                      <image  src="{{question.avatarUrl==''?'../../files/img/avatarUrl.png':question.avatarUrl}}"></image>
+     <scroll-view scroll-y="true" style="height:{{windowHeight-100}}rpx;background-color:#FFF"  @scrolltolower="showMore()" @scrolltoupper="reLoad()">
+       <view style="background-color:#FFF">
+            <panel>
+              <view class="title" slot="title">发布者</view>
+            </panel>
+            <view class="questionBar">
+                <view>
+                  <view class="question_avatar">
+                        <image  src="{{question.avatarUrl==''?'/files/img/avatarUrl.png':question.avatarUrl}}"></image>
+                    </view>
+                    <view class="question_deta">
+                        <view class="nickName">{{question.nickName}}</view>
+                        <view style="padding-top:20rpx;">
+                          <image class="grade_pic" src="../../files/img/grade_high.png"></image><text style="font-size:12px;color:#5383C3">{{question.averageScore}}</text>分
+                          <text style="margin-left:40rpx;">愿支付:</text><text style="font-size:14px;color:#5383C3">￥{{question.offer}}</text>
+                          <text style="font-size:12px;color:#5383C3;margin-left:60rpx;">{{question.questionNumber}}</text><text>个提问</text>
+                          <text style="font-size:12px;color:#5383C3;margin-left:60rpx;">{{question.refundRate}}%</text><text>退款率</text>
+                        </view>
+                    </view>
+                  <view style="clear:both"></view>
+                  <panel>
+                    <view class="title" slot="title">需求描述</view>
+                  </panel>
+                  <view class="question_desc">
+                    <text style="display:block;margin-top:20rpx;">{{question.questionDescribe}}</text>
                   </view>
-                  <view class="recommendumber">已推荐{{question.recommendNumber}}个回答者待选择</view>
-                  <view class="question_deta">
-                      <view class="nickName">{{question.nickName}}</view>
-                      <view style="padding-top:20rpx;">
-                        <image class="grade_pic" src="../../files/img/grade_high.png"></image><text style="font-size:12px;color:#5383C3">{{question.averageScore}}</text>分
-                        <text style="margin-left:40rpx;">愿支付:</text><text style="font-size:14px;color:#5383C3">￥{{question.offer}}</text>
-                        <text style="font-size:12px;color:#5383C3;margin-left:80rpx;">{{question.questionNumber}}</text><text>个提问</text>
-                        <text style="font-size:12px;color:#5383C3;margin-left:80rpx;">{{question.refundRate}}%</text><text>退款率</text>
-                      </view>
+                </view>
+                  <view class="profilesPic" wx:if="{{question.pics!=[]}}">
+                    <repeat for="{{question.pics}}" item="item">
+                      <image src="{{item}}" @tap="previewImage({{item}})"></image>
+                    </repeat>
                   </view>
-                <view style="clear:both"></view>
-                <view class="question_desc">
-                  <text>问题描述：</text><text style="color:#333;display:block;margin-top:20rpx;">{{question.questionDescribe}}</text>
-                </view>
-              </view>
-                <view class="profilesPic" wx:if="{{question.pics!=[]}}">
-                  <repeat for="{{question.pics}}" item="item">
-                    <image src="{{item}}" @tap="previewImage({{item}})"></image>
-                  </repeat>
-                </view>
-          </view>
-        <view>
-            <text class="commentTitle">回答者对用户的评价</text>
+                  <view class="location"><text style="color:black;font-weight:normal">限</text>{{question.location}}<text style="color:black;font-weight:normal">地区回答</text></view>
+                  <view class="recommendumber" wx:if="{{question.recommendNumber!=0}}"><text style="color:black;font-weight:normal">已推荐</text>{{question.recommendNumber}}个服务者</view>
+            </view>
+            <view style="clear:both;margin-bottom:30rpx"></view>
+            <panel >
+                <view class="title" slot="title">其他人对发布者的评价（{{question.commentNumber}}）</view>
+            </panel>
             <commentList :commentList.sync="commentList">
             </commentList>
         </view>
@@ -184,15 +212,21 @@
   import wepy from 'wepy'
   import utils from "@/mixins/utils"
   import commentList from "@/components/comment_list"
+  import Panel from '@/components/panel' 
   export default class question_detail extends wepy.page {
     config = {
-      navigationBarTitleText: '查看问题描述',
+      navigationBarTitleText: '需求描述',
+      navigationBarBackgroundColor: "#EEE",
+      backgroundColor:'#EEE',
     }
     data={
       questionId:'',
       question:'',
       commentList:'',
       showQuestionOnly:'',
+      pageNum:1,
+      pageSize:10,
+      noMore:false,
     }
 
     methods={
@@ -207,6 +241,7 @@
 
     components = {
       commentList:commentList,
+      panel: Panel,
     }
 
     mixins=[utils]
@@ -236,20 +271,99 @@
                   question.pics=question.pics.split(",");
                 }
                 self.question=question;
-                self.commentList=question.commentList;
                 self.$apply();
               }else if(res.data.code==730){
                wepy.redirectTo({ url: '/pages/login/login' });
              } 
           }
       })
-   }
+    }
+    reLoad(){
+        this.pageNum=1;
+        this.noMore=false;
+        this.onLoad();
+        wx.hideNavigationBarLoading();
+        wx.stopPullDownRefresh();
+    }
+    showMore(){
+        if(!this.noMore){
+            let self=this;
+            wx.showLoading({
+              title: '玩命加载中',
+            })
+            let json={};
+            self.pageNum+=1;
+            json.pageNum=self.pageNum+'';
+            json.pageSize=self.pageSize+'';
+            json.questionId=self.questionId;
+            let obj=self.genObj(json);
+            let sign=self.genSign(obj);
+            wepy.request({
+              url:  self.domain+'/ww/api/v1/question/commentList',
+              method: 'post',
+              data: {object:obj,sign:sign},
+              header:{
+                'JWT': 'true',
+                'content-type':'application/json', 
+                'Authorization':'Bearer '+self.accessToken
+              },
+              success: res => {
+                if(res.data.code==100){
+                  wx.hideLoading();
+                  let list=res.data.data.list;
+                  if(list.length==0){
+                    wx.showToast({
+                      title: '暂无更多数据',
+                      icon: 'none',
+                    })
+                    self.noMore=true
+                  }
+                  for(let i=0;i<list.length;i++){
+                    self.commentList.push(list[i]);
+                  }
+                  self.$apply();
+                }
+              
+              }
+            })
+          }else{
+            wx.showToast({
+                title: '暂无更多数据',
+                icon: 'none',
+              })
+          }
+    }
 
 
     onLoad(options){
       let questionId=options.questionId;
+      let self=this;
       this.questionId=questionId;
       this.showQuestionOnly=options.showQuestionOnly;
+      let json3={};
+      json3.questionId=questionId;
+      json3.pageNum=self.pageNum+'';
+      json3.pageSize=self.pageSize+'';
+      let obj3=self.genObj(json3);
+      let sign3=self.genSign(obj3);
+      wepy.request({
+        url:  self.domain+'/ww/api/v1/question/commentList',
+        method: 'post',
+        data: {object:obj3,sign:sign3},
+        header:{
+          'JWT': 'true',
+          'content-type':'application/json',
+          'Authorization':'Bearer '+self.accessToken
+        },
+        success(res) {
+           if(res.data.code==100){
+            self.commentList=res.data.data.list;
+            self.$apply();
+          }
+        }
+      })
+
+
       this.getDetail();
     }
   }

@@ -1,7 +1,7 @@
 <style lang="less">
 .head{
   position:fixed;
-  height: 90rpx;
+  height: 100rpx;
   background-color: #5383c3;
   width: 100%;
   z-index: 999;
@@ -16,19 +16,20 @@
   // box-shadow: 0px 0px 0px 0px rgba(170, 170, 170, 1);
   // border: 1px solid rgba(51, 51, 51, 1);
   background-color: #FFF;
-  margin-top:100rpx;
+  margin-top:90rpx;
 
 }
 
 .userinfo-avatar {
   width: 80rpx;
   height: 80rpx;
-  margin-left:20rpx;
+  margin-left:30rpx;
 }
 .userinfo-avatar image{
   width: 80rpx;
   height:80rpx;
   border-radius: 50%;
+  border:1px soild #FFF;
 }
 .zrww_logo{
    width: 150rpx;
@@ -76,16 +77,14 @@
   margin-left:20rpx;
   // margin-top:20rpx;
   font-size: 14px;
-  color:#999;
+  color:#333;
 }
 
 .behave2{
   margin-top:20rpx;
   margin-bottom:10rpx;
   margin-right:20rpx;
-  // line-height:-16rpx;
-  // float:right;
-  width:170rpx;
+  width:140rpx;
   height: 60rpx;
   line-height: 60rpx;
   background-color: #F6F6F6;
@@ -95,10 +94,12 @@
 }
 .blue_text{
  color:#5383C3;
+ font-weight: bold;
 }
 .question_info{
   float: left;
   margin-top:10rpx;
+  width:80%
 }
 .nick_name{
   margin-left:20rpx;
@@ -120,6 +121,9 @@
   margin-left:20rpx;
   color: rgba(153, 153, 153, 1);
   font-size: 10px;
+  overflow: hidden;  
+  white-space: nowrap;  
+  text-overflow: ellipsis; 
 }
 .chakan{
     width:134rpx;
@@ -146,8 +150,8 @@
 }
 .roollingtitle{
   font-size:14px;
-  color:#999;
-  margin:22rpx 0;
+  color:#333;
+  margin:20rpx 0;
 }
 .zhaorenwenwen{
   color:#FFF;
@@ -193,24 +197,24 @@
           <text class="renmaiquan">人脉圈</text>
           </view>
       </view>
-      <view style="display:flex;align-items:center;justify-content:center;height: 480rpx;">
+      <view style="display:flex;align-items:center;justify-content:center;height: 500rpx;">
         <view class="zrww" @tap="zrww()">
-          <view style="color:#333;font-size:18px;margin:30rpx 30rpx;">输入想找的人  ·  想问的事</view>
-          <view style="color:#999;font-size:14px;margin:10rpx 30rpx;">可以这样输入：</view>   
-          <view style="color:#999;font-size:14px;margin:10rpx 30rpx;">{{questionCaseList1}}</view>
-          <view style="color:#999;font-size:14px;margin:10rpx 30rpx;">{{questionCaseList2}}</view>  
-          <view style="color:#999;font-size:14px;margin:0rpx 30rpx;">......</view>    
+          <view style="color:#333;font-size:18px;margin-top:40rpx;margin-left:40rpx">输入想找的人  ·  想问的事</view>
+          <view style="color:#888;font-size:12px;margin-top:10rpx;margin-left:40rpx">可以这样输入：</view>   
+          <view style="color:#888;font-size:12px;margin-top:10rpx;margin-left:40rpx">{{questionCaseList1}}</view>
+          <view style="color:#888;font-size:12px;margin-top:10rpx;margin-left:40rpx">{{questionCaseList2}}</view>  
+          <view style="color:#888;font-size:12px;margin:0rpx 40rpx;">......</view>    
         </view>
       </view>
     </view>
   
     <view wx:if="{{upperQuestionList.length<=0}}">
 
-        <swiper  autoplay="{{autoplay}}" interval="5000"  duration="1000" circular="true" style="height:200rpx;background-color: #FFF;">
+        <swiper  autoplay="{{autoplay}}" interval="5000"  duration="1000" circular="true" style="height:250rpx;background-color: #FFF;">
             <repeat for="{{rollingdata}}" item="item">
               <swiper-item>
-                <view wx:if="{{item.jumpType==-1}}" style="text-align: center;"> 
-                  <swiper  autoplay="true" interval="3000" vertical="true" duration="1000" circular="true" style="height:200rpx;">
+                <view wx:if="{{item.jumpType==-1}}" style="text-align: center;padding-top:20rpx;"> 
+                  <swiper  autoplay="true" interval="3000" vertical="true" duration="1000" circular="true" style="height:250rpx;">
                         <swiper-item>
                           <repeat for="{{item.data}}" item="swiperText" index="index">
                             <view wx:if="{{index/3<1}}" class="roollingtitle">{{swiperText[0]}}<text class="blue_text">{{swiperText[1]}}</text>{{swiperText[2]}}</view>
@@ -230,7 +234,7 @@
                   <image src="{{item.fileUrl}}"  mode="widthFix" style="width: 100%;"/>
                 </view>
                  <view wx:elif="{{item.jumpType==9}}"> 
-                   <video src="{{item.jumpTarget}}" @play="changeAutoplay()" @pause="ended()" @ended="ended()" style="width:100%;height:200rpx;"  poster="{{item.fileUrl}}" controls show-fullscreen-btn></video>
+                   <video src="{{item.jumpTarget}}" @play="changeAutoplay()" @pause="ended()" @ended="ended()" style="width:100%;height:250rpx;"  poster="{{item.fileUrl}}" controls show-fullscreen-btn></video>
                 </view>
              
               </swiper-item>
@@ -249,7 +253,7 @@
         <repeat for="{{upperQuestionList}}" item="item">
             <view wx:if="{{item.status==1||item.status==2||item.status==6||item.status==7}}" @tap="viewQuestion({{item.questionId}})">
               <view class="question_avatar">
-                    <image src="{{item.avatarUrl==''?'../../files/img/avatarUrl.png':item.avatarUrl}}"></image>
+                    <image src="{{item.avatarUrl==''?'/files/img/avatarUrl.png':item.avatarUrl}}"></image>
               </view>
               <view class="question_info">
                 <text class="nick_name">{{item.responderShowName}}</text>
@@ -269,7 +273,7 @@
 
             <view wx:else>
               <view class="question_avatar">
-                    <image src="{{item.avatarUrl==''?'../../files/img/avatarUrl.png':item.avatarUrl}}"></image>
+                    <image src="{{item.avatarUrl==''?'/files/img/avatarUrl.png':item.avatarUrl}}"></image>
               </view>
               <view class="question_info">
                 <text class="nick_name">{{item.responderShowName}}</text>
@@ -300,9 +304,10 @@
      <view wx:if="{{isLogin}}" style="background-color: #FFF;">
           <view wx:if="{{timePass5}}" >
               <view wx:if="{{info.isResponder==0 && info.responderStatus!=3 && info.responderStatus!=5}}"> 
-                  <view class="Title" >
-                  <view class="title2">自身价值<text class="blue_text">变现</text></view>
-                  <button class="behave2" @tap="toBeResponder()">成为答者</button>
+                  <view class="Title">
+                    <image class="icon" style="margin-top:0;margin-left:20rpx" src="{{be_responder}}" slot="icon"></image>
+                    <view class="title2">加入人脉圈，价值变现</view>
+                    <button class="behave2" @tap="toBeResponder()">去查看</button>
                   </view>
               </view>
               <view wx:elif="{{info.isResponder==1 && info.responderStatus!=3 && info.responderStatus!=5}}"> 
@@ -322,14 +327,16 @@
               <view class='line' style="margin-top:0rpx;"></view>
               <view wx:if="{{info.invitationNumber==0}}">
                 <view class="Title">
-                <view class="title2">一次邀请，<text class="blue_text">永久</text>收益</view>
-                <button class="behave2" @tap="toInviteFriends()">去了解</button>
+                  <image class="icon" style="margin-top:0;margin-left:20rpx" src="{{go_invite}}" slot="icon"></image>
+                  <view class="title2">邀请身边朋友，坐享收益</view>
+                  <button class="behave2" @tap="toInviteFriends()">去查看</button>
                 </view>
               </view>
               <view wx:else>
                 <view style="height:100rpx;" @tap="toInviteeList()">
                   <view style="padding-top:40rpx;margin-left:20rpx;color:#999;font-size:12px;">已邀请<text class="blue_text">{{info.invitationNumber}}位</text>好友，共有<text class="blue_text">{{info.contacts}}人脉</text>，累计奖励<text class="blue_text" >{{info.invitationBalance}}元</text></view>
-                  <image class="icon_qianjin" style="margin-top:-40rpx;" src="../../files/img/qianjin.png"></image>
+                  <!-- <image class="icon_qianjin" style="margin-top:-40rpx;" src="../../files/img/qianjin.png"></image> -->
+                  <button class="behave2" style="width:120rpx;margin-top:-50rpx;" @tap="toInviteFriends()">查看</button>
                 </view>
               </view>
             <!-- <view class="grey_space" style="margin-top:10rpx;"></view> -->
@@ -341,8 +348,8 @@
               <indexArea>
                   <image class="icon" src="{{be_responder}}" slot="icon"></image>
                   <view class="indexArea_title" slot="indexArea_title">加入人脉圈，价值变现</view>
-                  <button class="behave" slot="behave" style="width:180rpx;" wx:if="{{info.isResponder==0}}" @tap="toBeResponder()">成为答者</button>
-                  <button class="behave" slot="behave" wx:else @tap="toMyResponderList()">查看</button>
+                  <button class="behave" slot="behave"  wx:if="{{info.isResponder==0}}" @tap="toBeResponder()">去查看</button>
+                  <button class="behave" slot="behave" style="width:120rpx;" wx:else @tap="toMyResponderList()">查看</button>
               </indexArea>
             </view>
             <view wx:elif="{{info.responderStatus==3||info.responderStatus==5}}"> 
@@ -358,8 +365,8 @@
                 <indexArea>
                   <image class="icon" src="{{go_invite}}" slot="icon"></image>
                   <view class="indexArea_title" slot="indexArea_title">邀请身边朋友，共建人脉圈，坐享收益</view>
-                  <button class="behave" slot="behave" wx:if="{{info.invitationNumber>0}}" @tap="toInviteeList()">查看</button>
-                  <button class="behave" slot="behave" wx:else @tap="toInviteFriends()">去邀请</button>
+                  <button class="behave" slot="behave" style="width:120rpx;" wx:if="{{info.invitationNumber>0}}" @tap="toInviteeList()">查看</button>
+                  <button class="behave" slot="behave" wx:else @tap="toInviteFriends()">去查看</button>
                 </indexArea>
           </view>
 
@@ -382,13 +389,13 @@
         <indexArea>
             <image class="icon" src="{{be_responder}}" slot="icon"></image>
             <view class="indexArea_title" slot="indexArea_title">加入人脉圈，价值变现</view>
-            <button class="behave" slot="behave" style="width:180rpx;" @tap="toBeResponder()">成为答者</button>
+            <button class="behave" slot="behave"  @tap="toBeResponder()">去查看</button>
         </indexArea>
         <view class="grey_space" style="height:5rpx;margin-top:30rpx;"></view>
         <indexArea>
           <image class="icon" src="{{go_invite}}" slot="icon"></image>
           <view class="indexArea_title" slot="indexArea_title">邀请身边朋友，共建人脉圈，坐享收益</view>
-          <button class="behave" slot="behave" @tap="toInviteFriends()">去邀请</button>
+          <button class="behave" slot="behave" @tap="toInviteFriends()">去查看</button>
         </indexArea>
     </view>
     <questionList :questionList.sync="questionList" :questionReward.sync="questionReward"></questionList>
@@ -420,10 +427,10 @@
     }
 
     data = {
-      avatarUrl:"../../files/img/avatarUrl.png",
-      go_invite:"../../files/img/go_invite.png",
-      be_responder:"../../files/img/be_responder.png",
-      be_responder_reject:"../../files/img/be_responder_reject.png",
+      avatarUrl:"/files/img/avatarUrl.png",
+      go_invite:"/files/img/go_invite.png",
+      be_responder:"/files/img/be_responder.png",
+      be_responder_reject:"/files/img/be_responder_reject.png",
       isLogin:'',
       questionList:[
       ],
@@ -559,6 +566,9 @@
     }
 
     onPullDownRefresh(){
+        wepy.setBackgroundColor({
+          backgroundColor: '#5383C3', 
+        })
         this.pageNum=1;
         this.noMore=false;
         this.onLoad();
@@ -566,6 +576,9 @@
         wx.stopPullDownRefresh();
     }
     onReachBottom(){
+        wepy.setBackgroundColor({
+          backgroundColor: '#EEE', 
+        })
         if(!this.noMore){
             let self=this;
             wx.showLoading({
@@ -728,7 +741,7 @@
       if(isLogin){
         let avatarUrl=wx.getStorageSync('basicInfo').avatarUrl;
         if(avatarUrl==""){
-          avatarUrl="../../files/img/avatarUrl.png"
+          avatarUrl="/files/img/avatarUrl.png"
         }
         self.avatarUrl=avatarUrl;
       }

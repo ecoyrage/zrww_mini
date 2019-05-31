@@ -6,12 +6,6 @@
     font-weight: bold;
     padding-top:20rpx;
 }
-
-.line{
-    width: 100%;
-    margin-top: 50rpx;
-    border-top:4rpx#F7F7F7 solid;
-}
 .grey_text{
   color:#999;
 }

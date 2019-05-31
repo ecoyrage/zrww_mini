@@ -119,7 +119,7 @@ button::after {
     <view class="name_bar">
       <view wx:if="{{isLogin}}">
         <view class="userinfo-avatar">
-              <image src="{{basicInfo.avatarUrl==''?'../../files/img/avatarUrl.png':basicInfo.avatarUrl}}"></image>
+              <image src="{{basicInfo.avatarUrl==''?'/files/img/avatarUrl.png':basicInfo.avatarUrl}}"></image>
         </view>
         <view>
             <text class="nickName">{{basicInfo.nickName}}</text>
@@ -276,7 +276,7 @@ button::after {
 
     onReachBottom() {
       wx.setBackgroundColor({
-        backgroundColor: '#F6F6F6', // 窗口的背景色为白色
+        backgroundColor: '#EEE', // 窗口的背景色为白色
       })
     }
     onPullDownRefresh(){

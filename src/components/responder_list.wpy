@@ -149,7 +149,7 @@
           <view @tap="clickNext({{item.responderId}})">
               <view class="head_top">
                   <view class="userinfo-avatar">
-                      <image  class="avatar_img" src="{{item.avatarUrl==''?'../../files/img/avatarUrl.png':item.avatarUrl}}"></image>
+                      <image  class="avatar_img" src="{{item.avatarUrl==''?'/files/img/avatarUrl.png':item.avatarUrl}}"></image>
                       <!-- <image  wx:if="{{item.isExpert==1}}" class="expert_img" src="../files/img/expert.png"></image> -->
                       <view class="status_img">
                           <image wx:if="{{item.isResting}}" src="../files/img/rest.png"></image>

@@ -127,16 +127,17 @@
 .focus{
   position:absolute;
   right: 20rpx;
+  top:120rpx;
   height: 60rpx;
   line-height: 60rpx;
   border-radius: 5px;
   color: #ffffff;
   font-size: 13px;
-  background-color: #f6f6f6;
-  color: #5383c3;
+  background-color: #5383C3;
 }
 .focus.unfocus{
-  color:#FF0000;
+  color:#5383C3;
+  background-color: #FFF;
 }
 .little_tabs{
   margin-top:20rpx;
@@ -181,7 +182,7 @@
     <scroll-view scroll-y="true" style="height:{{windowHeight-100}}rpx" @scrolltolower="showMore()" @scrolltoupper="reLoad()">
       <view class="head_top">
         <view class="userinfo-avatar">
-            <image  class="avatar_img" src="{{model.avatarUrl==''?'../files/img/avatarUrl.png':model.avatarUrl}}"></image>
+            <image  class="avatar_img" src="{{model.avatarUrl==''?'/files/img/avatarUrl.png':model.avatarUrl}}"></image>
             <view class="status_img">
                   <image wx:if="{{isRest}}" src="../files/img/rest.png"></image>
             </view>
@@ -197,8 +198,8 @@
           </view>
         </view>
          
-          <!-- <button wx:if="{{model.isFocus==0}}" class="focus" @tap="focus({{responderId}})">+关注</button>
-          <button wx:if="{{model.isFocus==1}}" class="focus unfocus" @tap="unfocus({{responderId}})">取消关注</button> -->
+          <button wx:if="{{model.isFocus==0}}" class="focus" @tap="focus({{responderId}})">+关注</button>
+          <button wx:if="{{model.isFocus==1}}" class="focus unfocus" @tap="unfocus({{responderId}})">取消关注</button>
         <view>
           <label class="location">{{model.location}}</label>
           <label class="fee">{{model.fee==0?'免费':'￥'+model.fee}}</label>

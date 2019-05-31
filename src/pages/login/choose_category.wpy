@@ -1,4 +1,33 @@
 <style lang="less">
+page{
+  background-color: #EEE;
+}
+.seach_bar{
+  height: 100rpx;
+  width: 100%; 
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  background-color:#EEE; 
+}
+.search_input{
+  text-align: center;
+  height: 60rpx;
+  width:100%;
+  margin-left:30rpx;
+  margin-right:30rpx;
+  background-color:#FFF;
+  border-radius: 5px;
+  color: #888;
+  font-size: 14px;
+}
+.search_img{
+  width: 40rpx;
+  height: 40rpx;
+  position: absolute;  
+  margin-left:-50rpx;
+}
+ 
 .login{
   display: flex;
   align-items: center;
@@ -16,50 +45,55 @@
   background-color: #5383c3;
   color: #ffffff;
 }
-.zrww{
-  // margin-top: 0rpx;
-  color: #333333;
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.fontarea{
-  position: absolute;
-  left: 80rpx;
-}
-
-.login-phone{
-  margin-top:40rpx;
-  background-color: #f6f6f6;
-  color: #5383c3;
-}
-button::after {
-  border: none;
-}
 .category{
-   display: flex;
-   flex-wrap: wrap;
-  //  height: 80%;
+  border-radius: 5px;
+  color: rgba(16, 16, 16, 1);
+  font-size: 14px;
+  background-color: #FFF;
+  margin:20rpx 20rpx;
 }
-.categoryButton{
-  width:200rpx;
-  height: 100rpx;
-  margin-left:20rpx;
-  margin-top:20rpx;
-  margin-right:20rpx;
-  
-  background-color: #f6f6f6;
-  border-radius: 20rpx;
-  line-height: 30rpx;//缩小行间距
-
-  display: table;
-
+.tips{
+  color: #888;
+  font-size: 12px;
+  text-align: left;
+  margin:20rpx 20rpx;
 }
-.categoryButton text{
-  font-size: 16px;
-  vertical-align:middle;
-  text-align: center;
-  display: table-cell;
+.all{
+  color: #888;
+  font-size: 14px;
+  height:100rpx;
+  display: flex;
+  align-items: center;
+  margin-left:30rpx;
+ 
+}
+
+.category_items{
+  display:flex; 
+  flex-wrap: wrap; 
+}
+.item{
+  height: 200rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column
+}
+.cate_img{
+  width:48rpx;
+  height: 48rpx;
+  display: block;
+}
+.border0{
+  border-right:1px solid #EEE;
+  border-top:1px solid #EEE;
+}
+.border1{
+  border-top:1px solid #EEE;
+  border-right:1px solid #EEE;
+}
+.border2{
+  border-top:1px solid #EEE;
 }
 .choosed{
   background-color: #5383C3;
@@ -67,10 +101,28 @@ button::after {
 </style>
 <template>
   <view>
-    <view class="section">
-      <text class="zrww">选择你的擅长的领域</text>
+    <view class="section" style="margin:20rpx 0;">
+      <text class="zrww">选择你从事/擅长的领域</text>
     </view>
-    <scroll-view scroll-y="true" style="height:{{windowHeight-180}}rpx">
+        <scroll-view scroll-y="true" style="height:{{windowHeight-120}}rpx">
+        <view class="category">
+          <view class="category_items" >
+            <repeat for="{{firstCategory}}" item="item" index="index">
+              <view>
+                <view  @tap="choose({{item.categoryId}})" class="item border{{index%3}} {{item.checked?'choosed':''}}" style="width:{{item_width}}px" wx:if="{{item.pic!=''}}">
+                  <view><image class="cate_img" src="{{item.pic}}"></image></view>
+                  <view style="margin-top:20rpx;">{{item.name}}</view>
+                </view>
+                <view  @tap="choose({{item.categoryId}})" class="item border{{index%3}} {{item.checked?'choosed':''}}" style="width:{{item_width}}px" wx:else>
+                    <view>{{item.name}}</view>
+                </view>
+              </view>
+            </repeat>
+          </view>
+        </view>
+        <view class="tips">我们会根据你选择的领域，推荐给你相关的内容</view>
+      </scroll-view>
+    <!-- <scroll-view scroll-y="true" style="height:{{windowHeight-180}}rpx">
       <view class="category">
           <repeat for="{{categoryList}}" item="item">
             <view wx:if="{{item.level==1}}">
@@ -78,7 +130,7 @@ button::after {
             </view>
           </repeat>
       </view>
-    </scroll-view>
+    </scroll-view> -->
   
    
     <view class="section">
@@ -94,7 +146,9 @@ button::after {
   import utils from "@/mixins/utils";
   export default class choose_category extends wepy.page {
     config = {
-      navigationBarTitleText: ''
+      navigationBarTitleText: '',
+      navigationBarBackgroundColor: "#EEE",
+      backgroundColor:'#EEE',
     }
     components = {
     }
@@ -102,8 +156,8 @@ button::after {
     methods = {
       choose(categoryId){
         let self=this;
-        for(let i=0;i<this.categoryList.length;i++){
-          let cate=this.categoryList[i];
+        for(let i=0;i<self.firstCategory.length;i++){
+          let cate=self.firstCategory[i];
           if(cate.categoryId==categoryId){
             cate.checked=!cate.checked;
             if(cate.checked==true){
@@ -121,8 +175,10 @@ button::after {
     mixins=[utils]
 
     data={
-        categoryList: [],
+        firstCategory: [],
         button:'跳过',
+        item_width:'',
+        categoryId:''
     }
     watch={
       categoryId(newValue, oldValue) {
@@ -132,8 +188,8 @@ button::after {
     confirm(){
        let self=this;
        let categoryId=self.categoryId;
-       for(let i=0;i<this.categoryList.length;i++){
-          let cate=this.categoryList[i];
+       for(let i=0;i<self.firstCategory.length;i++){
+          let cate=self.firstCategory[i];
           if(cate.checked==true){
             categoryId=cate.categoryId;
           }
@@ -181,19 +237,30 @@ button::after {
     }
 
     onLoad(options) {
-      
       let self = this
-      // wepy.getLocation({
-      //         type: 'gcj02', // 返回可以用于wx.openLocation的经纬度
-      //         success(res) {
-      //           const latitude = res.latitude
-      //           const longitude = res.longitude
-      //           console.log(latitude+","+longitude);
-             
-      //         }
-      // })
-  
-      self.categoryList=self.$parent.globalData.categorieList
+      var query = wx.createSelectorQuery();
+      //选择id
+      query.select('.category_items').boundingClientRect(function (rect) {
+        self.item_width=(rect.width-2)/3;
+        self.$apply();
+      }).exec();
+      let categoryList=self.$parent.globalData.categorieList;
+      let firstCategory=self.firstCategory;
+      for(let i=0;i<categoryList.length;i++){
+        if(categoryList[i].level==1){
+           firstCategory.push(categoryList[i]);
+        }
+      }
+      let obj={};
+      obj.name=""
+      obj.categoryId="-1"
+      if(firstCategory.length%3==1){
+        firstCategory.push(obj);
+        firstCategory.push(obj);
+      }else if(firstCategory.length%3==2){
+        firstCategory.push(obj);
+      }
+      self.$apply();
     }
   }
 </script>

@@ -21,6 +21,7 @@
     right: 0;
     margin-top:30rpx;
 }
+
 </style>
 
 <script>
@@ -32,13 +33,12 @@ import 'wepy-async-function'
 export default class extends wepy.app {
   config = {
     pages: [
+      
       'pages/index/index',
 
-
-
+      'pages/index/question_detail',// 问题详情
       'pages/index/connect_customer', //客服
       'pages/index/my_responderList',
-      'pages/index/question_detail',// 问题详情
       'pages/index/connectUs',
       'pages/index/describe_question',
 
@@ -75,8 +75,8 @@ export default class extends wepy.app {
 
       'pages/login/login_phone',
       'pages/login/invitation_code',//邀请码
-      'pages/login/choose_category',//选择分类
       'pages/login/login',
+      'pages/login/choose_category',//选择分类
 
      
       

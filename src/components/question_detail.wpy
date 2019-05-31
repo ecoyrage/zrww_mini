@@ -4,32 +4,31 @@
 }
 .question_avatar {
   float: left;
-  width: 60rpx;
-  height: 60rpx;
-  margin-left:20rpx;
-  margin-top:20rpx;
+  width: 80rpx;
+  height: 80rpx;
+  margin-left:30rpx;
+  margin-top:30rpx;
 }
 .question_avatar image{
-  width: 60rpx;
-  height:60rpx;
+  width: 80rpx;
+  height:80rpx;
   border-radius: 50%;
 }
 .line{
     width: 100%;
-    margin-top: 50rpx;
+    margin-top: 30rpx;
     border-top:4rpx#F7F7F7 solid;
 }
 .question_deta{
   float: left;
   margin-top:30rpx;
-  margin-left:20rpx;
+  margin-left:30rpx;
   color:#999;
   font-size: 12px;
 }
 .question_desc{
-  margin-top:20rpx;
-  margin-left:20rpx;
-  margin-right:20rpx;
+  margin-top:-40rpx;
+  margin-bottom:20rpx;
   text-align: left;
   color:#999;
   font-size: 14px;
@@ -39,7 +38,7 @@
   overflow: hidden;  
 }
 .profilesPic{
-  margin-left:20rpx;
+  margin-left:140rpx;
   margin-top:20rpx;
   margin-right:20rpx;
   display: flex;
@@ -47,10 +46,10 @@
 }
 
 .profilesPic image{
-  width:200rpx;
-  height:200rpx;
-  margin-right:37rpx;
-  margin-bottom:16rpx;
+  width:160rpx;
+  height:160rpx;
+  margin-right:20rpx;
+  margin-bottom:20rpx;
 }
 .grade_pic{
   width:24rpx;
@@ -63,40 +62,43 @@
   font-size:12px;
 }
 .recommendumber{
-  position: absolute;
-  right:40rpx;
   color:#5383C3;
   font-size: 13px;
-  margin-top:20rpx;
+  text-align: left;
+  margin-left:140rpx;
+  font-weight:bold;
 }
+
 </style>
 <template>
-  <view class="questionBar" >
-    <view @tap="viewQuestion({{question.questionId}})">
+  <view class="questionBar" @tap="viewQuestion({{question.questionId}})">
+    <view >
       <view class="question_avatar">
-            <image  src="{{question.avatarUrl==''?'../../files/img/avatarUrl.png':question.avatarUrl}}"></image>
+            <image  src="{{question.avatarUrl==''?'/files/img/avatarUrl.png':question.avatarUrl}}"></image>
         </view>
-        <view class="recommendumber">已推荐{{question.recommendumber}}个回答者待选择</view>
         <view class="question_deta">
-            <view class="nickName">{{question.nickName}}</view>
-            <view style="padding-top:10rpx;">
-              <image class="grade_pic" src="../files/img/grade_high.png"></image><text style="font-size:12px;color:#5383C3">{{question.averageScore}}</text>分
-              <text style="margin-left:20rpx;">愿支付:</text><text style="font-size:14px;color:#5383C3">￥{{question.offer}}</text>
-              <!-- <text style="margin-left:80rpx;">退款率:</text><text style="font-size:12px;color:#5383C3">{{question.refundRate}}%</text> -->
-            </view>
+            <view><text>愿支付</text><text style="font-size:12px;color:#5383C3;font-weight:bold">{{question.offer}}元</text></view>
         </view>
       <view style="clear:both"></view>
       <view class="question_desc">
-        <text>问题描述：</text><text style="color:#333;">{{question.questionDescribe}}</text>
+            <text style="font-size:16px;color:#333;display:block;margin-left:30rpx;margin-right:60rpx">{{question.questionDescribe}}</text>
       </view>
     </view>
       <view class="profilesPic" wx:if="{{question.pics!=[]}}">
         <repeat for="{{question.pics}}" item="item">
-          <image src="{{item}}" @tap="previewImage({{item}})"></image>
+          <image src="{{item}}"></image>
         </repeat>
       </view>
+      <view class="recommendumber" style="margin-bottom:20rpx;"><text style="color:black;font-weight:normal">限</text>{{question.location}}</view>
+      <view class="recommendumber" wx:if="{{question.recommendNumber!=0}}"><text style="color:black;font-weight:normal">已推荐</text>{{question.recommendNumber}}个服务者</view>
     <view class='line'></view>
 
+       
+         <!-- <view class="nickName">{{question.nickName}}</view> -->
+            <!-- <view style="padding-top:10rpx;">
+              <image class="grade_pic" src="../files/img/grade_high.png"></image><text style="font-size:12px;color:#5383C3">{{question.averageScore}}</text>分
+              <text style="margin-left:80rpx;">退款率:</text><text style="font-size:12px;color:#5383C3">{{question.refundRate}}%</text>
+            </view> -->
 
    
   </view>
