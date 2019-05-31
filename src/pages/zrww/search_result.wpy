@@ -1,10 +1,18 @@
 <style lang="less">
- .end{
+page{
+  background-color:#EEE;
+}
+.end{
    text-align: center;
    font-size: 12px;
-   color:#828282;
-   margin-top:40rpx;
+   color:#888;
+   margin-top:-60rpx;
+   padding-bottom:40rpx;
+   background-color: #EEE;
  }
+ .responder_view{
+  padding-top:20rpx;
+}
 
 </style>
 <template>
@@ -20,8 +28,10 @@
   import responderList from '@/components/responder_list'
   export default class search_result extends wepy.page {
     config = {
-      navigationBarTitleText: '',
+      navigationBarTitleText: '人脉列表',
       enablePullDownRefresh: true,
+      navigationBarBackgroundColor: "#EEE",
+      backgroundColor:'#EEE',
     }
     components = {
       responderList:responderList,

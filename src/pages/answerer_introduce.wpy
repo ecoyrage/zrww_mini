@@ -79,10 +79,15 @@
 }
 
 .profilesPic image{
-  width:211rpx;
-  height:211rpx;
-  margin-right:20rpx;
+  width:215rpx;
+  height:215rpx;
   margin-bottom:20rpx;
+}
+.item_pic0{
+ margin-right:20rpx;
+}
+.item_pic1{
+ margin-right:20rpx;
 }
 .status_img{
   margin-left:-10rpx;
@@ -230,8 +235,10 @@
         <view class="title" slot="title">简介</view>
         <view class="profiles">{{model.profiles}}</view>
         <view class="profilesPic">
-          <repeat for="{{profilesPic}}" item="item" wx:if="{{profilesPic!=''}}">
-            <image src="{{item}}" @tap="previewImage({{item}})"></image>
+          <repeat for="{{profilesPic}}" item="item" index="index" wx:if="{{profilesPic!=''}}">
+            <view class="item_pic{{index%3}}">
+              <image src="{{item}}" @tap="previewImage({{item}})"></image>
+            </view>
           </repeat>
         </view>
 

@@ -72,15 +72,15 @@ page{
   display: flex;
   align-items: center;
   margin-left:30rpx;
- 
 }
+
 
 .category_items{
   display:flex; 
   flex-wrap: wrap; 
 }
 .item{
-  height: 200rpx;
+  height: 100rpx;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -111,14 +111,14 @@ page{
               <input class="search_input" placeholder="搜索" value='' @tap='toKeyWordsSearch()'/>
         </view>
         <view class="category">
-          <view class="all">全部分类</view>
+          <view class="all"><text style="color:#5383c3" @tap="back()">全部分类</text><text>　-　{{name}}</text></view>
           <view class="category_items">
-            <repeat for="{{firstCategory}}" item="item" index="index">
-              <view  @tap="toSecond({{item.categoryId}},{{item.name}})" class="item border{{index%3}}" style="width:{{item_width}}px" wx:if="{{item.pic!=''}}">
+            <repeat for="{{secondCategory}}" item="item" index="index">
+              <view @tap="chooseCate({{item.categoryId}})" class="item border{{index%3}}" style="width:{{item_width}}px" wx:if="{{item.pic!=''}}">
                 <view><image class="cate_img" src="{{item.pic}}"></image></view>
-                <view style="margin-top:20rpx;">{{item.name}}</view>
+                <view>{{item.name}}</view>
               </view>
-              <view @tap="toSecond({{item.categoryId}},{{item.name}})" class="item border{{index%3}}" style="width:{{item_width}}px" wx:else>
+              <view @tap="chooseCate({{item.categoryId}})" class="item border{{index%3}}" style="width:{{item_width}}px" wx:else>
                   <view>{{item.name}}</view>
               </view>
             </repeat>
@@ -136,7 +136,7 @@ page{
 <script>
   import wepy from 'wepy'
   import utils from "@/mixins/utils";
-  export default class category_search extends wepy.page {
+  export default class category_search_second extends wepy.page {
     config = {
       navigationBarTitleText: '人脉圈',
       navigationBarBackgroundColor: "#EEE",
@@ -148,30 +148,31 @@ page{
 
 
     data = {
-      categoryList:'',
-      firstCategory:[],
-      item_width:''
+      secondCategory:[],
+      item_width:'',
+      parentId:'',
+      name:'',
     }
     
     mixins=[utils]
 
     methods = {
-     chooseCate(firstCategoryId,secondCategoryId){
-        wepy.navigateTo({
-            url:'/pages/zrww/search_result?firstCategoryId='+firstCategoryId+'&secondCategoryId='+secondCategoryId
-        })
+     back(){
+       wepy.navigateBack({
+         delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+       });
+     },
+     chooseCate(secondCategoryId){
+       if(secondCategoryId!=-1){
+          wepy.navigateTo({
+              url:'/pages/zrww/search_result?firstCategoryId='+this.parentId+'&secondCategoryId='+secondCategoryId
+          })
+       }
      },
      toKeyWordsSearch(){
       wepy.navigateTo({
             url:'/pages/zrww/keywords_search'
         })
-     },
-     toSecond(categoryId,name){
-       if(categoryId!=-1){
-         wepy.navigateTo({
-            url:'/pages/zrww/category_search_second?parentId='+categoryId+'&name='+name
-        })
-       }
      }
     }
     events = {
@@ -184,7 +185,9 @@ page{
 
     onLoad(options) {
       let self=this;
-
+      let parentId=options.parentId;
+      self.parentId=parentId;
+      self.name=options.name;
       var query = wx.createSelectorQuery();
       //选择id
       query.select('.category_items').boundingClientRect(function (rect) {
@@ -192,23 +195,31 @@ page{
         self.$apply();
       }).exec();
 
-      self.categoryList=self.$parent.globalData.categorieList;
-      let firstCategory=self.firstCategory;
-      for(let i=0;i<self.categoryList.length;i++){
-        if(self.categoryList[i].level==1){
-           firstCategory.push(self.categoryList[i]);
+
+ 
+      let categoryList=self.$parent.globalData.categorieList;
+      let secondCategory=self.secondCategory;
+      let obj1={};
+      obj1.name="全部"
+      obj1.categoryId="0"
+      obj1.level=2;
+      obj1.pic=""
+      obj1.parentId=""
+      secondCategory.push(obj1);
+      categoryList.forEach(obj=>{
+        if(obj.parentId==parentId){
+          secondCategory.push(obj);
         }
-      }
+      })
       let obj={};
       obj.name=""
       obj.categoryId="-1"
-      if(firstCategory.length%3==1){
-        firstCategory.push(obj);
-        firstCategory.push(obj);
-      }else if(firstCategory.length%3==2){
-        firstCategory.push(obj);
+      if(secondCategory.length%3==1){
+        secondCategory.push(obj);
+        secondCategory.push(obj);
+      }else if(secondCategory.length%3==2){
+        secondCategory.push(obj);
       }
-      self.curCategoryId=firstCategory[0].categoryId;
       self.$apply();
     }
   }

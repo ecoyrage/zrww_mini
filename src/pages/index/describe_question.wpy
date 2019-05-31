@@ -1,0 +1,123 @@
+<style lang="less">
+page{
+  width: 100%;
+}
+.login{
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  width: 710rpx;
+  height: 80rpx;
+  line-height: 20px;
+  border-radius: 5px;
+  color: #ffffff;
+  font-size: 14px;
+}
+.login-wechat{
+  position: fixed;
+  bottom:10rpx;
+  background-color: #5383c3;
+  color: #ffffff;
+}
+
+.zrww{
+  font-size:12px;
+  color:#888;
+  background-color: #EEE;
+}
+.text_area{
+  margin:30rpx 30rpx;
+  width:90%;
+  color:#333;
+  font-size:14px;
+  height:400rpx;
+}
+</style>
+<template>
+  <view>
+        <view class="zrww">
+          <view style="padding:10rpx 30rpx;">可以这样输入：</view>   
+          <view style="padding:10rpx 30rpx;">{{questionCaseList1}}</view>
+          <view style="padding:10rpx 30rpx;">{{questionCaseList2}}</view>  
+          <view style="padding:10rpx 30rpx;">......</view>    
+        </view>
+        <view style="height:400rpx;">
+         <textarea  class="text_area" placeholder="文字描述（限200字)" placeholder-style="color:#888;font-size:14px;" maxlength="200" auto-focus="true" @input="getText()"></textarea>
+        </view>
+        <panel >
+        <view class="title" slot="title">添加图片/视频（非必填 限6张）</view>
+      </panel>
+
+      <view class="section">
+          <button @tap="toConnectCustomer()" class="login login-wechat">下一步</button>
+      </view>
+
+
+  
+
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import utils from '@/mixins/utils'
+  import Panel from '@/components/panel' 
+  export default class describeQuestion extends wepy.page {
+    config = {
+     navigationBarTitleText: '描述需求',
+     navigationBarBackgroundColor: "#EEE",
+     backgroundColor:"#EEE"
+    }
+    components = {
+     panel: Panel,
+    }
+
+    data = {
+       questionCaseList1:'',
+       questionCaseList2:'',
+       text:'',
+    }
+   
+
+
+    mixins=[utils]
+
+
+    methods = {
+   
+    }
+
+    getText(e){
+      this.text=e.detail.value;
+    }
+
+   
+
+
+    events = {
+      // 'index-emit': (...args) => {
+      //   let $event = args[args.length - 1]
+      //   console.log(`${this.$name} receive ${$event.name} from ${$event.source.$name}`)
+      // }
+    }
+ 
+
+    
+  
+    onLoad() {
+      let self=this;
+      let questionCaseList=wx.getStorageSync('questionCaseList');
+      if(questionCaseList!=""){
+        let random1=Math.floor(Math.random()*questionCaseList.length);
+        let random2=Math.floor(Math.random()*questionCaseList.length);
+        while(random2==random1){
+          random2=Math.floor(Math.random()*questionCaseList.length);
+        }
+        self.questionCaseList1=questionCaseList[random1].fileName;
+        self.questionCaseList2=questionCaseList[random2].fileName;
+      }
+      self.$apply();
+     
+    }
+  }
+</script>

@@ -1,7 +1,4 @@
 <style lang="less">
-page{
-  background-color: #F6F6F6;
-}
 .head{
   position:fixed;
   height: 90rpx;
@@ -55,16 +52,16 @@ page{
   height: 100rpx;
   line-height: 20px;
   border-radius: 5px;
-  color: #EEEEEE;
+  color: #EEE;
   font-size: 32rpx;
 }
 .login-wechat{
   margin-top:40rpx;
   background-color: #5383c3;
-  color: #EEEEEE;
+  color: #EEE;
 }
 .grey_space{
-   background-color: #F6F6F6;
+   background-color: #EEE;
    height: 10rpx;
 }
 .search_img{
@@ -343,7 +340,7 @@ page{
             <view wx:if="{{info.responderStatus==0||info.responderStatus==1}}"> 
               <indexArea>
                   <image class="icon" src="{{be_responder}}" slot="icon"></image>
-                  <view class="indexArea_title" slot="indexArea_title">成为答者，价值变现，赚点外快</view>
+                  <view class="indexArea_title" slot="indexArea_title">加入人脉圈，价值变现</view>
                   <button class="behave" slot="behave" style="width:180rpx;" wx:if="{{info.isResponder==0}}" @tap="toBeResponder()">成为答者</button>
                   <button class="behave" slot="behave" wx:else @tap="toMyResponderList()">查看</button>
               </indexArea>
@@ -360,13 +357,11 @@ page{
             <view class="grey_space" style="height:5rpx;"></view>
                 <indexArea>
                   <image class="icon" src="{{go_invite}}" slot="icon"></image>
-                  <view class="indexArea_title" slot="indexArea_title">一次邀请、永久收益</view>
+                  <view class="indexArea_title" slot="indexArea_title">邀请身边朋友，共建人脉圈，坐享收益</view>
                   <button class="behave" slot="behave" wx:if="{{info.invitationNumber>0}}" @tap="toInviteeList()">查看</button>
                   <button class="behave" slot="behave" wx:else @tap="toInviteFriends()">去邀请</button>
                 </indexArea>
           </view>
-
-          <view class="grey_space" style="height:20rpx;"></view>
 
              <!-- <view >
         <view style="height:100rpx;">
@@ -386,20 +381,17 @@ page{
     <view wx:else style="background-color: #FFF;">
         <indexArea>
             <image class="icon" src="{{be_responder}}" slot="icon"></image>
-            <view class="indexArea_title" slot="indexArea_title">成为答者，价值变现，赚点外快</view>
+            <view class="indexArea_title" slot="indexArea_title">加入人脉圈，价值变现</view>
             <button class="behave" slot="behave" style="width:180rpx;" @tap="toBeResponder()">成为答者</button>
         </indexArea>
-        <view class="grey_space" style="height:5rpx;"></view>
+        <view class="grey_space" style="height:5rpx;margin-top:30rpx;"></view>
         <indexArea>
           <image class="icon" src="{{go_invite}}" slot="icon"></image>
-          <view class="indexArea_title" slot="indexArea_title">一次邀请、永久收益</view>
+          <view class="indexArea_title" slot="indexArea_title">邀请身边朋友，共建人脉圈，坐享收益</view>
           <button class="behave" slot="behave" @tap="toInviteFriends()">去邀请</button>
         </indexArea>
-        <view class="grey_space" style="height:20rpx;"></view>
     </view>
-
     <questionList :questionList.sync="questionList" :questionReward.sync="questionReward"></questionList>
-
 
     
     

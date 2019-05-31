@@ -1,7 +1,4 @@
 <style lang="less">
-.questionList{
-  background-color: #FFF;
-}
 .title_first{
     margin-left:20rpx;
     color:#0D0D0D;
@@ -23,10 +20,13 @@
 }
 </style>
 <template>
-  <view class="questionList">
+  <view>
       <view  wx:if="{{questionList.length>0}}">
-        <view  wx:if="{{questionReward!=0&&questionReward!=null}}" class="title_first">推荐回答问题<text class="grey_text">(你推荐答者回答问题累计奖励<text class="red_text">{{questionReward}}元</text>)</text></view>
-        <view  wx:else class="title_first">这些问题待解答<text class="grey_text">(直接回答/推荐别人回答，享<text class="red_text">高额奖励</text>)</text></view>
+        <panel>
+          <view class="title" slot="title">以下问题待解决（自己回答/成功推荐别人回答都可获得奖励）</view>
+        </panel>
+        <!-- <view  wx:if="{{questionReward!=0&&questionReward!=null}}" class="title_first">推荐回答问题<text class="grey_text">(你推荐答者回答问题累计奖励<text class="red_text">{{questionReward}}元</text>)</text></view>
+        <view  wx:else class="title_first">这些问题待解答<text class="grey_text">(直接回答/推荐别人回答，享<text class="red_text">高额奖励</text>)</text></view> -->
       </view>
      <view>
         <repeat for="{{questionList}}" item="item">
@@ -39,6 +39,7 @@
 <script>
   import wepy from 'wepy'
   import questionDetail from './question_detail'
+  import Panel from '@/components/panel' 
 
   export default class questionList extends wepy.component {
     props = {
@@ -47,7 +48,8 @@
     }
 
      components = {
-      questionDetail: questionDetail
+      questionDetail: questionDetail,
+      panel:Panel
     }
 
 
