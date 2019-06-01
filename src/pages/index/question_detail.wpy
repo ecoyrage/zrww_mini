@@ -118,6 +118,10 @@
   margin-right:20rpx;
   font-weight:bold;
 }
+button[disabled] {
+  color: rgba(240,86,84,0.3) !important;
+  background-color:rgba(246, 246, 246, 1) !important;
+}
 
 </style>
 <template>
@@ -198,8 +202,9 @@
         </view>
       </scroll-view>
       <view class="applyOrSuggest">
-            <button class="suggest">推荐别人(有奖励)</button>
-            <button class="apply">申请回答</button>
+            <button wx:if="{{question.isApplyRecommend==1}}" class="suggest" disabled="disabled" >已推荐</button>
+            <button wx:else class="suggest" @tap="recommend()">推荐别人(有奖励)</button>
+            <button class="apply" @tap="apply()">申请回答</button>
       </view>
   </view>
   
@@ -227,6 +232,7 @@
       pageNum:1,
       pageSize:10,
       noMore:false,
+      isResponder:'',
     }
 
     methods={
@@ -235,6 +241,26 @@
             current: img, // 当前显示图片的http链接
             urls: this.question.pics // 需要预览的图片http链接列表
           })
+        },
+        recommend(){
+          wepy.navigateTo({ url: '/pages/recommend/choose_recommend' });
+        },
+        apply(){
+          if(this.isResponder==0){
+            wx.showModal({
+                title: '成为回答者',
+                content: '你需要先申请成为回答者，才可回答该问题，是否继续？',
+                success: function (tip) {
+                    if (tip.confirm) {
+                          wepy.navigateTo({
+                            url:'/pages/be_responder'
+                          })
+                    }
+                }
+              })
+          }else{
+            
+          }
         }
 
     }
@@ -334,12 +360,18 @@
           }
     }
 
+    onShow(){
+       this.getDetail();
+    }
+
 
     onLoad(options){
       let questionId=options.questionId;
+      wx.setStorageSync('questionId',questionId);
       let self=this;
-      this.questionId=questionId;
-      this.showQuestionOnly=options.showQuestionOnly;
+      self.questionId=questionId;
+      self.showQuestionOnly=options.showQuestionOnly;
+      self.isResponder=options.isResponder;
       let json3={};
       json3.questionId=questionId;
       json3.pageNum=self.pageNum+'';
@@ -364,7 +396,7 @@
       })
 
 
-      this.getDetail();
+      // this.getDetail();
     }
   }
 </script>

@@ -109,6 +109,7 @@
   export default class questionDetail extends wepy.component {
     props = {
       question: {},
+      isResponder:{},
     }
 
   
@@ -121,7 +122,7 @@
           })
         },viewQuestion(questionId){
            wepy.navigateTo({
-            url: '/pages/index/question_detail?questionId='+questionId
+            url: '/pages/index/question_detail?questionId='+questionId+'&isResponder='+this.isResponder
           })
         }
 

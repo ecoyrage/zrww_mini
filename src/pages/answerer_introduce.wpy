@@ -461,6 +461,9 @@
       }
       if(options!=undefined&&options.hidden!=undefined){
         self.hidden=options.hidden;
+        if(self.hidden==1){
+          self.windowHeight+=100;
+        }
       }
       self.$apply();
       let json2={};

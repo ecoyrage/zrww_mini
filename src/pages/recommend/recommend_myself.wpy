@@ -1,0 +1,208 @@
+<style lang="less">
+page{
+  width: 100%;
+}
+.login{
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  width: 710rpx;
+  height: 80rpx;
+  line-height: 20px;
+  border-radius: 5px;
+  color: #ffffff;
+  font-size: 14px;
+}
+.login-wechat{
+  position: fixed;
+  bottom:10rpx;
+  background-color: #5383c3;
+  color: #ffffff;
+}
+
+.zrww{
+  font-size:12px;
+  color:#888;
+  background-color: #EEE;
+}
+.text_area{
+  margin:30rpx 30rpx;
+  width:90%;
+  color:#333;
+  font-size:14px;
+  height:400rpx;
+}
+
+
+
+radio{
+    width: 38rpx;
+}
+ 
+radio .wx-radio-input{
+    border-radius: 50%; 
+    width: 28rpx;
+    height: 28rpx;
+}
+ 
+
+</style>
+<template>
+  <view>
+     <scroll-view scroll-y="true" style="height:{{windowHeight-100}}rpx">
+        <panel >
+          <view class="title" slot="title">给发布者留言（选填）</view>
+        </panel>
+        <view style="height:300rpx;">
+         <textarea  class="text_area" placeholder="文字描述（限150字)" placeholder-style="color:#888;font-size:14px;" maxlength="150" auto-focus="true" @input="getText()"></textarea>
+        </view>
+        <panel >
+          <view class="title" slot="title">选择一张名片发送给发布者</view>
+           <radio-group bindchange="checkAll" class="text-left flex flex-vc pd-lr30">
+            <repeat for="{{cards}}" item="item">
+               
+              <view>
+                <label class="checkbox ft-30">
+                <radio  value='all' checked="{{selectAllStatus}}"/>全选
+              </label>
+                <image src="{{item.avatarUrl==''?'/files/img/avatarUrl.png':item.avatarUrl}}"></image>
+                
+
+              </view>
+            </repeat>
+          </radio-group>
+        </panel>
+
+       
+        
+     </scroll-view>
+       
+
+      <view class="section">
+          <button @tap="confirm()" class="login login-wechat">确定</button>
+      </view>
+
+
+  
+
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import utils from '@/mixins/utils'
+  import Panel from '@/components/panel' 
+  export default class recommend_myself extends wepy.page {
+    config = {
+     navigationBarTitleText: '选择名片',
+     navigationBarBackgroundColor: "#EEE",
+     backgroundColor:"#EEE"
+    }
+    components = {
+     panel: Panel,
+    }
+
+    data = {
+       responderId:'',
+       text:'',
+       cards:[],
+       selectAllStatus:false,
+    }
+   
+
+
+    mixins=[utils]
+
+
+    methods = {
+      confirm(){
+        let self=this;
+        let json={};
+        json.questionId=wx.getStorageSync('questionId');
+        json.responderId=self.responderId+'';
+        json.type='2';
+        json.recommendDescribe=self.text
+        let obj=self.genObj(json);
+        let sign=self.genSign(obj);
+        wepy.request({
+          url:  self.domain+'/ww/api/v1/question/apply',
+          method: 'post',
+          data: {object:obj,sign:sign},
+          header:{
+            'JWT': 'true',
+            'content-type':'application/json', 
+            'Authorization':'Bearer '+self.accessToken
+          },
+          success: res => {
+            if(res.data.code==100){
+                wepy.navigateBack({
+                  delta: wx.getStorageSync('delta')
+                });
+            }
+          
+          }
+        })
+
+        
+        
+      }
+    }
+
+    getText(e){
+      this.text=e.detail.value;
+    }
+
+   
+
+
+    events = {
+      // 'index-emit': (...args) => {
+      //   let $event = args[args.length - 1]
+      //   console.log(`${this.$name} receive ${$event.name} from ${$event.source.$name}`)
+      // }
+    }
+ 
+
+    
+  
+    onLoad(options) {
+      let self=this;
+      let cards=self.cards;
+      let json={};
+      json.type="1";
+      let obj=self.genObj(json);
+      let sign=self.genSign(obj);
+      wepy.request({
+        url:  self.domain+'/ww/api/v1/user/responderList',
+        method: 'post',
+        data: {object:obj,sign:sign},
+        header:{
+          'JWT': 'true',
+          'content-type':'application/json', 
+          'Authorization':'Bearer '+self.accessToken
+        },
+        success: res => {
+          if(res.data.code==100){
+            let list=res.data.data;
+            let names=''
+            list.forEach(obj=>{
+              names=self.getCategoryNameById(obj.firstCategoryId,obj.secondCategoryId);
+              let object={};
+              object.avatarUrl=obj.avatarUrl;
+              object.showName=obj.showName;
+              object.title=obj.title;
+              object.firstCategory=names.split(',')[0];
+              object.secondCategory=names.split(',')[1];
+              if(obj.fee==0) obj.fee="免费"
+              object.fee=obj.fee;
+              cards.push(object)
+            })
+            console.log(cards)
+            
+          }
+        
+        }
+      })
+    }
+  }
+</script>

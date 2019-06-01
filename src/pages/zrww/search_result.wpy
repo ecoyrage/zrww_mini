@@ -17,7 +17,7 @@ page{
 </style>
 <template>
  <view>
-  <responderList :responderList.sync="responderList"></responderList>
+  <responderList :responderList.sync="responderList" :isRecommend.sync="isRecommend" :hidden.sync="hidden"></responderList>
   <view class='end' wx:if="{{noMore}}">已经全部加载完毕</view>
 </view>
 </template>
@@ -45,6 +45,8 @@ page{
       pageNum:1,
       pageSize:10,
       responderList:'',
+      isRecommend:'',
+      hidden:'',
     }
     
     mixins=[utils]
@@ -163,6 +165,8 @@ page{
       let self=this;
       self.firstCategoryId=options.firstCategoryId;
       self.secondCategoryId=options.secondCategoryId;
+      self.isRecommend=options.isRecommend;
+      self.hidden=options.hidden;
       self.$apply();
       self.loading();
     }

@@ -23,7 +23,7 @@ page{
 </style>
 <template>
  <view class="contain">
-  <responderList :responderList.sync="responderList"></responderList>
+  <responderList :responderList.sync="responderList" :isRecommend.sync="isRecommend" :hidden.sync="hidden"></responderList>
   <view class='end' wx:if="{{noMore}}">已经全部加载完毕</view>
   <view class="nodata" wx:if="{{nodata}}">
      暂无内容
@@ -51,6 +51,8 @@ page{
       pageNum:1,
       pageSize:10,
       responderList:[],
+      isRecommend:'',
+      hidden:''
     }
     
     mixins=[utils]
@@ -163,7 +165,10 @@ page{
     
 
     onLoad(options) {
+      wx.setStorageSync('delta',3)
       let self=this;
+      self.isRecommend=options.isRecommend;
+      self.hidden=options.hidden;
       self.loading();
     }
   }

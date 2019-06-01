@@ -146,7 +146,7 @@
      <view wx:if="{{responderList.length==0}}" class='nodata'>暂无内容</view>
      <view wx:else class="responder_view">
         <repeat for="{{responderList}}" item="item">
-          <view @tap="clickNext({{item.responderId}})">
+          <view @tap="clickNext({{item.responderId}},{{item.showName}})">
               <view class="head_top">
                   <view class="userinfo-avatar">
                       <image  class="avatar_img" src="{{item.avatarUrl==''?'/files/img/avatarUrl.png':item.avatarUrl}}"></image>
@@ -199,7 +199,7 @@
                       <label class="little_tab">平均<label class="blue_font">{{item.averageTime}}分钟</label>响应</label>
                     </view>
                   </view>
-                  <button class="next_button" wx:if="{{hidden==true}}">问问</button>
+                  <button class="next_button" wx:if="{{hidden!=1}}">问问</button>
               </view>
           </view>
          <view class="space"></view>
@@ -215,14 +215,20 @@
     props = {
       responderList: {},
       hidden:{},
+      isRecommend:{},
     }
     components = {
        servicelabel: servicelabel,
     }
 
     methods={
-      clickNext(id){
-       wepy.navigateTo({ url: '/pages/answerer_introduce?responderId='+id+'&hidden='+this.hidden});
+      clickNext(id,showName){
+        if(this.isRecommend==1){
+          wepy.navigateTo({ url: '/pages/recommend/recommend_reason?showName='+showName+'&responderId='+id});
+        }else{
+          wepy.navigateTo({ url: '/pages/answerer_introduce?responderId='+id+'&hidden='+this.hidden});
+        }
+      
        
       }
     }

@@ -24,7 +24,7 @@
       </view>
      <view>
         <repeat for="{{questionList}}" item="item">
-          <questionDetail :question="item" ></questionDetail>
+          <questionDetail :question="item" :isResponder="isResponder"></questionDetail>
         </repeat>
      </view>
   </view>
@@ -38,7 +38,8 @@
   export default class questionList extends wepy.component {
     props = {
       questionList: {},
-      questionReward:{}
+      questionReward:{},
+      isResponder:{}
     }
 
      components = {

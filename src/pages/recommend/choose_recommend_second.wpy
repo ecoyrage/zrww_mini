@@ -1,0 +1,222 @@
+<style lang="less">
+page{  
+  height: 100%;
+}  
+/*总体主盒子*/  
+.container {  
+  position: relative;  
+  width: 100%; 
+  height: 100%; 
+  background-color: #EEE;
+}
+.seach_bar{
+  height: 100rpx;
+  width: 100%; 
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  background-color:#EEE; 
+}
+.search_input{
+  text-align: center;
+  height: 60rpx;
+  width:100%;
+  margin-left:30rpx;
+  margin-right:30rpx;
+  background-color:#FFF;
+  border-radius: 5px;
+  color: #888;
+  font-size: 14px;
+}
+.search_img{
+  width: 40rpx;
+  height: 40rpx;
+  position: absolute;  
+  margin-left:-50rpx;
+}
+ 
+.login{
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  width: 710rpx;
+  height: 80rpx;
+  line-height: 20px;
+  border-radius: 5px;
+  color: #ffffff;
+  font-size: 14px;
+}
+.login-wechat{
+  position: fixed;
+  bottom:10rpx;
+  background-color: #5383c3;
+  color: #ffffff;
+}
+.category{
+  border-radius: 5px;
+  color: rgba(16, 16, 16, 1);
+  font-size: 14px;
+  background-color: #FFF;
+  margin:20rpx 20rpx;
+}
+.tips{
+  color: #888;
+  font-size: 12px;
+  text-align: left;
+  margin:20rpx 20rpx;
+}
+.all{
+  color: #888;
+  font-size: 14px;
+  height:100rpx;
+  display: flex;
+  align-items: center;
+  margin-left:30rpx;
+}
+
+
+.category_items{
+  display:flex; 
+  flex-wrap: wrap; 
+}
+.item{
+  height: 100rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column
+}
+.cate_img{
+  width:48rpx;
+  height: 48rpx;
+  display: block;
+}
+.border0{
+  border-right:1px solid #EEE;
+  border-top:1px solid #EEE;
+}
+.border1{
+  border-top:1px solid #EEE;
+  border-right:1px solid #EEE;
+}
+.border2{
+  border-top:1px solid #EEE;
+}
+</style>
+<template>
+ <view class="container" >
+      <scroll-view scroll-y="true" style="height:{{windowHeight}}rpx">
+        <view class="seach_bar">
+              <image class="search_img" src="../../files/img/zrww/search_grey.png"></image>
+              <input class="search_input" placeholder="搜索" value='' @tap='toKeyWordsSearch()'/>
+        </view>
+        <view class="category">
+          <view class="all"><text style="color:#5383c3" @tap="back()">全部分类</text><text>　-　{{name}}</text></view>
+          <view class="category_items">
+            <repeat for="{{secondCategory}}" item="item" index="index">
+              <view @tap="chooseCate({{item.categoryId}})" class="item border{{index%3}}" style="width:{{item_width}}px" wx:if="{{item.pic!=''}}">
+                <view><image class="cate_img" src="{{item.pic}}"></image></view>
+                <view>{{item.name}}</view>
+              </view>
+              <view @tap="chooseCate({{item.categoryId}})" class="item border{{index%3}}" style="width:{{item_width}}px" wx:else>
+                  <view>{{item.name}}</view>
+              </view>
+            </repeat>
+          </view>
+        </view>
+      </scroll-view>
+</view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import utils from "@/mixins/utils";
+  export default class choose_recommend_second extends wepy.page {
+    config = {
+      navigationBarTitleText: '选择想推荐的人',
+      navigationBarBackgroundColor: "#EEE",
+      backgroundColor:'#EEE',
+
+    }
+    components = {
+    }
+
+
+    data = {
+      secondCategory:[],
+      item_width:'',
+      parentId:'',
+      name:'',
+    }
+    
+    mixins=[utils]
+
+    methods = {
+     back(){
+       wepy.navigateBack({
+         delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+       });
+     },
+     chooseCate(secondCategoryId){
+       if(secondCategoryId!=-1){
+          wepy.navigateTo({
+              url:'/pages/zrww/search_result?firstCategoryId='+this.parentId+'&secondCategoryId='+secondCategoryId+'&isRecommend=1&hidden=1'
+          })
+       }
+     },
+     toKeyWordsSearch(){
+      wepy.navigateTo({
+            url:'/pages/zrww/keywords_search'
+        })
+     }
+    }
+    events = {
+      // 'index-emit': (...args) => {
+      //   let $event = args[args.length - 1]
+      //   console.log(`${this.$name} receive ${$event.name} from ${$event.source.$name}`)
+      // }
+    }
+    
+
+    onLoad(options) {
+      wx.setStorageSync('delta',4)
+      let self=this;
+      let parentId=options.parentId;
+      self.parentId=parentId;
+      self.name=options.name;
+      var query = wx.createSelectorQuery();
+      //选择id
+      query.select('.category_items').boundingClientRect(function (rect) {
+        self.item_width=(rect.width-2)/3;
+        self.$apply();
+      }).exec();
+
+
+ 
+      let categoryList=self.$parent.globalData.categorieList;
+      let secondCategory=self.secondCategory;
+      let obj1={};
+      obj1.name="全部"
+      obj1.categoryId="0"
+      obj1.level=2;
+      obj1.pic=""
+      obj1.parentId=""
+      secondCategory.push(obj1);
+      categoryList.forEach(obj=>{
+        if(obj.parentId==parentId){
+          secondCategory.push(obj);
+        }
+      })
+      let obj={};
+      obj.name=""
+      obj.categoryId="-1"
+      if(secondCategory.length%3==1){
+        secondCategory.push(obj);
+        secondCategory.push(obj);
+      }else if(secondCategory.length%3==2){
+        secondCategory.push(obj);
+      }
+      self.$apply();
+    }
+  }
+</script>

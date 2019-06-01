@@ -176,6 +176,24 @@ export default class utils extends wepy.mixin {
       }
       return false;
     }
+
+  getCategoryNameById(firstCategoryId, secondCategoryId){
+      let self=this;
+      let categorieList = self.$parent.globalData.categorieList;
+      let firstName='',
+      secondName='';
+      categorieList.forEach(obj=>{
+        if (obj.categoryId == firstCategoryId){
+          firstName = obj.name;
+        } else if (obj.categoryId == secondCategoryId) {
+          secondName = obj.name;
+        }
+
+      })
+     return firstName + ',' + secondName
+    }
+
+  
  
 
     onLoad(){

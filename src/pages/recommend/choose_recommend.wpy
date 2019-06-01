@@ -1,0 +1,223 @@
+<style lang="less">
+page{  
+  height: 100%;
+}  
+/*总体主盒子*/  
+.container {  
+  position: relative;  
+  width: 100%; 
+  height: 100%; 
+  background-color: #EEE;
+}
+.seach_bar{
+  height: 100rpx;
+  width: 100%; 
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  background-color:#EEE; 
+}
+.search_input{
+  text-align: center;
+  height: 60rpx;
+  width:100%;
+  margin-left:30rpx;
+  margin-right:30rpx;
+  background-color:#FFF;
+  border-radius: 5px;
+  color: #888;
+  font-size: 14px;
+}
+.search_img{
+  width: 40rpx;
+  height: 40rpx;
+  position: absolute;  
+  margin-left:-50rpx;
+}
+.focus{
+  height: 100rpx;
+  margin: 20rpx 20rpx;
+  display: flex;
+  align-items: center;
+  background-color:#FFF; 
+  border-radius: 5px;
+}
+.focus_img{
+  width:48rpx;
+  height: 48rpx;
+  margin-left:30rpx;
+}
+.my_focus{
+  font-size:14px;
+  color:#333;
+  margin-left:30rpx;
+}
+.focus_qianjin{
+  width:38rpx;
+  height:48rpx;
+  position:absolute;
+  right:30rpx;
+}
+
+.category{
+  border-radius: 5px;
+  color: rgba(16, 16, 16, 1);
+  font-size: 14px;
+  background-color: #FFF;
+  margin:20rpx 20rpx;
+}
+.tips{
+  color: #888;
+  font-size: 12px;
+  text-align: left;
+  margin:20rpx 20rpx;
+}
+.all{
+  color: #888;
+  font-size: 14px;
+  height:100rpx;
+  display: flex;
+  align-items: center;
+  margin-left:30rpx;
+ 
+}
+
+.category_items{
+  display:flex; 
+  flex-wrap: wrap; 
+}
+.item{
+  height: 200rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column
+}
+.cate_img{
+  width:48rpx;
+  height: 48rpx;
+  display: block;
+}
+.border0{
+  border-right:1px solid #EEE;
+  border-top:1px solid #EEE;
+}
+.border1{
+  border-top:1px solid #EEE;
+  border-right:1px solid #EEE;
+}
+.border2{
+  border-top:1px solid #EEE;
+}
+</style>
+<template>
+ <view class="container" >
+      <scroll-view scroll-y="true" style="height:{{windowHeight}}rpx">
+        <!-- <view class="seach_bar">
+              <image class="search_img" src="/files/img/zrww/search_grey.png"></image>
+              <input class="search_input" placeholder="搜索" value='' @tap='toKeyWordsSearch()'/>
+        </view> -->
+        <view class="focus" @tap="toMyFocus()">
+           <image class="focus_img" src="/files/img/basicInfo/focus.png"></image>
+           <text class="my_focus">我关注的人</text>
+           <image class="focus_qianjin" src="/files/img/qianjin.png"></image>
+        </view>
+        <view class="category">
+          <view class="all">全部分类</view>
+          <view class="category_items">
+            <repeat for="{{firstCategory}}" item="item" index="index">
+              <view  @tap="toSecond({{item.categoryId}},{{item.name}})" class="item border{{index%3}}" style="width:{{item_width}}px" wx:if="{{item.pic!=''}}">
+                <view><image class="cate_img" src="{{item.pic}}"></image></view>
+                <view style="margin-top:20rpx;">{{item.name}}</view>
+              </view>
+              <view @tap="toSecond({{item.categoryId}},{{item.name}})" class="item border{{index%3}}" style="width:{{item_width}}px" wx:else>
+                  <view>{{item.name}}</view>
+              </view>
+            </repeat>
+          </view>
+        </view>
+      </scroll-view>
+  
+</view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import utils from "@/mixins/utils";
+  export default class choose_recommend extends wepy.page {
+    config = {
+      navigationBarTitleText: '选择想推荐的人',
+      navigationBarBackgroundColor: "#EEE",
+      backgroundColor:'#EEE',
+
+    }
+    components = {
+    }
+
+
+    data = {
+      categoryList:'',
+      firstCategory:[],
+      item_width:''
+    }
+    
+    mixins=[utils]
+
+    methods = {
+     toKeyWordsSearch(){
+      wepy.navigateTo({
+            url:'/pages/zrww/keywords_search'
+        })
+     },
+     toSecond(categoryId,name){
+       if(categoryId!=-1){
+         wepy.navigateTo({
+            url:'/pages/recommend/choose_recommend_second?parentId='+categoryId+'&name='+name
+        })
+       }
+     },
+     toMyFocus(){
+        wepy.navigateTo({
+            url:'/pages/basicInfo/focus?isRecommend=1&hidden=1'
+        })
+     }
+    }
+    events = {
+      // 'index-emit': (...args) => {
+      //   let $event = args[args.length - 1]
+      //   console.log(`${this.$name} receive ${$event.name} from ${$event.source.$name}`)
+      // }
+    }
+    
+
+    onLoad(options) {
+      let self=this;
+
+      var query = wx.createSelectorQuery();
+      //选择id
+      query.select('.category_items').boundingClientRect(function (rect) {
+        self.item_width=(rect.width-2)/3;
+        self.$apply();
+      }).exec();
+
+      self.categoryList=self.$parent.globalData.categorieList;
+      let firstCategory=self.firstCategory;
+      for(let i=0;i<self.categoryList.length;i++){
+        if(self.categoryList[i].level==1){
+           firstCategory.push(self.categoryList[i]);
+        }
+      }
+      let obj={};
+      obj.name=""
+      obj.categoryId="-1"
+      if(firstCategory.length%3==1){
+        firstCategory.push(obj);
+        firstCategory.push(obj);
+      }else if(firstCategory.length%3==2){
+        firstCategory.push(obj);
+      }
+      self.curCategoryId=firstCategory[0].categoryId;
+      self.$apply();
+    }
+  }
+</script>

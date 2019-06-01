@@ -303,14 +303,14 @@
 
      <view wx:if="{{isLogin}}" style="background-color: #FFF;">
           <view wx:if="{{timePass5}}" >
-              <view wx:if="{{info.isResponder==0 && info.responderStatus!=3 && info.responderStatus!=5}}"> 
+              <view wx:if="{{isResponder==0 && info.responderStatus!=3 && info.responderStatus!=5}}"> 
                   <view class="Title">
                     <image class="icon" style="margin-top:0;margin-left:20rpx" src="{{be_responder}}" slot="icon"></image>
                     <view class="title2">加入人脉圈，价值变现</view>
                     <button class="behave2" @tap="toBeResponder()">去查看</button>
                   </view>
               </view>
-              <view wx:elif="{{info.isResponder==1 && info.responderStatus!=3 && info.responderStatus!=5}}"> 
+              <view wx:elif="{{isResponder==1 && info.responderStatus!=3 && info.responderStatus!=5}}"> 
                 <view style="height:100rpx;">
                   <view style="padding-top:40rpx;margin-left:20rpx;color:#999;font-size:12px;">已回答<text class="blue_text">{{info.answerNumber}}个</text>问题，共赚<text class="blue_text">{{info.answerBalance}}元</text></view>
                   <image class="icon_qianjin" style="margin-top:-40rpx;" src="../../files/img/qianjin.png"></image>
@@ -348,7 +348,7 @@
               <indexArea>
                   <image class="icon" src="{{be_responder}}" slot="icon"></image>
                   <view class="indexArea_title" slot="indexArea_title">加入人脉圈，价值变现</view>
-                  <button class="behave" slot="behave"  wx:if="{{info.isResponder==0}}" @tap="toBeResponder()">去查看</button>
+                  <button class="behave" slot="behave"  wx:if="{{isResponder==0}}" @tap="toBeResponder()">去查看</button>
                   <button class="behave" slot="behave" style="width:120rpx;" wx:else @tap="toMyResponderList()">查看</button>
               </indexArea>
             </view>
@@ -398,7 +398,7 @@
           <button class="behave" slot="behave" @tap="toInviteFriends()">去查看</button>
         </indexArea>
     </view>
-    <questionList :questionList.sync="questionList" :questionReward.sync="questionReward"></questionList>
+    <questionList :questionList.sync="questionList" :questionReward.sync="questionReward" :isResponder.sync="isResponder"></questionList>
 
     
     
@@ -456,11 +456,11 @@
       pageSize:10,
       noMore:'',
       district:'',
-      rollingdata:[
-      ],
+      rollingdata:[],
       autoplay:true,
       questionCaseList1:'',
-      questionCaseList2:''
+      questionCaseList2:'',
+      isResponder:'',
        
     }
    
@@ -785,9 +785,7 @@
                 self.$apply();
               }
               self.info=data;
-              // if(self.avatarUrl=="../../files/img/avatarUrl.png"&&data.avatarUrl!=""){
-              //   self.avatarUrl=data.avatarUrl;
-              // }
+              self.isResponder=data.isResponder;
               self.upperQuestionList=data.questionList;
               self.countDown(self.upperQuestionList);
               self.questionReward=self.getRealityNum(data.questionReward);
