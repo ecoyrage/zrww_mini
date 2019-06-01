@@ -236,7 +236,7 @@
         <view class="title" slot="title">简介</view>
         <view class="profiles">{{model.profiles}}</view>
         <view class="profilesPic">
-          <repeat for="{{profilesPic}}" item="item" index="index" wx:if="{{profilesPic!=''}}">
+          <repeat for="{{profilesPic}}" item="item" index="index" wx:if="{{profilesPic!=''&&profilesPic!=-1}}">
             <view class="item_pic{{index%3}}">
               <image src="{{item}}" @tap="previewImage({{item}})"></image>
             </view>

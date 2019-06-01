@@ -613,7 +613,7 @@
                     self.noMore=true
                   }
                   for(let i=0;i<list.length;i++){
-                    if(list[i].pics==""){
+                    if(list[i].pics==""||list[i].pics=="-1"){
                       list[i].pics="";
                     }else{
                       list[i].pics=list[i].pics.split(",");
