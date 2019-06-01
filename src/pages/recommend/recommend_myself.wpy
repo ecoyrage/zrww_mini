@@ -32,11 +32,55 @@ page{
   font-size:14px;
   height:400rpx;
 }
-
-
+.flex{
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+}
+.card{
+  height: 140rpx;
+  display: flex;
+  align-items: center;
+}
+.card_img{
+  border-radius: 50%;
+  width:80rpx;
+  height: 80rpx;
+}
+.card_showName{
+  font-size: 16px;
+  font-weight: bold;
+  margin-left:40rpx;
+  margin-top:-40rpx;
+}
+.card_title{
+  font-size:12px;
+  color:#888;
+  margin-top:-40rpx;
+  margin-left:20rpx;
+}
+.card_category{
+  font-size:12px;
+  color:#888;
+  position:absolute;
+  margin-left:200rpx;
+  margin-top:20rpx;
+}
+.line{
+  width: 93%;
+  border-top:1rpx #EEE solid;
+}
+.card_fee{
+  color:#F05654;
+  font-size:12px;
+  position:absolute;
+  margin-top:20rpx;
+  right:30rpx;
+}
 
 radio{
-    width: 38rpx;
+    width: 48rpx;
+    margin-left:30rpx;
 }
  
 radio .wx-radio-input{
@@ -44,7 +88,18 @@ radio .wx-radio-input{
     width: 28rpx;
     height: 28rpx;
 }
- 
+radio .wx-radio-input.wx-radio-input-checked::before{
+    border-radius: 50%;
+    width: 44rpx; 
+    height: 44rpx; 
+    line-height: 44rpx;
+    text-align: center;
+    font-size: 26rpx; /* 对勾大小 26rpx */
+    color:#fff; /* 对勾颜色 */
+    background: #5383C3;
+    border-color: #2facff;
+}
+
 
 </style>
 <template>
@@ -58,18 +113,20 @@ radio .wx-radio-input{
         </view>
         <panel >
           <view class="title" slot="title">选择一张名片发送给发布者</view>
-           <radio-group bindchange="checkAll" class="text-left flex flex-vc pd-lr30">
-            <repeat for="{{cards}}" item="item">
-               
-              <view>
-                <label class="checkbox ft-30">
-                <radio  value='all' checked="{{selectAllStatus}}"/>全选
-              </label>
-                <image src="{{item.avatarUrl==''?'/files/img/avatarUrl.png':item.avatarUrl}}"></image>
-                
-
-              </view>
-            </repeat>
+           <radio-group @change="change">
+              <repeat for="{{cards}}" item="item">
+                <view class='card'>
+                  <radio value="{{item.responderId}},{{item.fee}}"/>
+                  <image class="card_img" src="{{item.avatarUrl==''?'/files/img/avatarUrl.png':item.avatarUrl}}"></image>
+                  <view class="card_showName">{{item.showName}}</view>
+                  <view class="card_title">{{item.title}}</view>
+                  <view class="card_category">{{item.firstCategory}}　{{item.secondCategory}}</view>
+                  <view class="card_fee">{{item.showFee}}</view>
+                </view>
+                <view class="flex">
+                  <view class="line"></view>
+                </view>
+              </repeat>
           </radio-group>
         </panel>
 
@@ -79,7 +136,7 @@ radio .wx-radio-input{
        
 
       <view class="section">
-          <button @tap="confirm()" class="login login-wechat">确定</button>
+          <button wx:if="{{responderId!=''}}" @tap="confirm()" class="login login-wechat">确定</button>
       </view>
 
 
@@ -106,12 +163,13 @@ radio .wx-radio-input{
        responderId:'',
        text:'',
        cards:[],
-       selectAllStatus:false,
+       fee:'',
     }
    
 
 
     mixins=[utils]
+
 
 
     methods = {
@@ -120,8 +178,9 @@ radio .wx-radio-input{
         let json={};
         json.questionId=wx.getStorageSync('questionId');
         json.responderId=self.responderId+'';
-        json.type='2';
+        json.type='1';
         json.recommendDescribe=self.text
+        json.fee=self.fee
         let obj=self.genObj(json);
         let sign=self.genSign(obj);
         wepy.request({
@@ -136,7 +195,7 @@ radio .wx-radio-input{
           success: res => {
             if(res.data.code==100){
                 wepy.navigateBack({
-                  delta: wx.getStorageSync('delta')
+                  delta: 1
                 });
             }
           
@@ -152,6 +211,11 @@ radio .wx-radio-input{
       this.text=e.detail.value;
     }
 
+    change(e){
+      let data=e.detail.value.split(',');
+      this.responderId=data[0];
+      this.fee=data[1];
+    }
    
 
 
@@ -188,16 +252,22 @@ radio .wx-radio-input{
             list.forEach(obj=>{
               names=self.getCategoryNameById(obj.firstCategoryId,obj.secondCategoryId);
               let object={};
+              object.responderId=obj.responderId;
               object.avatarUrl=obj.avatarUrl;
               object.showName=obj.showName;
               object.title=obj.title;
               object.firstCategory=names.split(',')[0];
               object.secondCategory=names.split(',')[1];
-              if(obj.fee==0) obj.fee="免费"
               object.fee=obj.fee;
+              if(obj.fee==0) {
+                obj.showFee="免费"
+              }else{
+                obj.showFee='￥'+self.getRealityNum(obj.fee)
+              }
+              object.showFee=obj.showFee;
               cards.push(object)
+              self.$apply();
             })
-            console.log(cards)
             
           }
         

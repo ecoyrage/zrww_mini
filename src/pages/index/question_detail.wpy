@@ -94,6 +94,10 @@
   font-size: 14px;
   text-align: center;
 }
+.apply.disabled{
+  background-color: rgba(83, 131, 195, 0.3) !important;
+  color: rgba(255, 255, 255, 1) !important;
+}
 .commentTitle{
   font-size:14px;
   color:#333;
@@ -118,7 +122,7 @@
   margin-right:20rpx;
   font-weight:bold;
 }
-button[disabled] {
+button[disabled]{
   color: rgba(240,86,84,0.3) !important;
   background-color:rgba(246, 246, 246, 1) !important;
 }
@@ -204,7 +208,8 @@ button[disabled] {
       <view class="applyOrSuggest">
             <button wx:if="{{question.isApplyRecommend==1}}" class="suggest" disabled="disabled" >已推荐</button>
             <button wx:else class="suggest" @tap="recommend()">推荐别人(有奖励)</button>
-            <button class="apply" @tap="apply()">申请回答</button>
+            <button wx:if="{{question.isApplyAnswer==1}}" class="apply disabled">已申请回答</button>
+            <button wx:else class="apply" @tap="apply()">申请回答</button>
       </view>
   </view>
   
@@ -259,7 +264,7 @@ button[disabled] {
                 }
               })
           }else{
-            
+             wepy.navigateTo({ url: '/pages/recommend/recommend_myself' });
           }
         }
 

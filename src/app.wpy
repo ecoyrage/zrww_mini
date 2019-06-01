@@ -33,14 +33,10 @@ import 'wepy-async-function'
 export default class extends wepy.app {
   config = {
     pages: [
-      
-      'pages/recommend/recommend_myself',
-
 
       'pages/index/index',
 
-      
-
+      'pages/recommend/recommend_myself',
       'pages/recommend/recommend_reason',
       'pages/recommend/choose_recommend', //选择想推荐的人
       'pages/recommend/choose_recommend_second',
