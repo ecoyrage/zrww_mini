@@ -1,25 +1,30 @@
 <style lang="less">
 .name_bar{
-  background-color: #5383C3;
-  height: 200rpx;
+  background-color: #FFF;
+  margin-top:90rpx;
+  height:240rpx;
+  display: flex;
+  align-items: center;
+  justify-content: left; 
+
 }
 .userinfo-avatar {
-  width: 100rpx;
-  height: 100rpx;
-  margin-left:20rpx;
-  padding-top:40rpx;
+  width: 120rpx;
+  height: 120rpx;
+  margin-left:30rpx;
 }
 .userinfo-avatar image{
-  width: 100rpx;
-  height:100rpx;
+  width: 120rpx;
+  height:120rpx;
   border-radius: 50%;
+  border:1px #888 solid;
 }
 .nickName{
-  color:#FFF;
-  font-size: 18px;
-  position:absolute;
-  left:140rpx;
-  top:100rpx;
+  color:#333;
+  font-size: 22px;
+  margin-left:30rpx;
+  font-weight: bold;
+
 }
 .menu_img{
   width:60rpx;
@@ -40,29 +45,28 @@
   text-align: center;
 }
 .grey_space{
-   background-color: #F6F6F6;
+   background-color: #EEE;
    height: 20rpx;
 }
 .tab_menu_img{
   width:48rpx;
   height: 48rpx;
-  margin-top:24rpx;
   margin-left:30rpx;
 }
 .line{
-  border-top:4rpx #F6F6F6 solid;
-  margin-left:76rpx;
-  margin-top: 20rpx;
+  border-top:1rpx #EEE solid;
+  margin-left:110rpx;
   z-index: 99;
 }
 .tab_menu{
   height: 100rpx;
+  display: flex;
+  align-items: center;
+  justify-content: left;  
 }
 .tab_menu text{
-  position: absolute;
-  padding-top: 30rpx;
-  padding-left: 20rpx;
-  font-size:14px;
+  padding-left: 30rpx;
+  font-size:16px;
 }
 .logout{
    background-color: #FFF;
@@ -101,10 +105,9 @@
 }
 .shezhi{
   display: inline;
-  font-size:14px;
+  font-size:16px;
   position: absolute;
-  padding-top:15rpx;
-  padding-left:20rpx;
+  padding-left:110rpx;
   background-color: transparent;
   width: 80%;
   text-align: left;
@@ -112,78 +115,60 @@
 button::after {
   border: none;
 }
+.tab_menu_qianjin{
+  width:38rpx;
+  height:48rpx;
+  position:absolute;
+  right:30rpx;
+
+}
 
 </style>
 <template>
   <view>
     <view class="name_bar">
-      <view wx:if="{{isLogin}}">
         <view class="userinfo-avatar">
               <image src="{{basicInfo.avatarUrl==''?'/files/img/avatarUrl.png':basicInfo.avatarUrl}}"></image>
         </view>
         <view>
             <text class="nickName">{{basicInfo.nickName}}</text>
         </view>
-      </view>
-      
-      <view class="login" wx:if="{{!isLogin}}" @tap="login()">
-        <text>登录/注册 </text>
-         <image src="../../files/img/qianjin_white.png"></image>
-      </view>
     </view>
-    <view class="middle_bar">
-      <view class="middle_part" style="margin-left:54rpx;"  @tap="clickWallet()">
-        <image class="menu_img" src="../../files/img/basicInfo/wallet.png"></image>
-        <view class="menu_text">
-          <text>钱包</text>
-        </view>
-        <view class="separator"></view>
+     <view class="grey_space"></view>
+
+     <view class="tab_menu"  @tap="clickWallet()">
+              <image class="tab_menu_img" src="/files/img/basicInfo/wallet.png"></image>
+              <text>钱包</text>
+              <image class="tab_menu_qianjin" style="right:30rpx" src="../../files/img/qianjin.png"></image>
       </view>
-      
-      <view class="middle_part" @tap="clickAnswer()">
-        <image class="menu_img" src="../../files/img/basicInfo/hdjl.png"></image>
-        <view class="menu_text">
-        <text>回答记录</text>
-        </view>
-        <view class="separator"></view>
+      <view class="grey_space"></view>
+      <view class="tab_menu" @tap="clickQuestion()">
+            <image class="tab_menu_img" src="/files/img/basicInfo/twjl.png"></image>
+            <text>提问</text>
+            <image class="tab_menu_qianjin"  src="../../files/img/qianjin.png"></image>
       </view>
-      <view class="middle_part" @tap="clickQuestion()">
-        <image class="menu_img" src="../../files/img/basicInfo/twjl.png"></image>
-        <view class="menu_text">
-        <text>提问记录</text>
-        </view>
-        <view class="separator"></view>
+       <view class="line"></view>
+       <view class="tab_menu" @tap="clickAnswer()">
+            <image class="tab_menu_img" src="/files/img/basicInfo/hdjl.png"></image>
+            <text>回答</text>
+            <image class="tab_menu_qianjin"  src="../../files/img/qianjin.png"></image>
       </view>
-      <view class="middle_part" @tap="clickFocus()">
-        <image class="menu_img" src="../../files/img/basicInfo/focus.png"></image>
-        <view class="menu_text">
-        <text>关注</text>
-        </view>
+       <view class="line"></view>
+       <view class="tab_menu" @tap="clickFocus()">
+            <image class="tab_menu_img" src="/files/img/basicInfo/focus.png"></image>
+            <text>关注</text>
+            <image class="tab_menu_qianjin"   src="../../files/img/qianjin.png"></image>
       </view>
-          
-    </view>
-     <view class="grey_space" style="margin-top:20rpx;">
-     </view>
+     <view class="grey_space" style="margin-top:20rpx;"></view>
 
      <view>
-        <!-- <view class="tab_menu">
-             <image class="tab_menu_img" src="../../files/img/basicInfo/lxpt.png"></image>
-             <text>联系平台</text>
-              <image class="icon_qianjin" src="../../files/img/qianjin.png"></image>
-             <view class='line'></view>
-        </view> -->
+     
         <view class="tab_menu">
              <image class="tab_menu_img" src="../../files/img/basicInfo/shezhi.png"></image>
              <button class="shezhi" open-type="openSetting">设置</button>
-              <image class="icon_qianjin" src="../../files/img/qianjin.png"></image>
+              <image class="tab_menu_qianjin" src="../../files/img/qianjin.png"></image>
               <view class='line'></view>
         </view>
-         <!-- <view class="tab_menu">
-             <image class="tab_menu_img" src="../../files/img/doubt.png"></image>
-             <text>实名认证</text>
-              <image class="icon_qianjin" src="../../files/img/qianjin.png"></image>
-        </view> -->
-       
 
      </view>
       <view class="grey_space" style="height:{{windowHeight-480}}rpx;">
@@ -202,8 +187,8 @@ button::after {
   export default class basic_info extends wepy.page {
     config = {
       navigationBarTitleText: '我的',
-      navigationBarBackgroundColor: "#5383C3",
-      backgroundColor:'#5383C3',
+      // navigationBarBackgroundColor: "#5383C3",
+      // backgroundColor:'#5383C3',
       enablePullDownRefresh: true,
     }
     components = {
@@ -259,6 +244,7 @@ button::after {
           success(res) {
             if (res.confirm) {
               self.isLogin=false;
+              self.$parent.login();
               self.$apply();
               wx.removeStorageSync('accessToken');
               wx.removeStorageSync('randomKey');

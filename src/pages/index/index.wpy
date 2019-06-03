@@ -29,7 +29,7 @@
   width: 80rpx;
   height:80rpx;
   border-radius: 50%;
-  border:1px soild #FFF;
+  border:1px #FFF soild ;
 }
 .zrww_logo{
    width: 150rpx;

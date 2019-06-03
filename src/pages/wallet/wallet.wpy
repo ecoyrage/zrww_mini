@@ -56,7 +56,7 @@
 }
 
 .line{
-  border-top:4rpx #F6F6F6 solid;
+  border-top:1rpx #EEE solid;
   margin-left:76rpx;
 }
 

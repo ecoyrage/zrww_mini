@@ -34,7 +34,10 @@ export default class extends wepy.app {
   config = {
     pages: [
 
+      
+
       'pages/index/index',
+
 
       'pages/recommend/recommend_myself',
       'pages/recommend/recommend_reason',
@@ -61,10 +64,11 @@ export default class extends wepy.app {
 
 
       
-      'pages/basicInfo/basic_info',//个人中心、我的
       'pages/basicInfo/answer_record', //回答记录
       'pages/basicInfo/question_record',//提问记录
       'pages/basicInfo/focus',//个人中心、我的
+      'pages/basicInfo/basic_info',//个人中心、我的
+
 
       'pages/out/privacyProtection',
 
@@ -78,8 +82,8 @@ export default class extends wepy.app {
       'pages/be_responder',
       'pages/invite_friends',//邀请好友
       'pages/no_content',//暂无内容
-      'pages/answerer_introduce',//回答者介绍
 
+      'pages/answerer_introduce',//回答者介绍
 
       'pages/login/login_phone',
       'pages/login/invitation_code',//邀请码
@@ -140,6 +144,7 @@ export default class extends wepy.app {
     whyBecomeResponderPic:'',
     whyInvitationPic:'',
     serviceDescriptionPic:'',
+    code:'',
 
   }
   
@@ -151,7 +156,7 @@ export default class extends wepy.app {
   
 
   onLaunch() {
-    // this.testAsync()
+    this.login()
      wepy.getSystemInfo({
        success: function (res) {
         this.globalData.model=res.model;
@@ -186,8 +191,7 @@ export default class extends wepy.app {
       setTimeout(() => {
          wepy.login({
           success(res){
-            console.log(res)
-            resolve('promise resolved')
+            this.globalData.code=res.code;
           }
         });
         
@@ -195,9 +199,8 @@ export default class extends wepy.app {
     })
   }
 
-  async testAsync () {
-    const data = await this.sleep(3)
-    console.log(data)
+  async login () {
+    const data = await this.sleep(0)
   }
 
   getUserInfo(cb) {

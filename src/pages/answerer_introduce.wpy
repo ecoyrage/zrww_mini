@@ -36,7 +36,14 @@
   color:#888;
   font-size: 12px;
   margin-left:20rpx;
-  margin-top:18rpx;
+  margin-top:20rpx;
+}
+.category{
+  color:#888;
+  font-size: 12px;
+  margin-left:20rpx;
+  margin-top:20rpx;
+
 }
 .head_bottom{
   font-size: 12px;
@@ -196,6 +203,9 @@
           <view>
             <label class="company">{{model.company}}</label>
           </view>
+          <view>
+            <label class="category">{{firstCategory}} {{secondCategory}}</label>
+          </view>
         </view>
          
           <button wx:if="{{model.isFocus==0}}" class="focus" @tap="focus({{responderId}})">+关注</button>
@@ -297,6 +307,8 @@
        pageSize:10,
        commentList:'',
        noMore:false,
+       firstCategory:'',
+       secondCategory:''
     }
     mixins=[utils];
 
@@ -468,6 +480,7 @@
       self.$apply();
       let json2={};
       json2.responderId=self.responderId;
+      // json2.responderId='1134349251944493058';
       let obj2=self.genObj(json2);
       let sign2=self.genSign(obj2);
       wepy.request({
@@ -483,8 +496,12 @@
           self.model=res.data.data;
           self.servicelabel=res.data.data.label.split(',');
           self.workDay=self.changeWorkDay(res.data.data.workDay);
+          let categpryName=self.getCategoryNameById(self.model.firstCategoryId,self.model.secondCategoryId).split(',');
+          self.firstCategory=categpryName[0];
+          self.secondCategory=categpryName[1];
           self.isRest=self.isResting(res.data.data.workDay,res.data.data.serviceTime);
           self.profilesPic=res.data.data.profilesPic.split(',');
+          
           self.$apply();
         }
       })

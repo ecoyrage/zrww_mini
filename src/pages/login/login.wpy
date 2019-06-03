@@ -198,39 +198,35 @@
     getUnionId(encryptedData,iv){
       let self=this;
       return new Promise((resolve, reject) => {
-        //  resolve('ogp_70sFqo7c9uiShhgg77RhrvgI')
-        wepy.login({
-              success(res){
-                let json={};
-                json.code=res.code;
-                json.encryptedData=encryptedData;
-                json.iv=iv;
-                let obj=self.genObj(json);
-                let sign=self.genSign(obj);
-                wepy.request({
-                  url: self.domain+'/ww/api/v1/common/code2Session',
-                  method: 'post',
-                  data: {object:obj,sign:sign},
-                  header:{
-                    'JWT': 'true',
-                    'content-type':'application/json',
-                  },
-                  success: function (data) {
-                    if(data.data.code==100){
-                      resolve(data.data.data);
-                    }else{
-                      console.log("登录 、 解密unidode失败");
-                      console.log(data.data.msg);
-                      wepy.showToast({
-                        title: '请求失败！请重试',
-                        icon: 'none',
-                        duration: 3000
-                      })
-                    }
-                  }
-                });
+          let json={};
+          json.code=self.$parent.globalData.code;
+          json.encryptedData=encryptedData;
+          json.iv=iv;
+          let obj=self.genObj(json);
+          let sign=self.genSign(obj);
+          wepy.request({
+            url: self.domain+'/ww/api/v1/common/code2Session',
+            method: 'post',
+            data: {object:obj,sign:sign},
+            header:{
+              'JWT': 'true',
+              'content-type':'application/json',
+            },
+            success: function (data) {
+              if(data.data.code==100){
+                resolve(data.data.data);
+              }else{
+                self.$parent.login();
+                console.log("登录 、 解密unidode失败");
+                console.log(data.data.msg);
+                wepy.showToast({
+                  title: '请求失败！请重试',
+                  icon: 'none',
+                  duration: 3000
+                })
               }
-        });
+            }
+          });
       })
     }
     oauthLogin(unionId,userInfo){
