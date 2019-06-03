@@ -132,10 +132,10 @@
                 if(res.data.code==100){
                     let list=res.data.data.list;
                     if(list.length==0){
-                       wx.showToast({
-                        title: '暂无更多数据',
-                        icon: 'none',
-                      })
+                      //  wx.showToast({
+                      //   title: '暂无更多数据',
+                      //   icon: 'none',
+                      // })
                       self.noMore=true
                     }
                     for(let i=0;i<list.length;i++){
