@@ -1,36 +1,38 @@
 <style lang="less">
+page{
+    background-color: #EEE;
+}
 .head{
-    background-color: #5383C3;
     text-align: center;
-    color:#fff;
-}
-.head2{
-    display: flex;
-    justify-content:space-between;
-    margin-top:30rpx;
-}
-.head2part{
-    display: table;
+    border-radius: 5px;
+    background-color: #5383C3;
+    height:242rpx;
+    margin:20rpx 20rpx 40rpx 20rpx;
    
-}
-.font_size12{
-    font-size: 12px;
-}
-.font_size16{
-    font-size:16px;
 }
 .font_size18{
     font-size:18px;
+    padding-top:40rpx;
+    font-weight: bold;
+    color:#FFF;
 }
-.grey_space{
-    height: 20rpx;
-    background-color: #F6F6F6;
+
+.font_size28{
+    font-size:28px;
+    padding-top:40rpx;
+    padding-bottom:40rpx;
+    color:#FFF;
 }
-.jfye{
-    height:100rpx;
-    display: flex;
-    align-items:center;
+.warpper{
+  display: flex;
+  align-items: center;
+  height:100rpx;
 }
+.icon_qianjin{
+    margin-top:0;
+    right: 30rpx;
+}
+
 .tixian{
     width:134rpx;
     height: 60rpx;
@@ -43,15 +45,12 @@
 .wallet_icon{
     width:48rpx;
     height: 48rpx;
-    margin-top:26rpx;
-    margin-bottom: 26rpx;
-    margin-left:20rpx;
+    margin-left:30rpx;
 }
 .wallet_name{
-     margin-top:28rpx;
-     margin-left:20rpx;
+     margin-left:30rpx;
      font-size:14px;
-     color:#101010;
+     color:#333;
 
 }
 
@@ -59,70 +58,44 @@
   border-top:1rpx #EEE solid;
   margin-left:76rpx;
 }
+.grey_space{
+   background-color: #EEE;
+   height: 20rpx;
+}
 
 </style>
 <template>
   <view>
       <view class="head">
-        <view class="font_size12">积分总收益</view>
-        <view class="font_size18">00.00</view>
-        <view class="head2">
-            <view class="head2part" style="margin-left:20rpx;">
-                <view class="font_size16">00.00</view> 
-                <view class="font_size12">邀请奖励</view> 
-            </view>
-            <view style="height:60rpx;margin-top:10rpx;border-left:1px #FFF solid;"></view>
-            <view class="head2part">
-                <view class="font_size16">00.00</view> 
-                <view class="font_size12">答题收益</view> 
-            </view>
-             <view style="height:60rpx;margin-top:10rpx;border-left:1px #FFF solid;"></view>
-            <view class="head2part" style="margin-right:20rpx;margin-bottom:20rpx;">
-                <view class="font_size16">00.00</view> 
-                <view class="font_size12">推荐奖励</view>
-            </view>
-        </view>
-      </view>
-      <view class="grey_space"></view>
-
-      <view class="jfye">
-          <view>
-                <text style="margin-left:88rpx;font-size:14px;color:#333">积分余额</text>
-                <text style="margin-left:42rpx;font-size:20px;color:#333;font-weight:bold">00.00</text>
-                <!-- <view style="display:inline-table;position:absolute;right:20rpx;">
-                    <button class="tixian">提现</button>
-                </view> -->
-          </view>
+            <view class="font_size18">总收益</view>
+            <view class="font_size28">0.00</view>
       </view>
 
-      <view class="grey_space"></view>
-
-      <view>
-          <view style="display:flex" @tap="toInviteeList()">
+      <view style="background-color:#FFF">
+          <view class="warpper"  @tap="toInviteeList()">
               <image class="wallet_icon" src="../../files/img/wallet/yqjl.png"></image>
-              <view class="wallet_name">邀请奖励记录</view>
+              <view class="wallet_name"> 人脉奖励</view>
               <image class="icon_qianjin" src="../../files/img/qianjin.png"></image>
           </view>
           <view class="line"></view>
-          <view style="display:flex" @tap="toNoContent()">
+          <view class="warpper" @tap="toNoContent()">
               <image class="wallet_icon" src="../../files/img/wallet/dtsy.png"></image>
-              <view class="wallet_name">答题收益记录</view>
+              <view class="wallet_name">服务收益</view>
               <image class="icon_qianjin" src="../../files/img/qianjin.png"></image>
           </view>
           <view class="line"></view>
-          <view style="display:flex" @tap="toNoContent()">
+          <view class="warpper" @tap="toNoContent()">
               <image class="wallet_icon" src="../../files/img/wallet/tjjl.png"></image>
-              <view class="wallet_name">推荐奖励记录</view>
+              <view class="wallet_name">推荐奖励</view>
               <image class="icon_qianjin" src="../../files/img/qianjin.png"></image>
           </view>
-          <view class="line"></view>
-          <view style="display:flex" @tap="toNoContent()">
+          <view class="grey_space"></view>
+          <view class="warpper"  @tap="toNoContent()">
               <image class="wallet_icon" src="../../files/img/wallet/txjl.png"></image>
               <view class="wallet_name">提现记录</view>
               <image class="icon_qianjin" src="../../files/img/qianjin.png"></image>
           </view>
       </view>
-      <view style="background-color: #F6F6F6;height:500rpx;"></view>
 
     
     
@@ -134,8 +107,8 @@
   import wepy from 'wepy'
   export default class wallet extends wepy.page {
     config = {
-       navigationBarTitleText: '',
-       navigationBarBackgroundColor: "#5383C3",
+       navigationBarTitleText: '钱包',
+       navigationBarBackgroundColor: "#EEE",
     }
     components = {
      
@@ -166,7 +139,7 @@
 
     onLoad() {
       let self = this
-      
+ 
     }
   }
 </script>

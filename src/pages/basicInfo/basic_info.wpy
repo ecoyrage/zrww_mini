@@ -159,7 +159,7 @@ button::after {
             <text>关注</text>
             <image class="tab_menu_qianjin"   src="../../files/img/qianjin.png"></image>
       </view>
-     <view class="grey_space" style="margin-top:20rpx;"></view>
+     <view class="grey_space"></view>
 
      <view>
      
@@ -260,15 +260,8 @@ button::after {
      }
     }
 
-    onReachBottom() {
-      wx.setBackgroundColor({
-        backgroundColor: '#EEE', // 窗口的背景色为白色
-      })
-    }
+
     onPullDownRefresh(){
-       wx.setBackgroundColor({
-        backgroundColor: '#5383C3', // 窗口的背景色为白色
-      })
       wx.hideNavigationBarLoading() //完成停止加载
       wx.stopPullDownRefresh() //停止下拉刷新
     }

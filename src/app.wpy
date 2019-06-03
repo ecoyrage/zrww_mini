@@ -73,10 +73,9 @@ export default class extends wepy.app {
       'pages/out/privacyProtection',
 
 
-      'pages/wallet/wallet',//钱包
       'pages/wallet/invitee_list',//邀请列表
       'pages/wallet/inviter_rank',//邀请排行
-
+      'pages/wallet/wallet',//钱包
       
       
       'pages/be_responder',
