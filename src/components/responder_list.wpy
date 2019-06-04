@@ -1,9 +1,9 @@
 <style lang="less">
 .responder_view{
-  padding-left: 30rpx;
   background-color: #FFF;
 }
 .head_top{
+  padding-left: 30rpx;
   display: flex;
   margin-top:30rpx;
 }
@@ -11,7 +11,6 @@
   width: 100rpx;
   height: 100rpx;
   border-radius: 50%;
-  // margin-left:20rpx;
 }
 .avatar_img{
   width: 80rpx;
@@ -79,7 +78,7 @@
   margin-top:20rpx;
 }
 .servicelabel{
-  padding-left:80rpx;
+  padding-left:110rpx;
 }
 .panel_bar{
   color:#828282;
@@ -134,12 +133,7 @@
   color:#999;
   font-size: 12px;
 } 
-.space{
-   background-color: #EEE;
-   height: 20rpx;
-   margin-left: -30rpx;
-   margin-top:30rpx;
-}
+
 </style>
 <template>
   <view style="margin-bottom:80rpx;">
@@ -147,6 +141,11 @@
      <view wx:else class="responder_view">
         <repeat for="{{responderList}}" item="item">
           <view @tap="clickNext({{item.responderId}},{{item.showName}})">
+
+            <panel wx:if="{{myResponderList==1}}">
+              <view class="title" slot="title">通过该身份回答{{item.answerNumber}}个问题，共赚{{item.answerBalance}}元</view>
+            </panel>
+
               <view class="head_top">
                   <view class="userinfo-avatar">
                       <image  class="avatar_img" src="{{item.avatarUrl==''?'/files/img/avatarUrl.png':item.avatarUrl}}"></image>
@@ -177,7 +176,7 @@
                 <servicelabel :servicelabel="item.label"></servicelabel>
               </view>
     
-              <view wx:if="{{item.isResting}}">
+              <view wx:if="{{item.isResting}}" style="margin-left:30rpx;">
                   <view class="panel_bar">
                       <view>
                         <label style="margin-left:-120rpx;font-size:12px;color:#333">服务时间</label>
@@ -190,7 +189,7 @@
                   <!-- <button class="next_button" @tap="clickNext({{item.responderId}})">留言</button> -->
               </view>
 
-              <view wx:else>
+              <view wx:else style="margin-left:30rpx;">
                   <view class="little_tabs">
                     <label><image class="grade_pic" src="../files/img/grade_high.png"></image><label class="blue_font">{{item.averageScore}}</label>分</label>
                     <label class="little_tab"><label class="blue_font">{{item.answerNumber}}</label>个回答</label>
@@ -201,8 +200,8 @@
                   </view>
                   <button class="next_button" wx:if="{{hidden!=1}}">问问</button>
               </view>
+              <view style="height:30rpx;"></view>
           </view>
-         <view class="space"></view>
         </repeat>
      </view>
   </view>
@@ -211,16 +210,19 @@
 <script>
   import wepy from 'wepy'
   import servicelabel from '../components/servicelabel'
+  import Panel from '@/components/panel' 
   export default class responderList extends wepy.component {
     props = {
       responderList: {},
       hidden:{},
       isRecommend:{},
+      myResponderList:{},
     }
     components = {
        servicelabel: servicelabel,
+        panel: Panel,
     }
-
+   
     methods={
       clickNext(id,showName){
         if(this.isRecommend==1){

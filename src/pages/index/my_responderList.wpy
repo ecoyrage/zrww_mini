@@ -1,8 +1,32 @@
 <style lang="less">
+page{
+  background-color: #EEE;
+}
+.head_top{
+  margin-top:0;
+  padding-top:30rpx;
+}
+.warpper{
+  display: flex;
+  align-items: center;
+  // justify-content: center;  
+  background-color: #FFF;
+  height:120rpx;
+}
+.warpper text{
+  margin-left:30rpx;
+  color:#101010;
+  font-size:16px;
+}
+
+
 </style>
 <template>
  <view>
-  <responderList :responderList.sync="responderList" :hidden.sync="hidden"></responderList>
+  <view class="warpper">
+    <text>共回答{{answerNumber}}个问题，共赚{{answerBalance}}元</text>
+  </view>
+  <responderList :responderList.sync="responderList" :hidden.sync="hidden" :myResponderList="myResponderList"></responderList>
 </view>
 </template>
 
@@ -12,8 +36,9 @@
   import responderList from '@/components/responder_list'
   export default class my_responderList extends wepy.page {
     config = {
-      navigationBarTitleText: '',
-      // enablePullDownRefresh: true,
+      navigationBarTitleText: '我的身份',
+      navigationBarBackgroundColor: "#EEE",
+      backgroundColor:"#EEE",
     }
     components = {
       responderList:responderList,
@@ -23,6 +48,9 @@
     data = {
       responderList:'',
       hidden:'',
+      answerBalance:'',
+      answerNumber:'',
+      myResponderList:1
     }
     
     mixins=[utils]
@@ -56,8 +84,11 @@
         },
         success: res => {
           if(res.data.code==100){
-            self.responderList=res.data.data;
+            self.responderList=res.data.data.list;
+            self.answerBalance=self.getRealityNum(res.data.data.answerBalance).toFixed(2);
+            self.answerNumber=res.data.data.answerNumber;
             for(let i=0;i<self.responderList.length;i++){
+              self.responderList[i].answerBalance=self.getRealityNum(self.responderList[i].answerBalance).toFixed(2);
               self.responderList[i].fee=self.getRealityNum(self.responderList[i].fee);
               self.responderList[i].label=self.responderList[i].label.split(',');
               self.responderList[i].isResting=self.isResting(self.responderList[i].workDay,self.responderList[i].serviceTime);

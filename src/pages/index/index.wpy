@@ -186,14 +186,13 @@
               <image  src="{{avatarUrl}}"></image>
           </view>
           <view class="zrww_logo">
-              <!-- <image  src="../../files/img/zrww.png"></image> -->
               <text class="zhaorenwenwen">找人问问</text>
               <text class="district">{{district}}</text>
           </view>
           <view>
-          <image class="lxwm_img" @tap="connectUs()" src="../../files/img/lxwm.png"></image>
+          <image class="lxwm_img" @tap="connectUs()" src="/files/img/lxwm.png"></image>
           <text class="kefu">客服</text>
-          <image class="search_img" @tap="search()" src="../../files/img/search_black.png"></image>
+          <image class="search_img" @tap="search()" src="/../files/img/search_black.png"></image>
           <text class="renmaiquan">人脉圈</text>
           </view>
       </view>
@@ -233,8 +232,8 @@
                 <view wx:elif="{{item.jumpType==8}}" @tap="toAnswererIntroduce({{item.jumpTarget}})"> 
                   <image src="{{item.fileUrl}}"  mode="widthFix" style="width: 100%;"/>
                 </view>
-                 <view wx:elif="{{item.jumpType==9}}"> 
-                   <video src="{{item.jumpTarget}}" @play="changeAutoplay()" @pause="ended()" @ended="ended()" style="width:100%;height:250rpx;"  poster="{{item.fileUrl}}" controls show-fullscreen-btn></video>
+                 <view wx:elif="{{item.jumpType==9}}" @tap="fullScreen()"> 
+                   <video id='video' src="{{item.jumpTarget}}" @play="changeAutoplay()" @pause="ended()" @ended="ended()" style="width:100%;height:250rpx;"  poster="{{item.fileUrl}}" controls show-fullscreen-btn show-center-play-btn="{{false}}"></video>
                 </view>
              
               </swiper-item>
@@ -339,7 +338,6 @@
                   <button class="behave2" style="width:120rpx;margin-top:-50rpx;" @tap="toInviteFriends()">查看</button>
                 </view>
               </view>
-            <!-- <view class="grey_space" style="margin-top:10rpx;"></view> -->
           </view>
 
 
@@ -369,20 +367,6 @@
                   <button class="behave" slot="behave" wx:else @tap="toInviteFriends()">去查看</button>
                 </indexArea>
           </view>
-
-             <!-- <view >
-        <view style="height:100rpx;">
-          <view style="padding-top:40rpx;margin-left:20rpx;color:#999;font-size:12px;">已回答<text class="blue_text">{{info.answerNumber}}个</text>问题，共赚<text class="blue_text">{{info.answerBalance}}元</text></view>
-          <image class="icon_qianjin" style="margin-top:-40rpx;" src="../../files/img/qianjin.png"></image>
-        </view>
-        <view class='line' style="margin-top:10rpx;"></view>
-        <view style="height:100rpx;" @tap="toInviteeList()">
-          <view style="padding-top:40rpx;margin-left:20rpx;color:#999;font-size:12px;">已邀请<text class="blue_text">{{info.invitationNumber}}位</text>好友，共有<text class="blue_text">{{info.contacts}}人脉</text>，累计奖励<text class="blue_text" >{{info.invitationBalance}}元</text></view>
-          <image class="icon_qianjin" style="margin-top:-40rpx;" src="../../files/img/qianjin.png"></image>
-        </view>
-       
-      </view>
-      <view class="grey_space" style="margin-top:10rpx;"></view> -->
 
     </view>
     <view wx:else style="background-color: #FFF;">
@@ -555,6 +539,9 @@
         wepy.navigateTo({
           url: '/pages/index/my_responderList?hidden=1',
         })
+      },
+      fullScreen(){
+        wx.createVideoContext('video').requestFullScreen()
       }
     }
 

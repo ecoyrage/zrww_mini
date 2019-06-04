@@ -247,7 +247,7 @@ radio .wx-radio-input.wx-radio-input-checked::before{
         },
         success: res => {
           if(res.data.code==100){
-            let list=res.data.data;
+            let list=res.data.data.list;
             let names=''
             list.forEach(obj=>{
               names=self.getCategoryNameById(obj.firstCategoryId,obj.secondCategoryId);

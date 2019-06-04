@@ -15,11 +15,11 @@
   height: 100%;
 }
 .icon_qianjin{
-    width:38rpx;
-    height: 48rpx;
-    position:absolute;
-    right: 0;
-    margin-top:30rpx;
+  width:38rpx;
+  height: 48rpx;
+  position:absolute;
+  right: 0;
+  margin-top:30rpx;
 }
 
 </style>
@@ -48,9 +48,10 @@ export default class extends wepy.app {
 
       'pages/index/question_detail',// 问题详情
       'pages/index/connect_customer', //客服
-      'pages/index/my_responderList',
       'pages/index/connectUs',
       'pages/index/describe_question',
+      'pages/index/my_responderList',
+
 
 
 
