@@ -8,8 +8,8 @@
   margin-top:30rpx;
 }
 .userinfo-avatar {
-  width: 100rpx;
-  height: 100rpx;
+  width: 80rpx;
+  height: 80rpx;
   border-radius: 50%;
 }
 .avatar_img{
@@ -78,7 +78,7 @@
   margin-top:20rpx;
 }
 .servicelabel{
-  padding-left:110rpx;
+  padding-left:90rpx;
 }
 .panel_bar{
   color:#828282;
@@ -176,7 +176,7 @@
                 <servicelabel :servicelabel="item.label"></servicelabel>
               </view>
     
-              <view wx:if="{{item.isResting}}" style="margin-left:30rpx;">
+              <view wx:if="{{item.isResting}}" style="margin-left:10rpx;">
                   <view class="panel_bar">
                       <view>
                         <label style="margin-left:-120rpx;font-size:12px;color:#333">服务时间</label>
@@ -189,7 +189,7 @@
                   <!-- <button class="next_button" @tap="clickNext({{item.responderId}})">留言</button> -->
               </view>
 
-              <view wx:else style="margin-left:30rpx;">
+              <view wx:else style="margin-left:10rpx;">
                   <view class="little_tabs">
                     <label><image class="grade_pic" src="../files/img/grade_high.png"></image><label class="blue_font">{{item.averageScore}}</label>分</label>
                     <label class="little_tab"><label class="blue_font">{{item.answerNumber}}</label>个回答</label>

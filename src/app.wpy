@@ -34,9 +34,8 @@ export default class extends wepy.app {
   config = {
     pages: [
 
-      
-
       'pages/index/index',
+      'pages/index/my_responderList',
 
 
       'pages/recommend/recommend_myself',
@@ -50,7 +49,6 @@ export default class extends wepy.app {
       'pages/index/connect_customer', //客服
       'pages/index/connectUs',
       'pages/index/describe_question',
-      'pages/index/my_responderList',
 
 
 
@@ -105,24 +103,6 @@ export default class extends wepy.app {
       "desc": "你的位置信息将用于小程序位置接口的效果展示"
     }
    }, 
-  //  tabBar: {  
-  //   color: "#a9b7b7",  
-  //   selectedColor: "#11cd6e",  
-  //   borderStyle: "black" ,
-  //   list: [{  
-  //     //  "selectedIconPath": "images/icon_consult_press.png",  
-  //     //  "iconPath": "images/icon_consult.png",  
-  //     pagePath: "pages/index/index",  
-  //     text: "首页"  
-  //   },
-  //     {  
-  //     //  "selectedIconPath": "images/icon_mine_press.png",  
-  //     //  "iconPath": "images/icon_mine.png",  
-  //     pagePath: "pages/basicInfo/basic_info",  
-  //     text: "我的"  
-  //   },
-  //   ]  
-  //  } 
   }
 
   globalData = {
