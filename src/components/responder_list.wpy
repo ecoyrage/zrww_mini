@@ -120,6 +120,7 @@
 .status_img{
   width: 100rpx;
   height:30rpx;
+   margin-left:-10rpx;
 }
 .status_img image{
   width: 100rpx;
@@ -179,8 +180,8 @@
               <view wx:if="{{item.isResting}}" style="margin-left:10rpx;">
                   <view class="panel_bar">
                       <view>
-                        <label style="margin-left:-120rpx;font-size:12px;color:#333">服务时间</label>
-                        <label>　{{item.workDay}}</label>
+                        <label style="margin-left:-110rpx;font-size:12px;color:#333">服务时间</label>
+                        <label style="margin-left:-10rpx">　{{item.workDay}}</label>
                       </view>
                       <view style="margin-top:20rpx;color:#888">
                         <label >{{item.serviceTime}}</label>

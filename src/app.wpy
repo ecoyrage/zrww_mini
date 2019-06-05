@@ -33,9 +33,12 @@ import 'wepy-async-function'
 export default class extends wepy.app {
   config = {
     pages: [
-
       'pages/index/index',
       'pages/index/my_responderList',
+      'pages/index/question_detail',// 问题详情
+      'pages/index/connect_customer', //客服
+      'pages/index/connectUs',
+      'pages/index/describe_question',
 
 
       'pages/recommend/recommend_myself',
@@ -44,24 +47,12 @@ export default class extends wepy.app {
       'pages/recommend/choose_recommend_second',
 
 
-
-      'pages/index/question_detail',// 问题详情
-      'pages/index/connect_customer', //客服
-      'pages/index/connectUs',
-      'pages/index/describe_question',
-
-
-
-
-
       'pages/zrww/search_result',
       'pages/zrww/keywords_search',
       'pages/zrww/zrww',
       'pages/zrww/category_search',
       'pages/zrww/category_search_second',
       
-
-
       
       'pages/basicInfo/answer_record', //回答记录
       'pages/basicInfo/question_record',//提问记录
@@ -70,7 +61,6 @@ export default class extends wepy.app {
 
 
       'pages/out/privacyProtection',
-
 
       'pages/wallet/invitee_list',//邀请列表
       'pages/wallet/inviter_rank',//邀请排行
@@ -89,7 +79,6 @@ export default class extends wepy.app {
       'pages/login/choose_category',//选择分类
 
      
-      
       'pages/treaty',
     ],
     window: {
