@@ -493,17 +493,20 @@
           'Authorization':'Bearer '+self.accessToken
         },
         success(res) {
-          self.model=res.data.data;
-          self.servicelabel=res.data.data.label.split(',');
-          self.model.fee=self.getRealityNum(self.model.fee);
-          self.workDay=self.changeWorkDay(res.data.data.workDay);
-          let categpryName=self.getCategoryNameById(self.model.firstCategoryId,self.model.secondCategoryId).split(',');
-          self.firstCategory=categpryName[0];
-          self.secondCategory=categpryName[1];
-          self.isRest=self.isResting(res.data.data.workDay,res.data.data.serviceTime);
-          self.profilesPic=res.data.data.profilesPic.split(',');
-          
-          self.$apply();
+          if(res.data.code==100){
+              self.model=res.data.data;
+              self.servicelabel=res.data.data.label.split(',');
+              self.model.fee=self.getRealityNum(self.model.fee);
+              self.workDay=self.changeWorkDay(res.data.data.workDay);
+              let categpryName=self.getCategoryNameById(self.model.firstCategoryId,self.model.secondCategoryId).split(',');
+              self.firstCategory=categpryName[0];
+              self.secondCategory=categpryName[1];
+              self.isRest=self.isResting(res.data.data.workDay,res.data.data.serviceTime);
+              self.profilesPic=res.data.data.profilesPic.split(',');
+              self.$apply();
+            }else if(res.data.code==730){
+            wepy.redirectTo({ url: '/pages/login/login' });
+          }
         }
       })
 

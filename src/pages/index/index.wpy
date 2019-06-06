@@ -192,7 +192,7 @@
           <view>
           <image class="lxwm_img" @tap="connectUs()" src="/files/img/lxwm.png"></image>
           <text class="kefu">客服</text>
-          <image class="search_img" @tap="search()" src="/../files/img/search_black.png"></image>
+          <image class="search_img" @tap="search()" src="/files/img/search_black.png"></image>
           <text class="renmaiquan">人脉圈</text>
           </view>
       </view>
@@ -342,7 +342,7 @@
 
 
           <view wx:else>
-            <view wx:if="{{info.responderStatus==0||info.responderStatus==1}}"> 
+            <view wx:if="{{info.responderStatus==0||info.responderStatus==1||info.responderStatus==''||info.responderStatus==undefined}}"> 
               <indexArea>
                   <image class="icon" src="{{be_responder}}" slot="icon"></image>
                   <view class="indexArea_title" slot="indexArea_title">加入人脉圈，价值变现</view>
@@ -719,9 +719,8 @@
     }, 1000)
 
     }
-   
-    onLoad() {
-      let self = this
+    onShow(){
+      let self=this;
       let isLogin=wx.getStorageSync('isLogin');
       self.isLogin=isLogin;
       self.district=self.$parent.globalData.district;
@@ -731,6 +730,28 @@
           avatarUrl="/files/img/avatarUrl.png"
         }
         self.avatarUrl=avatarUrl;
+      }
+      console.log(self.info.responderStatus)
+     
+      self.$apply();
+    }
+   
+    onLoad(options) {
+      let self = this
+      let isLogin=wx.getStorageSync('isLogin');
+      if(options!=undefined&&options.openFromApp!=undefined&&options.openFromApp==1){
+        wx.setStorageSync('responderId',options.responderId)
+        wx.setStorageSync('openFromApp',options.openFromApp)
+        if(isLogin){
+            wepy.navigateTo({
+                url: '/pages/answerer_introduce?responderId=' + wx.getStorageSync('responderId')
+              });
+        }else{
+          wepy.navigateTo({
+            url:'/pages/login/login'
+          })
+        }
+        
       }
       let questionCaseList=wx.getStorageSync('questionCaseList');
       if(questionCaseList!=""){

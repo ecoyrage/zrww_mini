@@ -47,9 +47,16 @@ export default class utils extends wepy.mixin {
         success(res) {
           if(res.data.code==100){
               wx.setStorageSync('basicInfo',res.data.data);
+            if (wx.getStorageSync('openFromApp')==1){
+              wepy.redirectTo({
+                url: '/pages/answerer_introduce?responderId=' + wx.getStorageSync('responderId')
+              });
+            }else{
               wepy.reLaunch({
-                url:'/pages/index/index'
+                url: '/pages/index/index'
               })
+            }
+              
           }
         }
       })
